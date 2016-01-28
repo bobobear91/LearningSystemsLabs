@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LS_Lab1
+namespace LS_Lab1___Neural_Network
 {
     static class Program
     {
