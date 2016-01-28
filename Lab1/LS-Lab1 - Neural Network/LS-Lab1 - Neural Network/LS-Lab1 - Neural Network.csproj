@@ -63,7 +63,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="MainForm.cs">
+=======
+    <Compile Include="Components\FileReader.cs" />
+    <Compile Include="Form1.cs">
+>>>>>>> origin/master
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
@@ -109,8 +114,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Folder Include="Components\" />
     <Folder Include="UserControls\" />
+=======
+>>>>>>> origin/master
     <Folder Include="ViewModel\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
