@@ -152,6 +152,7 @@ namespace LS_Lab1___Neural_Network.Components
                     throw;
                 }
 
+                // Returns formatted FileData-array.
                 return FileData;
             }
 
@@ -197,6 +198,7 @@ namespace LS_Lab1___Neural_Network.Components
                     throw;
                 }
 
+                // Returns Formatted FileData-array.
                 return FileData;
             }
 
