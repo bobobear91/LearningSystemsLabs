@@ -106,11 +106,8 @@ namespace LS_Lab1___Neural_Network.Components
 
                 return FileData;
             }
-            else
-            {
-                // Do nothing
-                return null;
-            }
+
+            return null;
         }
     }
 }
