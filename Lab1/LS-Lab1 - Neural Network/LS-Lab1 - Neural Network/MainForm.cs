@@ -48,12 +48,12 @@ namespace LS_Lab1___Neural_Network
         #region Menu
         private void trainingDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadFileDialog("Traning text-file");
+            LoadFileDialog("Traning");
         }
 
         private void testDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadFileDialog("Test text-file");
+            LoadFileDialog("Test");
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace LS_Lab1___Neural_Network
         private void LoadFileDialog(string title)
         {
             OpenFileDialog theDialog = new OpenFileDialog();
-            theDialog.Title = title;
+            theDialog.Title = string.Format("{0} text-file", title);
             theDialog.Filter = "Txt files|*.txt";
             theDialog.InitialDirectory = @"C:\";
             if (theDialog.ShowDialog() == DialogResult.OK)
@@ -71,7 +71,11 @@ namespace LS_Lab1___Neural_Network
                 string filename = theDialog.FileName;
                 Action action = () =>
                     {
-                        
+                        statusStripLabel.Text = string.Format("Loading {0}",title);
+                        int[] arrayCheck =  { 2, 19, 20 };
+                        var index = FileReader.CollectFileData(filename,3, arrayCheck);
+                        statusStripLabel.Text = string.Format("Loading done: {0}", title);
+
                     };
                 syncContext.Send(item => action.Invoke(), null);
 

@@ -41,7 +41,7 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -151,7 +151,7 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
+            this.statusStripLabel,
             this.toolStripProgressBar1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 563);
             this.statusStrip1.Name = "statusStrip1";
@@ -159,11 +159,11 @@
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripStatusLabel1
+            // statusStripLabel
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(80, 17);
-            this.toolStripStatusLabel1.Text = "{Status-Label}";
+            this.statusStripLabel.Name = "statusStripLabel";
+            this.statusStripLabel.Size = new System.Drawing.Size(80, 17);
+            this.statusStripLabel.Text = "{Status-Label}";
             // 
             // toolStripProgressBar1
             // 
@@ -235,9 +235,9 @@
             this.lblTestInformation.AutoSize = true;
             this.lblTestInformation.Location = new System.Drawing.Point(3, 41);
             this.lblTestInformation.Name = "lblTestInformation";
-            this.lblTestInformation.Size = new System.Drawing.Size(59, 13);
+            this.lblTestInformation.Size = new System.Drawing.Size(62, 13);
             this.lblTestInformation.TabIndex = 3;
-            this.lblTestInformation.Text = "Information";
+            this.lblTestInformation.Text = "Information:";
             // 
             // lblTestData
             // 
@@ -314,7 +314,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel statusStripLabel;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
