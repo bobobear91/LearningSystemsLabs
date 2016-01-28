@@ -155,12 +155,11 @@ namespace LS_Lab1___Neural_Network.Components
                 // Returns formatted FileData-array.
                 return FileData;
             }
-
             return null;
         }
 
         /// <summary>
-        /// Reads a file and stores a selected number of elements to the format used in Etch-depth prediction NN, 
+        /// Reads a file and stores a selected number of elements to the format used in Etch-depth prediction NN.
         /// </summary>
         /// <param name="FilePath"></param>
         /// <param name="nOfInputs"></param>
@@ -201,8 +200,52 @@ namespace LS_Lab1___Neural_Network.Components
                 // Returns Formatted FileData-array.
                 return FileData;
             }
-
             return null;
-        } 
+        }
+
+        /// <summary>
+        /// Reads a file and stores a selected number of output elements to the format used in Etch-depth prediction NN.
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <param name="nOfOutputs"></param>
+        /// <param name="SelectedOutputIndex"></param>
+        /// <returns></returns>
+        public static double[,] CollectOutputFileData(string FilePath, int nOfOutputs, int[] SelectedOutputIndex)
+        {
+            if (FileExist(FilePath) && nOfOutputs <= CountFileRows(FilePath) && SelectedOutputIndex.Count() <= nOfOutputs && CriticalIndexInRange(SelectedOutputIndex, FilePath))
+            {
+                string[,] RawData = ReadFile(FilePath);
+                int nOfDataSets = CountFileRows(FilePath);
+                double[,] FileData = new double[nOfDataSets, nOfOutputs];
+
+                try
+                {
+                    // Creates a FileData-array with a selected number of output elements from RawData-array
+                    for (int i = 0; i < nOfDataSets; i++)
+                    {
+                        for (int j = 0; j < nOfOutputs; j++)
+                        {
+                            FileData[i, j] = Convert.ToDouble(RawData[i, SelectedOutputIndex[j]].ToUpper());
+                        }
+                    }
+                }
+                catch (FormatException)
+                {
+                    throw;
+                }
+                catch (OverflowException)
+                {
+                    throw;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+                // Returns Formatted FileData-array.
+                return FileData;
+            }
+            return null;
+        }  
     }
 }
