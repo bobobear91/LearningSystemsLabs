@@ -43,10 +43,10 @@ namespace LS_Lab1___Neural_Network.Components
                 for (int i = 0; i < nOfRows; i++)
                 {
                     // Splits a row into array elements.
-                    string[] tmpData = file.ReadLine().Split(' ');
-                   
+                    string[] tmpData = file.ReadLine().Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
                     for (int j = 0; j < nOfColumns; j++)
                     {
+                        tmpData[j] = tmpData[j].Replace('.', ',');
                         // Stores temporary created tmpData in fileData array. 
                         fileData[i, j] = tmpData[j];
                     }
@@ -87,7 +87,7 @@ namespace LS_Lab1___Neural_Network.Components
             if (FileExist(FilePath))
             {
                 // If file exists, returns the number of columns that exist in the first line of the specified file.
-                return System.IO.File.ReadLines(FilePath).First().Split(' ').Count();
+                return System.IO.File.ReadLines(FilePath).First().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Count();
             }
             return 0;
         }
@@ -120,13 +120,13 @@ namespace LS_Lab1___Neural_Network.Components
         /// <param name="FilePath"></param>
         /// <param name="nOfInputs"></param>
         /// <returns></returns>
-        public static double[,] CollectFileData(string FilePath, int nOfInputs) //TODO: check that double is enough to contain data.
+        public static double[,] CollectFileData(string FilePath, int nOfInputs)
         {
             if (FileExist(FilePath) && nOfInputs <= CountFileRows(FilePath))
             {
                 string[,] RawData = ReadFile(FilePath);
                 int nOfDataSets = CountFileRows(FilePath);
-                double[,] FileData = new double[nOfInputs, nOfDataSets];
+                double[,] FileData = new double[nOfDataSets, nOfInputs];
 
                 try
                 {
@@ -166,22 +166,22 @@ namespace LS_Lab1___Neural_Network.Components
         /// <param name="nOfInputs"></param>
         /// <param name="CriticalInputIndex"></param>
         /// <returns></returns>
-        public static double[,] CollectFileData(string FilePath, int nOfInputs, int[] CriticalInputIndex) //TODO: check if double is enough to contain data.
+        public static double[,] CollectFileData(string FilePath, int nOfInputs, int[] CriticalInputIndex)
         {
             if (FileExist(FilePath) && nOfInputs <= CountFileRows(FilePath) && CriticalInputIndex.Count() <= nOfInputs && CriticalIndexInRange(CriticalInputIndex, FilePath))
             {
                 string[,] RawData = ReadFile(FilePath);
                 int nOfDataSets = CountFileRows(FilePath);
-                double[,] FileData = new double[nOfInputs, nOfDataSets];
+                double[,] FileData = new double[nOfDataSets, nOfInputs];
 
                 try
                 {
                     // Creates a FileData-array with a selected number of elements from RawData-array
-                    for (int i = 0; i <= nOfDataSets; i++)
+                    for (int i = 0; i < nOfDataSets; i++)
                     {
-                        for (int j = 0; j <= nOfInputs; j++)
+                        for (int j = 0; j < nOfInputs; j++)
                         {
-                            FileData[i, j] = Convert.ToDouble(RawData[i, CriticalInputIndex[j]]);
+                            FileData[i, j] = Convert.ToDouble(RawData[i, CriticalInputIndex[j]].ToUpper());
                         }
                     }
                 }
