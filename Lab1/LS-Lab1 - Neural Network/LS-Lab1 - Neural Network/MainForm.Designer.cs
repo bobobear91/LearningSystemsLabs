@@ -45,13 +45,13 @@
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblTestInformation = new System.Windows.Forms.Label();
+            this.lblTestData = new System.Windows.Forms.Label();
+            this.lblTraningInformation = new System.Windows.Forms.Label();
+            this.lblTraningData = new System.Windows.Forms.Label();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -199,20 +199,6 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(499, 508);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(508, 3);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(499, 508);
-            this.tableLayoutPanel2.TabIndex = 0;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel4);
@@ -229,10 +215,10 @@
             this.tableLayoutPanel4.AutoSize = true;
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Controls.Add(this.label4, 0, 3);
-            this.tableLayoutPanel4.Controls.Add(this.label3, 0, 2);
-            this.tableLayoutPanel4.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblTestInformation, 0, 3);
+            this.tableLayoutPanel4.Controls.Add(this.lblTestData, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.lblTraningInformation, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.lblTraningData, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -244,41 +230,55 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(487, 144);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
-            // label4
+            // lblTestInformation
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 41);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(72, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Traning Data:";
+            this.lblTestInformation.AutoSize = true;
+            this.lblTestInformation.Location = new System.Drawing.Point(3, 41);
+            this.lblTestInformation.Name = "lblTestInformation";
+            this.lblTestInformation.Size = new System.Drawing.Size(59, 13);
+            this.lblTestInformation.TabIndex = 3;
+            this.lblTestInformation.Text = "Information";
             // 
-            // label3
+            // lblTestData
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 27);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Traning Data:";
+            this.lblTestData.AutoSize = true;
+            this.lblTestData.Location = new System.Drawing.Point(3, 27);
+            this.lblTestData.Name = "lblTestData";
+            this.lblTestData.Size = new System.Drawing.Size(57, 13);
+            this.lblTestData.TabIndex = 2;
+            this.lblTestData.Text = "Test Data:";
             // 
-            // label2
+            // lblTraningInformation
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Traning Data:";
+            this.lblTraningInformation.AutoSize = true;
+            this.lblTraningInformation.Location = new System.Drawing.Point(3, 14);
+            this.lblTraningInformation.Name = "lblTraningInformation";
+            this.lblTraningInformation.Size = new System.Drawing.Size(62, 13);
+            this.lblTraningInformation.TabIndex = 1;
+            this.lblTraningInformation.Text = "Information:";
             // 
-            // label1
+            // lblTraningData
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Traning Data:";
+            this.lblTraningData.AutoSize = true;
+            this.lblTraningData.Location = new System.Drawing.Point(3, 0);
+            this.lblTraningData.Name = "lblTraningData";
+            this.lblTraningData.Size = new System.Drawing.Size(72, 13);
+            this.lblTraningData.TabIndex = 0;
+            this.lblTraningData.Text = "Traning Data:";
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(508, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(499, 508);
+            this.tableLayoutPanel2.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -330,10 +330,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblTestInformation;
+        private System.Windows.Forms.Label lblTestData;
+        private System.Windows.Forms.Label lblTraningInformation;
+        private System.Windows.Forms.Label lblTraningData;
     }
 }
 
