@@ -18,6 +18,7 @@ namespace LS_Lab1___Neural_Network
         double[,] traningData = null;
         double[,] testData = null;
 
+        #region Constructor
         public MainForm()
         {
             InitializeComponent();
@@ -41,6 +42,7 @@ namespace LS_Lab1___Neural_Network
             btnShowTestMatrix.Enabled = false;
             btnShowTrainMatrix.Enabled = false;
         }
+        #endregion
 
         #region Form
         private void MainForm_Load(object sender, EventArgs e)
@@ -59,47 +61,84 @@ namespace LS_Lab1___Neural_Network
         private void loadDataMenuItem_Click(object sender, EventArgs e)
         {
             var button = (ToolStripMenuItem)sender;
-            Tuple<double[,], string> returnData = null;
+            string path;
             switch (button.Name)
             {
                 case "trainingDataToolStripMenuItem":
+                    //Loads Traning
+                    LoadFileDialog("Traning", out path,out traningData);
+                    ChangeLabelStatusTraning(path, traningData);
 
-                    returnData = LoadFileDialog("Traning");
-                    traningData = returnData.Item1;
-
-                    lblTraningData.Text = GetStringPath("Traning", returnData.Item2);
-                    lblTraningInformation.Text = GetStringDataSize(returnData.Item1);
-
-                    tsButtonRemove.Enabled = true;
-                    btnTrain.Enabled = true;
-                    btnShowTrainMatrix.Enabled = true;
                     break;
                 case "testDataToolStripMenuItem":
-                    returnData = LoadFileDialog("Test");
-                    testData = returnData.Item1;
-                    lblTestData.Text = GetStringPath("Test",returnData.Item2);
-                    lblTestInformation.Text = GetStringDataSize(returnData.Item1);
+                    //Loads test
+                    LoadFileDialog("Test",out path, out testData);
+                    ChangeLabelStatusTest(path, testData);
 
-                    tsButtonRemove.Enabled = true;
-                    btnShowTestMatrix.Enabled = true;
+                    break;
+
+                case "loadBothToolStripMenuItem":
+                    //Loads traning
+                    LoadFileDialog("Traning",out path, out traningData);
+                    ChangeLabelStatusTraning(path, traningData);
+                   
+                    //Loads test
+                    LoadFileDialog("Test",out path,out traningData);
+                    ChangeLabelStatusTest(path, testData);
+                   
                     break;
                 default:
                     break;
             }
         }
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="data"></param>
+        private void ChangeLabelStatusTraning(string filename, double[,] data)
+        {   
+            if (!string.IsNullOrEmpty(filename))
+            {
+                lblTraningData.Text = GetStringPath("Traning", filename);
+                lblTraningInformation.Text = GetStringDataSize(data);
+
+                tsButtonRemove.Enabled = true;
+                btnTrain.Enabled = true;
+                btnShowTrainMatrix.Enabled = true;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="data"></param>
+        private void ChangeLabelStatusTest(string filename, double[,] data)
+        {
+            if (!string.IsNullOrEmpty(filename))
+            {
+                lblTestData.Text = GetStringPath("Test", filename);
+                lblTestInformation.Text = GetStringDataSize(data);
+                tsButtonRemove.Enabled = true;
+                btnShowTestMatrix.Enabled = true;
+            }
+        }
 
         /// <summary>
         /// Load a file
         /// </summary>
         /// <param name="title"></param>
         /// <returns>Data and path of file</returns>
-        private Tuple<double[,],string> LoadFileDialog(string title)
+        private void LoadFileDialog(string title,out string filepath, out double[,] data)
         {
-            double[,] rreturn = null;
-            string filename = string.Empty;
+            filepath = string.Empty;
+            data = null;
 
+            string temppath;
+            double[,] tempData = null;
             //File dialog
             OpenFileDialog theDialog = new OpenFileDialog();
             theDialog.Title = string.Format("{0} text-file", title);
@@ -109,17 +148,18 @@ namespace LS_Lab1___Neural_Network
             if (theDialog.ShowDialog() == DialogResult.OK)
             {
                 //Sets the filedialog path to variable filedialog
-                filename = theDialog.FileName;
+                temppath = theDialog.FileName;
                 Action action = () =>
                     {
                         statusStripLabel.Text = string.Format("Loading {0}",title);
                         int[] arrayCheck =  { 2, 19, 20 };
-                        rreturn = FileReader.CollectFileData(filename,3, arrayCheck);
+                        tempData = FileReader.CollectFileData(temppath,3, arrayCheck);
                         statusStripLabel.Text = string.Format("Loading done: {0}", title);
                     };
                 syncContext.Send(item => action.Invoke(), null);
+                filepath = temppath;
+                data = tempData;
             }
-            return new Tuple<double[,],string>(rreturn, filename);
         }
         #endregion
 
