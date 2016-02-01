@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,8 +62,20 @@
             this.lblTraningInformation = new System.Windows.Forms.Label();
             this.lblTraningData = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnTest = new System.Windows.Forms.Button();
+            this.panelANNButtons = new System.Windows.Forms.Panel();
             this.btnTrain = new System.Windows.Forms.Button();
+            this.btnTest = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.artificialNeuralNetworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.fuzzySystemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.geneticAlgorithmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dynamicProgrammingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reininforcedLearningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -71,6 +86,9 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.panelANNButtons.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -89,7 +107,15 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadFileToolStripMenuItem});
+            this.loadFileToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.artificialNeuralNetworkToolStripMenuItem,
+            this.fuzzySystemToolStripMenuItem,
+            this.geneticAlgorithmToolStripMenuItem,
+            this.dynamicProgrammingToolStripMenuItem,
+            this.reininforcedLearningToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -101,7 +127,7 @@
             this.testDataToolStripMenuItem,
             this.loadBothToolStripMenuItem});
             this.loadFileToolStripMenuItem.Name = "loadFileToolStripMenuItem";
-            this.loadFileToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.loadFileToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.loadFileToolStripMenuItem.Text = "Load file";
             // 
             // trainingDataToolStripMenuItem
@@ -220,12 +246,14 @@
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.groupBox1, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.panelANNButtons, 0, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 106F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(499, 508);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
@@ -236,7 +264,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(493, 396);
+            this.groupBox1.Size = new System.Drawing.Size(493, 376);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "File Information";
@@ -374,39 +402,135 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.btnTest, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnTrain, 0, 1);
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.26653F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.73347F));
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel7, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(508, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(499, 508);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // btnTest
+            // panelANNButtons
             // 
-            this.btnTest.Location = new System.Drawing.Point(2, 2);
-            this.btnTest.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(80, 29);
-            this.btnTest.TabIndex = 8;
-            this.btnTest.Text = "Test";
-            this.btnTest.UseVisualStyleBackColor = true;
+            this.panelANNButtons.Controls.Add(this.button2);
+            this.panelANNButtons.Controls.Add(this.btnTest);
+            this.panelANNButtons.Controls.Add(this.btnTrain);
+            this.panelANNButtons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelANNButtons.Location = new System.Drawing.Point(3, 385);
+            this.panelANNButtons.Name = "panelANNButtons";
+            this.panelANNButtons.Size = new System.Drawing.Size(493, 40);
+            this.panelANNButtons.TabIndex = 2;
             // 
             // btnTrain
             // 
-            this.btnTrain.Location = new System.Drawing.Point(2, 256);
-            this.btnTrain.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnTrain.Location = new System.Drawing.Point(6, 6);
+            this.btnTrain.Margin = new System.Windows.Forms.Padding(2);
             this.btnTrain.Name = "btnTrain";
             this.btnTrain.Size = new System.Drawing.Size(80, 29);
-            this.btnTrain.TabIndex = 7;
+            this.btnTrain.TabIndex = 16;
             this.btnTrain.Text = "Train";
             this.btnTrain.UseVisualStyleBackColor = true;
+            // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(90, 6);
+            this.btnTest.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(80, 29);
+            this.btnTest.TabIndex = 17;
+            this.btnTest.Text = "Test";
+            this.btnTest.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(174, 6);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(80, 29);
+            this.button2.TabIndex = 19;
+            this.button2.Text = "Extra";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // artificialNeuralNetworkToolStripMenuItem
+            // 
+            this.artificialNeuralNetworkToolStripMenuItem.Name = "artificialNeuralNetworkToolStripMenuItem";
+            this.artificialNeuralNetworkToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.artificialNeuralNetworkToolStripMenuItem.Text = "Artificial Neural Network";
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 1;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel7.Controls.Add(this.chart1, 0, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(168, 3);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 2;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80.8765F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 19.12351F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(328, 502);
+            this.tableLayoutPanel7.TabIndex = 0;
+            // 
+            // chart1
+            // 
+            chartArea4.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea4);
+            this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend4.Name = "Legend1";
+            this.chart1.Legends.Add(legend4);
+            this.chart1.Location = new System.Drawing.Point(3, 3);
+            this.chart1.Name = "chart1";
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.chart1.Series.Add(series4);
+            this.chart1.Size = new System.Drawing.Size(322, 400);
+            this.chart1.TabIndex = 1;
+            this.chart1.Text = "chart1";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(201, 6);
+            // 
+            // fuzzySystemToolStripMenuItem
+            // 
+            this.fuzzySystemToolStripMenuItem.Name = "fuzzySystemToolStripMenuItem";
+            this.fuzzySystemToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.fuzzySystemToolStripMenuItem.Text = "Fuzzy System";
+            // 
+            // geneticAlgorithmToolStripMenuItem
+            // 
+            this.geneticAlgorithmToolStripMenuItem.Name = "geneticAlgorithmToolStripMenuItem";
+            this.geneticAlgorithmToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.geneticAlgorithmToolStripMenuItem.Text = "Genetic Algorithm";
+            // 
+            // dynamicProgrammingToolStripMenuItem
+            // 
+            this.dynamicProgrammingToolStripMenuItem.Name = "dynamicProgrammingToolStripMenuItem";
+            this.dynamicProgrammingToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.dynamicProgrammingToolStripMenuItem.Text = "Dynamic Programming";
+            // 
+            // reininforcedLearningToolStripMenuItem
+            // 
+            this.reininforcedLearningToolStripMenuItem.Name = "reininforcedLearningToolStripMenuItem";
+            this.reininforcedLearningToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.reininforcedLearningToolStripMenuItem.Text = "Reininforced learning";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(201, 6);
             // 
             // MainForm
             // 
@@ -436,6 +560,9 @@
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.panelANNButtons.ResumeLayout(false);
+            this.tableLayoutPanel7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -462,8 +589,6 @@
         private System.Windows.Forms.ToolStripMenuItem removeTestDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeBothToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button btnTrain;
-        private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Label lblTraningData;
         private System.Windows.Forms.Label lblTraningInformation;
         private System.Windows.Forms.Label lblTraningStatus;
@@ -476,6 +601,20 @@
         private System.Windows.Forms.Button btnShowTestMatrix;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.ToolStripMenuItem loadBothToolStripMenuItem;
+        private System.Windows.Forms.Panel panelANNButtons;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Button btnTrain;
+        private System.Windows.Forms.ToolStripMenuItem artificialNeuralNetworkToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem fuzzySystemToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem geneticAlgorithmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dynamicProgrammingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reininforcedLearningToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 
