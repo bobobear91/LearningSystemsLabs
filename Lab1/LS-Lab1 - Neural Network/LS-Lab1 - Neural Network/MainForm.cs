@@ -165,7 +165,7 @@ namespace LS_Lab1___Neural_Network
                     {
                         statusStripLabel.Text = string.Format("Loading {0}",title);
                         int[] arrayCheck =  { 2, 19, 20 };
-                        tempData = FileReader.CollectFileData(temppath,3, arrayCheck);
+                        tempData = FileReader.CollectInputFileData(temppath,3, arrayCheck);
                         statusStripLabel.Text = string.Format("Loading done: {0}", title);
                     };
                 syncContext.Send(item => action.Invoke(), null);
