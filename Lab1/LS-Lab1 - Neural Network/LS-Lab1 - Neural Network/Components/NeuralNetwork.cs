@@ -15,8 +15,16 @@ namespace LS_Lab1___Neural_Network.Components
         int numHidden;
         int numOutput;
 
-        private Random rnd;
+        //private double[] inputs;
+        //private double[][] ihWeights;
+        //private double[] hBiases;
+        //private double[] hOutputs;
 
+        //private double[][] hoWeights;
+        //private double[] oBiases;
+        //private double[] outputs;
+
+        //private Random rnd;
 
         public int NumberInputs
         {
@@ -35,15 +43,6 @@ namespace LS_Lab1___Neural_Network.Components
                 return numOutput;
             }
         }
-
-        private double[] inputs;
-        private double[][] ihWeights;
-        private double[] hBiases;
-        private double[] hOutputs;
-
-        private double[][] hoWeights;
-        private double[] oBiases;
-        private double[] outputs;
 
         public NeuralNetwork(int numInput, int numHidden, int numOutput)
         {
