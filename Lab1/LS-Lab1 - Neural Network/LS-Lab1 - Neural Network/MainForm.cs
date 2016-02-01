@@ -1,4 +1,14 @@
-﻿using LS_Lab1___Neural_Network.Components;
+﻿/*
+    Authors: 
+        Robin Calmegård,
+        Dennis Stockhaus
+    Created:
+
+    Description:
+    
+*/
+using LS_Lab1___Neural_Network.Components;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -70,6 +80,7 @@ namespace LS_Lab1___Neural_Network
                     ChangeLabelStatusTraning(path, traningData);
 
                     break;
+
                 case "testDataToolStripMenuItem":
                     //Loads test
                     LoadFileDialog("Test",out path, out testData);
@@ -122,6 +133,7 @@ namespace LS_Lab1___Neural_Network
             {
                 lblTestData.Text = GetStringPath("Test", filename);
                 lblTestInformation.Text = GetStringDataSize(data);
+
                 tsButtonRemove.Enabled = true;
                 btnShowTestMatrix.Enabled = true;
             }
