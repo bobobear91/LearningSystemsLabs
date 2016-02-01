@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LS_Lab1___Neural_Network.Components
 {
-    class FileReader
+    class FileReader //TODO: flip arrays, index-y
     {
         /// <summary>
         /// Checks if a file at specified directory 'Exists'.

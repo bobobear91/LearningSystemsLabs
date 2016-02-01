@@ -35,7 +35,6 @@ namespace LS_Lab1___Neural_Network.Components
                 return numOutput;
             }
         }
-            
 
         private double[] inputs;
         private double[][] ihWeights;
@@ -46,6 +45,66 @@ namespace LS_Lab1___Neural_Network.Components
         private double[] oBiases;
         private double[] outputs;
 
+        public NeuralNetwork(int numInput, int numHidden, int numOutput)
+        {
+            this.numInput = numInput;
+            this.numHidden = numHidden;
+            this.numOutput = numOutput;
+        }
 
+        private static double[][] MakeMatrix(int rows, int columns, double v)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void InitializeWeights()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetWeights(double[,] weights)
+        {
+            throw new NotImplementedException();
+        }
+        public double[,] GetWeights()
+        {
+            throw new NotImplementedException();
+        }
+
+        public double[] ComputeOutputs(double[] xValues)
+        {
+            throw new NotImplementedException();
+        }
+        public static double HyperTan(double x)
+        {
+            throw new NotImplementedException();
+        }
+        public static double[] SoftMax(double[] oSums)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double[] Train(double[,] TrainingData, int maxEpochs, double learnRate, double momentum)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Shuffle(int[] sequence)
+        {
+            throw new NotImplementedException();
+        }
+        private double Error(double[,] trainData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double Accuracy(double[,] testData)
+        {
+            throw new NotImplementedException();
+        }
+        private static int MaxIndex(double[] vector)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
