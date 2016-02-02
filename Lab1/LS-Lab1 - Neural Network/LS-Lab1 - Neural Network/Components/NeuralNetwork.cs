@@ -15,16 +15,16 @@ namespace LS_Lab1___Neural_Network.Components
         int numHidden;
         int numOutput;
 
-        //private double[] inputs;
-        //private double[][] ihWeights;
-        //private double[] hBiases;
-        //private double[] hOutputs;
+        private double[] inputs;
+        private double[,] ihWeights;
+        private double[] hBiases;
+        private double[] hOutputs;
 
-        //private double[][] hoWeights;
-        //private double[] oBiases;
-        //private double[] outputs;
+        private double[,] hoWeights;
+        private double[] oBiases;
+        private double[] outputs;
 
-        //private Random rnd;
+        private Random rnd;
 
         public int NumberInputs
         {
@@ -46,12 +46,31 @@ namespace LS_Lab1___Neural_Network.Components
 
         public NeuralNetwork(int numInput, int numHidden, int numOutput)
         {
+            // Initialize ANN configuration
             this.numInput = numInput;
             this.numHidden = numHidden;
             this.numOutput = numOutput;
+
+            // Initialize input layer
+            this.inputs = new double[numInput];
+
+            // Initialize input->hidden layer + bias
+            this.ihWeights = MakeMatrix(numInput, numHidden, 0.0);
+            this.hBiases = new double[numHidden];
+            this.hOutputs = new double[numHidden];
+
+            // Initialize hidden->output layer + bias
+            this.hoWeights = MakeMatrix(numHidden, numOutput, 0.0);
+            this.oBiases = new double[numOutput];
+            this.outputs = new double[numOutput];
+
+            // Init, random gen. 
+            this.rnd = new Random(0); // TODO: Add seed? 
+            // Setup initial weights for ANN, will initialize all weights and biases.
+            InitializeWeights();
         }
 
-        private static double[][] MakeMatrix(int rows, int columns, double v)
+        private static double[,] MakeMatrix(int rows, int columns, double v)
         {
             throw new NotImplementedException();
         }
@@ -61,11 +80,11 @@ namespace LS_Lab1___Neural_Network.Components
             throw new NotImplementedException();
         }
 
-        public void SetWeights(double[,] weights)
+        public void SetWeights(double[] weights)
         {
             throw new NotImplementedException();
         }
-        public double[,] GetWeights()
+        public double[] GetWeights()
         {
             throw new NotImplementedException();
         }
