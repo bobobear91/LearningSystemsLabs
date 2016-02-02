@@ -6,9 +6,10 @@
 
     Description:
     
+
 */
 using LS_Lab1___Neural_Network.Components;
-
+using LS_Lab1___Neural_Network.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +32,10 @@ namespace LS_Lab1___Neural_Network
         public enum State { Training, Testing}
         public enum CState { Ready, Ongoing}
 
+        private readonly Size FormMinimumSize = new Size(620, 560);
+        private readonly string[] Messages = { "" };
+       
+
         #region Constructor
         public MainForm()
         {
@@ -42,7 +47,7 @@ namespace LS_Lab1___Neural_Network
             this.Load += MainForm_Load;
 
             //Minimum size of the form
-            this.MinimumSize = new Size(620, 560);
+            this.MinimumSize = FormMinimumSize;
             this.Text = "Neural Network";
 
             //GUI update thread, will be used for updating the form
@@ -50,11 +55,24 @@ namespace LS_Lab1___Neural_Network
 
             //Sets the button to disabled
             tsButtonRemove.Enabled = false;
+
+
             btnTest.Enabled = false;
+
+
             btnTrain.Enabled = false;
+
             btnShowTestMatrix.Enabled = false;
+            btnShowTestMatrix.Click += btnShowMatrix_Click;
+
+
             btnShowTrainMatrix.Enabled = false;
+            btnShowTrainMatrix.Click += btnShowMatrix_Click;
+
+
+
         }
+
         #endregion
 
         #region Form
@@ -186,9 +204,37 @@ namespace LS_Lab1___Neural_Network
 
         private string GetStringDataSize(double[,] data)
         {
-            return string.Format("Size of array X:{0} Y:{1}", data.GetLength(0), data.GetLength(1));
+            //((data.GetLength(1) != 0) ? data.GetLength(1) : "Error")
+            return string.Format("Size of array X:{0} Y:{1}", data.GetLength(1), data.GetLength(0));
         }
         #endregion
+
+        private void btnShowMatrix_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            switch (btn.Name)
+            {
+                case "btnShowTrainMatrix":
+                    ShowMatrix("Train", "Show the current array.", traningData);
+                    break;
+                case "btnShowTestMatrix":
+                    ShowMatrix("Train", "Show & Edit", testData);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ShowMatrix(string name, string description, double[,] data)
+        {
+            Action action = () =>
+            {
+                MatrixForm mf = new MatrixForm(name, description, data);
+                mf.ShowDialog();
+            };
+            syncContext.Send(item => action.Invoke(), null);
+
+        }
 
         private bool isNNTrained = false;
         private void btnTrain_Click(object sender, EventArgs e)
@@ -218,6 +264,16 @@ namespace LS_Lab1___Neural_Network
         private void btnShowTestMatrix_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void lblTestData_Resize(object sender, EventArgs e)
+        {
+            Label lbl = (Label)sender;
+            using (Graphics g = CreateGraphics())
+            {
+                SizeF size = g.MeasureString(lbl.Text, lbl.Font, 495);
+                lbl.Height = (int)Math.Ceiling(size.Height);
+            }
         }
     }
 }
