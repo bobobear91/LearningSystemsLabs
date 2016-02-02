@@ -215,21 +215,21 @@ namespace LS_Lab1___Neural_Network
             switch (btn.Name)
             {
                 case "btnShowTrainMatrix":
-                    ShowMatrix("Train", "Show the current array.", traningData);
+                    ShowMatrix("Artificial Nerual Network Matrix","Training Matrix", "Show the current array.", traningData);
                     break;
                 case "btnShowTestMatrix":
-                    ShowMatrix("Train", "Show & Edit", testData);
+                    ShowMatrix("Artificial Nerual Network Matrix", "Test Matrix", "Show & Edit", testData);
                     break;
                 default:
                     break;
             }
         }
 
-        private void ShowMatrix(string name, string description, double[,] data)
+        private void ShowMatrix(string formname,string title, string description, double[,] data)
         {
             Action action = () =>
             {
-                MatrixForm mf = new MatrixForm(name, description, data);
+                MatrixForm mf = new MatrixForm(formname,title, description, data);
                 mf.ShowDialog();
             };
             syncContext.Send(item => action.Invoke(), null);

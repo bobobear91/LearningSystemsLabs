@@ -12,29 +12,50 @@ namespace LS_Lab1___Neural_Network.View
 {
     public partial class MatrixForm : Form
     {
-        public MatrixForm(string matrixHMsg, string matrixMsg, double[,] data)
+        public MatrixForm(string formText,string matrixTitleMsg, string matrixMsg, double[,] data)
         {
             InitializeComponent();
+            //Form
+            this.Text = (!string.IsNullOrEmpty(formText) ? formText : "Matrix show."); ;
 
             //Label Header
-            lblHeader.Text = matrixHMsg;
+            lblHeader.Text = (!string.IsNullOrEmpty(matrixTitleMsg) ? matrixTitleMsg : "No Title.");
 
             //Label Description
-            lblDescription.Text = matrixMsg;
+            lblDescription.Text = (!string.IsNullOrEmpty(matrixMsg) ? matrixMsg : "No description."); ;
 
             //Data
             this.Data = data;
+            this.lbBoxMatrix.SelectedIndexChanged += LbBoxMatrix_SelectedIndexChanged;
+
+            //Checks if data is NULL
             if (Data != null)
             {
-                for (int i = 0; i < data.GetLength(0); i++)
+                lblDescription.Text += string.Format(" Matrix have rows:{0} and columns:{1}", data.GetLength(0), data.GetLength(1));
+                for (int y = 0; y < data.GetLength(0); y++)
                 {
-                    this.lbBoxMatrix.Items.Add(string.Format("1: {0} | 2 : {1} | 3 : {2}", Data[i,0], Data[i, 1], Data[i, 2]));
+                    string line = string.Format("{0}:", y);
+                    for (int x = 0; x < data.GetLength(1); x++)
+                    {
+                        line += string.Format(" {0}     {1}", Data[y, x], (x < (data.GetLength(1)-1)) ? ("|") : string.Empty);
+
+                    }
+                    //this.lbBoxMatrix.Items.Add(string.Format("{0}. 1: {1} | 2 : {2} | 3 : {3}", y ,Data[y,0], Data[y, 1], Data[y, 2]));
+                    this.lbBoxMatrix.Items.Add(line);
                 }
             }
             else
             {
-
+                this.lbBoxMatrix.Items.Add("Matrix is empty.");
             }
+
+            btnEdit.Enabled = false;
+        }
+
+        private void LbBoxMatrix_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CurrentSelected = ((ListBox)sender).SelectedIndex;
+            MessageBox.Show(CurrentSelected.ToString());
         }
 
         public double[,] Data
@@ -42,5 +63,13 @@ namespace LS_Lab1___Neural_Network.View
             get;
             set;
         }
+
+        private int CurrentSelected = 0;
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }

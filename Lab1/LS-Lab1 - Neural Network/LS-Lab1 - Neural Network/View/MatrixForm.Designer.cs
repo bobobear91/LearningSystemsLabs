@@ -32,7 +32,7 @@
             this.lblDescription = new System.Windows.Forms.Label();
             this.lblHeader = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
             this.lbBoxMatrix = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -59,8 +59,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(396, 457);
-            this.splitContainer1.SplitterDistance = 97;
+            this.splitContainer1.Size = new System.Drawing.Size(464, 321);
+            this.splitContainer1.SplitterDistance = 68;
             this.splitContainer1.TabIndex = 0;
             // 
             // lblDescription
@@ -68,7 +68,7 @@
             this.lblDescription.AutoSize = true;
             this.lblDescription.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescription.Location = new System.Drawing.Point(0, 77);
+            this.lblDescription.Location = new System.Drawing.Point(0, 48);
             this.lblDescription.Name = "lblDescription";
             this.lblDescription.Size = new System.Drawing.Size(141, 20);
             this.lblDescription.TabIndex = 1;
@@ -95,23 +95,24 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.button1);
+            this.splitContainer2.Panel1.Controls.Add(this.btnEdit);
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.lbBoxMatrix);
-            this.splitContainer2.Size = new System.Drawing.Size(396, 356);
-            this.splitContainer2.SplitterDistance = 132;
+            this.splitContainer2.Size = new System.Drawing.Size(464, 249);
+            this.splitContainer2.SplitterDistance = 154;
             this.splitContainer2.TabIndex = 0;
             // 
-            // button1
+            // btnEdit
             // 
-            this.button1.Location = new System.Drawing.Point(12, 119);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(107, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnEdit.Location = new System.Drawing.Point(23, 3);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(104, 23);
+            this.btnEdit.TabIndex = 0;
+            this.btnEdit.Text = "Edit";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // lbBoxMatrix
             // 
@@ -119,14 +120,14 @@
             this.lbBoxMatrix.FormattingEnabled = true;
             this.lbBoxMatrix.Location = new System.Drawing.Point(0, 0);
             this.lbBoxMatrix.Name = "lbBoxMatrix";
-            this.lbBoxMatrix.Size = new System.Drawing.Size(260, 356);
+            this.lbBoxMatrix.Size = new System.Drawing.Size(306, 249);
             this.lbBoxMatrix.TabIndex = 0;
             // 
             // MatrixForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 457);
+            this.ClientSize = new System.Drawing.Size(464, 321);
             this.Controls.Add(this.splitContainer1);
             this.Name = "MatrixForm";
             this.Text = "MatrixForm";
@@ -149,7 +150,7 @@
         private System.Windows.Forms.Label lblHeader;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.ListBox lbBoxMatrix;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Label lblDescription;
     }
 }
