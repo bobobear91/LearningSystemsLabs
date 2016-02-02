@@ -42,7 +42,7 @@ namespace LS_Lab1___Neural_Network
             this.Load += MainForm_Load;
 
             //Minimum size of the form
-            this.MinimumSize = new Size(680, 520);
+            this.MinimumSize = new Size(620, 560);
             this.Text = "Neural Network";
 
             //GUI update thread, will be used for updating the form
