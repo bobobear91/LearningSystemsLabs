@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace LS_Lab1___Neural_Network.View
 {
-    public partial class ArtficialNeuralNetworkForm : Form
+    public partial class HelpForm : Form
     {
-        public ArtficialNeuralNetworkForm()
+        public HelpForm()
         {
             InitializeComponent();
         }

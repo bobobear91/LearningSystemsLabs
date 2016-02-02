@@ -1,6 +1,6 @@
 ﻿namespace LS_Lab1___Neural_Network.View
 {
-    partial class ArtficialNeuralNetwork
+    partial class ArtficialNeuralNetworkForm
     {
         /// <summary>
         /// Required designer variable.

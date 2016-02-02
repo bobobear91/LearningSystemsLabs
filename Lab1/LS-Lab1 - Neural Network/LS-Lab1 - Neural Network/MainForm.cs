@@ -28,6 +28,9 @@ namespace LS_Lab1___Neural_Network
         double[,] traningData = null;
         double[,] testData = null;
 
+        public enum State { Training, Testing}
+        public enum CState { Ready, Ongoing}
+
         #region Constructor
         public MainForm()
         {
