@@ -17,7 +17,7 @@ namespace LS_Lab1___Neural_Network.Components
         {
             if (System.IO.File.Exists(FilePath))
             {
-                // Returns true if file exists. 
+                // Returns true if the file exists. 
                 return true;
             }
             return false;
