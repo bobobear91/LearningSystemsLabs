@@ -77,7 +77,15 @@ namespace LS_Lab1___Neural_Network.Components
 
         private void InitializeWeights()
         {
-            throw new NotImplementedException();
+            // Calculate the total number of weights in ANN
+            int numWeights = (numInput * numHidden) + (numHidden * numOutput) + numHidden + numOutput;
+            double[] initialWeights = new double[numWeights];
+
+            // Initialize weights with random values. 
+            for (int i = 0; i < initialWeights.Length; i++)
+            {
+                initialWeights[i] = (0.001 - 0.0001) * rnd.NextDouble() + 0.0001; //TODO: avoid arbitrary constants? 
+            }
         }
 
         public void SetWeights(double[] weights)

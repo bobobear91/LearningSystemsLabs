@@ -35,20 +35,20 @@ namespace LS_Lab1___Neural_Network.Components
                 // Fetches information of Row/Column-size to determine the size of Data array.
                 int nOfRows = CountFileRows(FilePath);
                 int nOfColumns = CountFileColumns(FilePath);
-                string[,] fileData = new string[nOfColumns, nOfRows];
+                string[,] fileData = new string[nOfRows, nOfColumns]; 
                 // Create streamReader, Open file.
                 System.IO.StreamReader file = new System.IO.StreamReader(FilePath);
 
                 // Iterator to fill 'fileData'-array with values from formatted textfile. 
-                for (int i = 0; i < nOfRows; i++)
+                for (int y = 0; y < nOfRows; y++)
                 {
                     // Splits a row into array elements.
                     string[] tmpData = file.ReadLine().Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-                    for (int j = 0; j < nOfColumns; j++)
+                    for (int x = 0; x < nOfColumns; x++)
                     {
-                        tmpData[j] = tmpData[j].Replace('.', ',');
+                        tmpData[x] = tmpData[x].Replace('.', ',');
                         // Stores temporary created tmpData in fileData array. 
-                        fileData[j, i] = tmpData[j];
+                        fileData[y, x] = tmpData[x];
                     }
                 }
                 
@@ -131,11 +131,11 @@ namespace LS_Lab1___Neural_Network.Components
                 try
                 {
                     // Creates a FileData-array with all elements from RawData-array.
-                    for (int i = 0; i < CountFileRows(FilePath); i++)
+                    for (int y = 0; y < CountFileRows(FilePath); y++)
                     {
-                        for (int j = 0; j < CountFileColumns(FilePath); j++)
+                        for (int x = 0; x < CountFileColumns(FilePath); x++)
                         {
-                            FileData[j, i] = Convert.ToDouble(RawData[j, i]);
+                            FileData[y, x] = Convert.ToDouble(RawData[y, x]);
                         }
                     }
                 }
@@ -171,16 +171,16 @@ namespace LS_Lab1___Neural_Network.Components
             {
                 string[,] RawData = ReadFileToArray(FilePath);
                 int nOfDataSets = CountFileRows(FilePath);
-                double[,] FileData = new double[nOfInputs, nOfDataSets];
+                double[,] FileData = new double[nOfDataSets, nOfInputs];
 
                 try
                 {
                     // Creates a FileData-array with a selected number of elements from RawData-array
-                    for (int i = 0; i < nOfDataSets; i++)
+                    for (int y = 0; y < nOfDataSets; y++)
                     {
-                        for (int j = 0; j < nOfInputs; j++)
+                        for (int x = 0; x < nOfInputs; x++)
                         {
-                            FileData[j, i] = Convert.ToDouble(RawData[CriticalInputIndex[j], i].ToUpper());
+                            FileData[y, x] = Convert.ToDouble(RawData[y, CriticalInputIndex[x]].ToUpper());
                         }
                     }
                 }
