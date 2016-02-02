@@ -17,7 +17,7 @@ namespace LS_Lab1___Neural_Network.View
             InitializeComponent();
             //Form
             this.Text = (!string.IsNullOrEmpty(formText) ? formText : "Matrix show."); ;
-
+            this.MinimumSize = new Size(480, 360);
             //Label Header
             lblHeader.Text = (!string.IsNullOrEmpty(matrixTitleMsg) ? matrixTitleMsg : "No Title.");
 

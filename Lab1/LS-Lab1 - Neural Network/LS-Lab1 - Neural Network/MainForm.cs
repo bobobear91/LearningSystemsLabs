@@ -25,16 +25,18 @@ namespace LS_Lab1___Neural_Network
 {
     public partial class MainForm : Form
     {
+        #region Statics & Enums
+        public enum State { Training, Testing }
+        public enum CState { Ready, Ongoing }
+        private readonly Size FormMinimumSize = new Size(620, 560);
+        #endregion
+
+        #region Variables
         private WindowsFormsSynchronizationContext syncContext;
         double[,] traningData = null;
         double[,] testData = null;
 
-        public enum State { Training, Testing}
-        public enum CState { Ready, Ongoing}
-
-        private readonly Size FormMinimumSize = new Size(620, 560);
-        private readonly string[] Messages = { "" };
-       
+        #endregion
 
         #region Constructor
         public MainForm()
@@ -83,7 +85,7 @@ namespace LS_Lab1___Neural_Network
 
         #endregion
 
-        #region Menu
+        #region Menu Topbar
         /// <summary>
         /// Load data event (Click)
         /// </summary>
@@ -209,13 +211,18 @@ namespace LS_Lab1___Neural_Network
         }
         #endregion
 
+        #region Form-UI
+        /// <summary>
+        /// Click event for Matrix Buttons
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnShowMatrix_Click(object sender, EventArgs e)
         {
-            Button btn = (Button)sender;
-            switch (btn.Name)
+            switch (((Button)sender).Name)
             {
                 case "btnShowTrainMatrix":
-                    ShowMatrix("Artificial Nerual Network Matrix","Training Matrix", "Show the current array.", traningData);
+                    ShowMatrix("Artificial Nerual Network Matrix", "Training Matrix", "Show the current array.", traningData);
                     break;
                 case "btnShowTestMatrix":
                     ShowMatrix("Artificial Nerual Network Matrix", "Test Matrix", "Show & Edit", testData);
@@ -225,24 +232,43 @@ namespace LS_Lab1___Neural_Network
             }
         }
 
-        private void ShowMatrix(string formname,string title, string description, double[,] data)
+
+        /// <summary>
+        /// Create matrix form method 
+        /// </summary>
+        /// <param name="formname"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="data"></param>
+        private void ShowMatrix(string formname, string title, string description, double[,] data)
         {
             Action action = () =>
             {
-                MatrixForm mf = new MatrixForm(formname,title, description, data);
+                MatrixForm mf = new MatrixForm(formname, title, description, data);
                 mf.ShowDialog();
             };
             syncContext.Send(item => action.Invoke(), null);
 
         }
+        #endregion
 
+
+        //TODO
         private bool isNNTrained = false;
         private void btnTrain_Click(object sender, EventArgs e)
         {
             //Checks if nn is already trained
             if (isNNTrained)
             {
-               
+                if ((MessageBox.Show("Ops!", "It seems that the neural network is already train. Do you want to retrain?", MessageBoxButtons.YesNo) == DialogResult.Yes))
+                {
+                    //The user wants to retrain
+                }
+                else
+                {
+                    //Stops the training
+                    return;
+                }
             }
             //Networked is trained
             isNNTrained = btnTest.Enabled = true;
