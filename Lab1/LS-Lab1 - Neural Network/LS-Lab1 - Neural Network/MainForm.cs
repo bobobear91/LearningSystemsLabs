@@ -2,14 +2,17 @@
     Authors: 
         Robin Calmegård,
         Dennis Stockhaus
-    Created:
+    Created: @2016-01-26
 
     Description:
     
 
 */
+
+#region Usings
 using LS_Lab1___Neural_Network.Components;
 using LS_Lab1___Neural_Network.View;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+#endregion
 
 namespace LS_Lab1___Neural_Network
 {
@@ -28,11 +32,15 @@ namespace LS_Lab1___Neural_Network
         #region Statics & Enums
         public enum State { Training, Testing }
         public enum CState { Ready, Ongoing }
-        private readonly Size FormMinimumSize = new Size(620, 560);
+        private readonly Size FormMinimumSize = new Size(620, 620);
         #endregion
 
         #region Variables
+        /// <summary>
+        /// synchronization context for the WFA model
+        /// </summary>
         private WindowsFormsSynchronizationContext syncContext;
+
         double[,] traningData = null;
         double[,] testData = null;
 
@@ -50,7 +58,7 @@ namespace LS_Lab1___Neural_Network
 
             //Minimum size of the form
             this.MinimumSize = FormMinimumSize;
-            this.Text = "Neural Network";
+            this.Text = "Artificial Neural Network";
 
             //GUI update thread, will be used for updating the form
             this.syncContext = SynchronizationContext.Current as WindowsFormsSynchronizationContext;
@@ -58,19 +66,29 @@ namespace LS_Lab1___Neural_Network
             //Sets the button to disabled
             tsButtonRemove.Enabled = false;
 
-
+            //*****************************************************************************
+            //      Buttons
+            //*****************************************************************************
+            //Button - Test the neural network
             btnTest.Enabled = false;
 
-
+            //Button - Train the neural network
             btnTrain.Enabled = false;
 
+            //Button - Show Test Matrix
             btnShowTestMatrix.Enabled = false;
             btnShowTestMatrix.Click += btnShowMatrix_Click;
 
-
+            //Button - Show Train Matrix
             btnShowTrainMatrix.Enabled = false;
             btnShowTrainMatrix.Click += btnShowMatrix_Click;
 
+
+            //*****************************************************************************
+            //      Numeric up & down
+            //*****************************************************************************
+            //Numeric Iterations
+            numericIterations.Value = 1000;
 
 
         }
@@ -242,6 +260,7 @@ namespace LS_Lab1___Neural_Network
         /// <param name="data"></param>
         private void ShowMatrix(string formname, string title, string description, double[,] data)
         {
+            //Create an action directive
             Action action = () =>
             {
                 MatrixForm mf = new MatrixForm(formname, title, description, data);
@@ -250,8 +269,9 @@ namespace LS_Lab1___Neural_Network
             syncContext.Send(item => action.Invoke(), null);
 
         }
-        #endregion
 
+
+        #endregion
 
         //TODO
         private bool isNNTrained = false;
@@ -260,21 +280,21 @@ namespace LS_Lab1___Neural_Network
             //Checks if nn is already trained
             if (isNNTrained)
             {
-                if ((MessageBox.Show("Ops!", "It seems that the neural network is already train. Do you want to retrain?", MessageBoxButtons.YesNo) == DialogResult.Yes))
-                {
-                    //The user wants to retrain
-                }
-                else
-                {
-                    //Stops the training
+                if ((MessageBox.Show("Ops!", "It seems that the neural network is already train. Do you want to retrain?", MessageBoxButtons.YesNo) == DialogResult.No))
                     return;
-                }
             }
             //Networked is trained
-            isNNTrained = btnTest.Enabled = true;
-
+            Action action = () =>
+            {
+                isNNTrained = btnTest.Enabled = true;
+                //double[] bestWeights = NeuralNetwork.Train(traningData, maxEpochs, learnRate, momentum);
+                MessageBox.Show("Traning Done!","Traning ");
+            };
+            syncContext.Send(item => action.Invoke(), null);
+            //NeuralNetwork.
             //Shows graph
         }
+
 
         private void btnTest_Click(object sender, EventArgs e)
         {
