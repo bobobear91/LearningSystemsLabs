@@ -1,8 +1,10 @@
 ﻿/*
     Authors: 
         Robin Calmegård,
-        Dennis Stockhaus
+        Dennis Stockhaus,
+
     Created: @2016-01-26
+    Edited:
 
     Description:
     
@@ -105,6 +107,11 @@ namespace LS_Lab1___Neural_Network
             tooltip.SetToolTip(this.lblIterations, "Maximum iterations for the neural network.");
             tooltip.SetToolTip(this.lblLearnRate, "The difference in the learn rate for each new iteration.");
 
+            //TODO
+            tooltip.SetToolTip(this.lblMomentum, "TODO.");
+            tooltip.SetToolTip(this.lblProcentage, "TODO.");
+
+
             //*****************************************************************************
             //      Numeric up & down
             //*****************************************************************************
@@ -113,8 +120,10 @@ namespace LS_Lab1___Neural_Network
             numericIterations.Value = 1000; //10e3
             numericIterations.Maximum = 10000; //10e4
 
-            numericLearnrate.Value = (decimal)0.05;
-            numericLearnrate.Increment = (decimal)0.05;
+            //
+            numericLearnrate.Value = (decimal)0.005;
+            numericLearnrate.Increment = (decimal)0.005;
+            numericLearnrate.Minimum = (decimal)0.005;
             //Maximum?
 
             //numericMomentum
@@ -125,6 +134,10 @@ namespace LS_Lab1___Neural_Network
             numericPercentage.Maximum = 99;
 
         }
+
+        #endregion
+
+        #region Initialize Components
 
         #endregion
 
