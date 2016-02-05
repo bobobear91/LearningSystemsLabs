@@ -9,7 +9,7 @@
 
 */
 
-#region Usings
+#region Usings-strings
 using LS_Lab1___Neural_Network.Components;
 using LS_Lab1___Neural_Network.View;
 
@@ -44,6 +44,7 @@ namespace LS_Lab1___Neural_Network
         double[,] traningData = null;
         double[,] testData = null;
 
+        ToolTip tooltip;
         #endregion
 
         #region Constructor
@@ -63,6 +64,21 @@ namespace LS_Lab1___Neural_Network
             //GUI update thread, will be used for updating the form
             this.syncContext = SynchronizationContext.Current as WindowsFormsSynchronizationContext;
 
+            //*****************************************************************************
+            //      Tooltip
+            //*****************************************************************************
+            tooltip = new ToolTip();
+            // Set up the delays for the ToolTip.
+            tooltip.AutoPopDelay = 5000;
+            tooltip.InitialDelay = 1000;
+            tooltip.ReshowDelay = 500;
+            // Force the ToolTip text to be displayed whether or not the form is active.
+            tooltip.ShowAlways = true;
+
+
+            //*****************************************************************************
+            //      Menubar
+            //*****************************************************************************
             //Sets the button to disabled
             tsButtonRemove.Enabled = false;
 
@@ -83,13 +99,30 @@ namespace LS_Lab1___Neural_Network
             btnShowTrainMatrix.Enabled = false;
             btnShowTrainMatrix.Click += btnShowMatrix_Click;
 
+            //*****************************************************************************
+            //      Label tooltips
+            //*****************************************************************************
+            tooltip.SetToolTip(this.lblIterations, "Maximum iterations for the neural network.");
+            tooltip.SetToolTip(this.lblLearnRate, "The difference in the learn rate for each new iteration.");
 
             //*****************************************************************************
             //      Numeric up & down
             //*****************************************************************************
-            //Numeric Iterations
-            numericIterations.Value = 1000;
+            //default values
+            numericIterations.Minimum = 1; //10e0
+            numericIterations.Value = 1000; //10e3
+            numericIterations.Maximum = 10000; //10e4
 
+            numericLearnrate.Value = (decimal)0.05;
+            numericLearnrate.Increment = (decimal)0.05;
+            //Maximum?
+
+            //numericMomentum
+
+            numericPercentage.Value = 90;
+            numericPercentage.Increment = 1;
+            numericPercentage.Minimum = 1;
+            numericPercentage.Maximum = 99;
 
         }
 
@@ -293,6 +326,8 @@ namespace LS_Lab1___Neural_Network
             syncContext.Send(item => action.Invoke(), null);
             //NeuralNetwork.
             //Shows graph
+
+
         }
 
 

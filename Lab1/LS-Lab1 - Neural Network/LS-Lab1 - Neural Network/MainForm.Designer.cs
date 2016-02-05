@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,18 +81,18 @@
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.lblMomentum = new System.Windows.Forms.Label();
+            this.numericMomentum = new System.Windows.Forms.NumericUpDown();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.lblLearnRate = new System.Windows.Forms.Label();
+            this.numericLearnrate = new System.Windows.Forms.NumericUpDown();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblIterations = new System.Windows.Forms.Label();
             this.numericIterations = new System.Windows.Forms.NumericUpDown();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.lblLearnRate = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.lblProcentage = new System.Windows.Forms.Label();
+            this.numericPercentage = new System.Windows.Forms.NumericUpDown();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -111,14 +111,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericMomentum)).BeginInit();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericLearnrate)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericIterations)).BeginInit();
             this.panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            this.panel3.SuspendLayout();
             this.panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericPercentage)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -583,17 +583,17 @@
             // 
             // chart1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
             this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(3, 3);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(322, 399);
             this.chart1.TabIndex = 1;
             this.chart1.Text = "chart1";
@@ -619,38 +619,77 @@
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.label3);
-            this.panel4.Controls.Add(this.numericUpDown2);
+            this.panel4.Controls.Add(this.lblMomentum);
+            this.panel4.Controls.Add(this.numericMomentum);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(3, 132);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(153, 56);
             this.panel4.TabIndex = 7;
             // 
-            // label3
+            // lblMomentum
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 3);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(50, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Iterations";
+            this.lblMomentum.AutoSize = true;
+            this.lblMomentum.Location = new System.Drawing.Point(3, 3);
+            this.lblMomentum.Name = "lblMomentum";
+            this.lblMomentum.Size = new System.Drawing.Size(59, 13);
+            this.lblMomentum.TabIndex = 4;
+            this.lblMomentum.Text = "Momentum";
             // 
-            // numericUpDown2
+            // numericMomentum
             // 
-            this.numericUpDown2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.numericMomentum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown2.DecimalPlaces = 3;
-            this.numericUpDown2.Location = new System.Drawing.Point(3, 29);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
+            this.numericMomentum.DecimalPlaces = 3;
+            this.numericMomentum.Location = new System.Drawing.Point(3, 29);
+            this.numericMomentum.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(147, 20);
-            this.numericUpDown2.TabIndex = 5;
-            this.numericUpDown2.Value = new decimal(new int[] {
+            this.numericMomentum.Name = "numericMomentum";
+            this.numericMomentum.Size = new System.Drawing.Size(147, 20);
+            this.numericMomentum.TabIndex = 5;
+            this.numericMomentum.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.lblLearnRate);
+            this.panel3.Controls.Add(this.numericLearnrate);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(3, 68);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(153, 58);
+            this.panel3.TabIndex = 6;
+            // 
+            // lblLearnRate
+            // 
+            this.lblLearnRate.AutoSize = true;
+            this.lblLearnRate.Location = new System.Drawing.Point(3, 3);
+            this.lblLearnRate.Name = "lblLearnRate";
+            this.lblLearnRate.Size = new System.Drawing.Size(55, 13);
+            this.lblLearnRate.TabIndex = 4;
+            this.lblLearnRate.Text = "Learn rate";
+            // 
+            // numericLearnrate
+            // 
+            this.numericLearnrate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.numericLearnrate.DecimalPlaces = 3;
+            this.numericLearnrate.Location = new System.Drawing.Point(3, 29);
+            this.numericLearnrate.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericLearnrate.Name = "numericLearnrate";
+            this.numericLearnrate.Size = new System.Drawing.Size(147, 20);
+            this.numericLearnrate.TabIndex = 5;
+            this.numericLearnrate.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -704,83 +743,48 @@
             this.panel5.Controls.Add(this.panel6);
             this.panel5.Location = new System.Drawing.Point(3, 194);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(153, 64);
+            this.panel5.Size = new System.Drawing.Size(153, 84);
             this.panel5.TabIndex = 8;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown1.DecimalPlaces = 3;
-            this.numericUpDown1.Location = new System.Drawing.Point(3, 29);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(147, 20);
-            this.numericUpDown1.TabIndex = 5;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // lblLearnRate
-            // 
-            this.lblLearnRate.AutoSize = true;
-            this.lblLearnRate.Location = new System.Drawing.Point(3, 3);
-            this.lblLearnRate.Name = "lblLearnRate";
-            this.lblLearnRate.Size = new System.Drawing.Size(55, 13);
-            this.lblLearnRate.TabIndex = 4;
-            this.lblLearnRate.Text = "Learn rate";
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.lblLearnRate);
-            this.panel3.Controls.Add(this.numericUpDown1);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(3, 68);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(153, 58);
-            this.panel3.TabIndex = 6;
             // 
             // panel6
             // 
-            this.panel6.Controls.Add(this.label4);
-            this.panel6.Controls.Add(this.numericUpDown3);
+            this.panel6.Controls.Add(this.lblProcentage);
+            this.panel6.Controls.Add(this.numericPercentage);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(153, 64);
+            this.panel6.Size = new System.Drawing.Size(153, 56);
             this.panel6.TabIndex = 8;
             // 
-            // label4
+            // lblProcentage
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 3);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(50, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Iterations";
+            this.lblProcentage.AutoSize = true;
+            this.lblProcentage.Location = new System.Drawing.Point(3, 3);
+            this.lblProcentage.Name = "lblProcentage";
+            this.lblProcentage.Size = new System.Drawing.Size(101, 13);
+            this.lblProcentage.TabIndex = 4;
+            this.lblProcentage.Text = "Desired Percentage";
             // 
-            // numericUpDown3
+            // numericPercentage
             // 
-            this.numericUpDown3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.numericPercentage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown3.DecimalPlaces = 3;
-            this.numericUpDown3.Location = new System.Drawing.Point(3, 29);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
+            this.numericPercentage.Location = new System.Drawing.Point(3, 29);
+            this.numericPercentage.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+            this.numericPercentage.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(147, 20);
-            this.numericUpDown3.TabIndex = 5;
-            this.numericUpDown3.Value = new decimal(new int[] {
-            1,
+            this.numericPercentage.Name = "numericPercentage";
+            this.numericPercentage.Size = new System.Drawing.Size(147, 20);
+            this.numericPercentage.TabIndex = 5;
+            this.numericPercentage.Value = new decimal(new int[] {
+            90,
             0,
             0,
             0});
@@ -823,17 +827,17 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericMomentum)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericLearnrate)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericIterations)).EndInit();
             this.panel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericPercentage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -894,15 +898,15 @@
         private System.Windows.Forms.Label lblIterations;
         private System.Windows.Forms.NumericUpDown numericIterations;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Label lblMomentum;
+        private System.Windows.Forms.NumericUpDown numericMomentum;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label lblLearnRate;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numericLearnrate;
         private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.Label lblProcentage;
+        private System.Windows.Forms.NumericUpDown numericPercentage;
     }
 }
 
