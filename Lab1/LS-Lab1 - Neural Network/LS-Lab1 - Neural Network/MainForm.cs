@@ -43,8 +43,8 @@ namespace LS_Lab1___Neural_Network
         /// </summary>
         private WindowsFormsSynchronizationContext syncContext;
 
-        double[,] traningData = null;
-        double[,] testData = null;
+        double[][] trainingData = null;
+        double[][] testData = null;
 
         ToolTip tooltip;
         #endregion
@@ -92,6 +92,7 @@ namespace LS_Lab1___Neural_Network
 
             //Button - Train the neural network
             btnTrain.Enabled = false;
+            btnTrain.Click += btnTrain_Click;
 
             //Button - Show Test Matrix
             btnShowTestMatrix.Enabled = false;
@@ -133,6 +134,9 @@ namespace LS_Lab1___Neural_Network
             numericPercentage.Minimum = 1;
             numericPercentage.Maximum = 99;
 
+            int[] arrayCheck = { 2, 19, 20, 21 }; //TODO: check criticalIndex
+            trainingData = FileReader.CollectJaggedInputFileData("C://Users//dss10_000//Documents//GitHub//LearningSystemsLabs//Lab1//Data_Training.txt", 4, arrayCheck);
+            btnTrain.Enabled = true;
         }
 
         #endregion
@@ -163,8 +167,8 @@ namespace LS_Lab1___Neural_Network
             {
                 case "trainingDataToolStripMenuItem":
                     //Loads Traning
-                    LoadFileDialog("Traning", out path,out traningData);
-                    ChangeLabelStatusTraning(path, traningData);
+                    LoadFileDialog("Traning", out path,out trainingData);
+                    ChangeLabelStatusTraning(path, trainingData);
 
                     break;
 
@@ -177,11 +181,11 @@ namespace LS_Lab1___Neural_Network
 
                 case "loadBothToolStripMenuItem":
                     //Loads traning
-                    LoadFileDialog("Traning",out path, out traningData);
-                    ChangeLabelStatusTraning(path, traningData);
+                    LoadFileDialog("Traning",out path, out trainingData);
+                    ChangeLabelStatusTraning(path, trainingData);
                    
                     //Loads test
-                    LoadFileDialog("Test",out path,out traningData);
+                    LoadFileDialog("Test",out path,out trainingData);
                     ChangeLabelStatusTest(path, testData);
                    
                     break;
@@ -195,7 +199,7 @@ namespace LS_Lab1___Neural_Network
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="data"></param>
-        private void ChangeLabelStatusTraning(string filename, double[,] data)
+        private void ChangeLabelStatusTraning(string filename, double[][] data)
         {   
             if (!string.IsNullOrEmpty(filename))
             {
@@ -214,7 +218,7 @@ namespace LS_Lab1___Neural_Network
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="data"></param>
-        private void ChangeLabelStatusTest(string filename, double[,] data)
+        private void ChangeLabelStatusTest(string filename, double[][] data)
         {
             if (!string.IsNullOrEmpty(filename))
             {
@@ -231,13 +235,13 @@ namespace LS_Lab1___Neural_Network
         /// </summary>
         /// <param name="title"></param>
         /// <returns>Data and path of file</returns>
-        private void LoadFileDialog(string title,out string filepath, out double[,] data)
+        private void LoadFileDialog(string title,out string filepath, out double[][] data)
         {
             filepath = string.Empty;
             data = null;
 
             string temppath;
-            double[,] tempData = null;
+            double[][] tempData = null;
             //File dialog
             OpenFileDialog theDialog = new OpenFileDialog();
             theDialog.Title = string.Format("{0} text-file", title);
@@ -251,8 +255,8 @@ namespace LS_Lab1___Neural_Network
                 Action action = () =>
                     {
                         statusStripLabel.Text = string.Format("Loading {0}",title);
-                        int[] arrayCheck =  { 2, 19, 20 };
-                        tempData = FileReader.CollectInputFileData(temppath,3, arrayCheck);
+                        int[] arrayCheck =  { 2, 19, 20, 21}; //TODO: check criticalIndex
+                        tempData = FileReader.CollectJaggedInputFileData(temppath,3, arrayCheck);
                         statusStripLabel.Text = string.Format("Loading done: {0}", title);
                     };
                 syncContext.Send(item => action.Invoke(), null);
@@ -268,10 +272,10 @@ namespace LS_Lab1___Neural_Network
             return string.Format("{0} data path: {1}", type, filename);
         }
 
-        private string GetStringDataSize(double[,] data)
+        private string GetStringDataSize(double[][] data)
         {
             //((data.GetLength(1) != 0) ? data.GetLength(1) : "Error")
-            return string.Format("Size of array X:{0} Y:{1}", data.GetLength(1), data.GetLength(0));
+            return string.Format("Size of array X:{0} Y:{1}", data[0].Length, data.Length);
         }
         #endregion
 
@@ -286,7 +290,7 @@ namespace LS_Lab1___Neural_Network
             switch (((Button)sender).Name)
             {
                 case "btnShowTrainMatrix":
-                    ShowMatrix("Artificial Nerual Network Matrix", "Training Matrix", "Show the current array.", traningData);
+                    ShowMatrix("Artificial Nerual Network Matrix", "Training Matrix", "Show the current array.", trainingData);
                     break;
                 case "btnShowTestMatrix":
                     ShowMatrix("Artificial Nerual Network Matrix", "Test Matrix", "Show & Edit", testData);
@@ -304,7 +308,7 @@ namespace LS_Lab1___Neural_Network
         /// <param name="title"></param>
         /// <param name="description"></param>
         /// <param name="data"></param>
-        private void ShowMatrix(string formname, string title, string description, double[,] data)
+        private void ShowMatrix(string formname, string title, string description, double[][] data)
         {
             //Create an action directive
             Action action = () =>
@@ -323,6 +327,11 @@ namespace LS_Lab1___Neural_Network
         private bool isNNTrained = false;
         private void btnTrain_Click(object sender, EventArgs e)
         {
+            NeuralNetwork NN = new NeuralNetwork(3, 5, 1, 0.05, 0.95);
+            //NN.Train(trainingData, 1000, 10000000);
+
+            MessageBox.Show("started training");
+
             //Checks if nn is already trained
             if (isNNTrained)
             {

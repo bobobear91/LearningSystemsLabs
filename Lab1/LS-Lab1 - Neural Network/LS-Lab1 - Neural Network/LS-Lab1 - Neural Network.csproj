@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Components\FileReader.cs" />
     <Compile Include="Components\NeuralNetwork.cs" />
+    <Compile Include="Components\OldNeuaralNetwork.cs" />
     <Compile Include="Components\XMLReader.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

@@ -61,6 +61,43 @@ namespace LS_Lab1___Neural_Network.Components
             // Returns 'null' if file doesnt exist. 
             return null;
         }
+        private static string[][] ReadFileToJaggedArray(string FilePath)
+        {
+            if (FileExist(FilePath))
+            {
+                // Fetches information of Row/Column-size to determine the size of Data array.
+                int nOfRows = CountFileRows(FilePath);
+                int nOfColumns = CountFileColumns(FilePath);
+                string[][] fileData = new string[nOfRows][];
+                for (int y = 0; y < fileData.Length; y++)
+                {
+                    fileData[y] = new string[nOfColumns];
+                }
+                // Create streamReader, Open file.
+                System.IO.StreamReader file = new System.IO.StreamReader(FilePath);
+
+                // Iterator to fill 'fileData'-array with values from formatted textfile. 
+                for (int y = 0; y < nOfRows; y++)
+                {
+                    // Splits a row into array elements.
+                    string[] tmpData = file.ReadLine().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    for (int x = 0; x < nOfColumns; x++)
+                    {
+                        tmpData[x] = tmpData[x].Replace('.', ',');
+                        // Stores temporary created tmpData in fileData array. 
+                        fileData[y][x] = tmpData[x];
+                    }
+                }
+
+                // Important! Closing file after use. 
+                file.Close();
+
+                // Return complete array with data from file.
+                return fileData;
+            }
+            // Returns 'null' if file doesnt exist. 
+            return null;
+        }
 
         /// <summary>
         /// Reads a file, and returns the number of 'Rows', assuming ' ' divides file data.
@@ -214,6 +251,48 @@ namespace LS_Lab1___Neural_Network.Components
         {
             // This function does the same as "CollectInputFileData", but with a proper name. 
             return CollectInputFileData(FilePath, nOfOutputs, SelectedOutputIndex);
-        }  
+        }
+
+        public static double[][] CollectJaggedInputFileData(string FilePath, int nOfInputs, int[] CriticalInputIndex)
+        {
+            if (FileExist(FilePath) && nOfInputs <= CountFileColumns(FilePath) && CriticalInputIndex.Count() <= nOfInputs && CriticalIndexInRange(CriticalInputIndex, FilePath))
+            {
+                string[][] RawData = ReadFileToJaggedArray(FilePath);
+                int nOfDataSets = CountFileRows(FilePath);
+                double[][] FileData = new double[nOfDataSets][];
+                for (int y = 0; y < FileData.Length; y++)
+                {
+                    FileData[y] = new double[nOfInputs];
+                }
+
+                try
+                {
+                    // Creates a FileData-array with a selected number of elements from RawData-array
+                    for (int y = 0; y < nOfDataSets; y++)
+                    {
+                        for (int x = 0; x < nOfInputs; x++)
+                        {
+                            FileData[y][x] = Convert.ToDouble(RawData[y][CriticalInputIndex[x]].ToUpper());
+                        }
+                    }
+                }
+                catch (FormatException)
+                {
+                    throw;
+                }
+                catch (OverflowException)
+                {
+                    throw;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+                // Returns Formatted FileData-array.
+                return FileData;
+            }
+            return null;
+        }
     }
 }

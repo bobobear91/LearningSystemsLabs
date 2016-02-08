@@ -12,7 +12,7 @@ namespace LS_Lab1___Neural_Network.View
 {
     public partial class MatrixForm : Form
     {
-        public MatrixForm(string formText,string matrixTitleMsg, string matrixMsg, double[,] data)
+        public MatrixForm(string formText,string matrixTitleMsg, string matrixMsg, double[][] data)
         {
             InitializeComponent();
             //Form
@@ -31,13 +31,13 @@ namespace LS_Lab1___Neural_Network.View
             //Checks if data is NULL
             if (Data != null)
             {
-                lblDescription.Text += string.Format(" Matrix have rows:{0} and columns:{1}", data.GetLength(0), data.GetLength(1));
+                lblDescription.Text += string.Format(" Matrix have rows:{0} and columns:{1}", data.Length, data[0].Length);
                 for (int y = 0; y < data.GetLength(0); y++)
                 {
                     string line = string.Format("{0}:", y);
                     for (int x = 0; x < data.GetLength(1); x++)
                     {
-                        line += string.Format(" {0}     {1}", Data[y, x], (x < (data.GetLength(1)-1)) ? ("|") : string.Empty);
+                        line += string.Format(" {0}     {1}", Data[y][x], (x < (data.GetLength(1)-1)) ? ("|") : string.Empty);
 
                     }
                     //this.lbBoxMatrix.Items.Add(string.Format("{0}. 1: {1} | 2 : {2} | 3 : {3}", y ,Data[y,0], Data[y, 1], Data[y, 2]));
@@ -58,7 +58,7 @@ namespace LS_Lab1___Neural_Network.View
             MessageBox.Show(CurrentSelected.ToString());
         }
 
-        public double[,] Data
+        public double[][] Data
         {
             get;
             set;
