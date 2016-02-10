@@ -203,7 +203,7 @@ namespace LS_Lab1___Neural_Network.Components
         private double[] ComputeOutput(double[] TrainingDataInput)
         {
             double[] ihSums = new double[numHidden];
-            double[] hoSums = new double[numOutput];
+            double[] hoSums = new double[numHidden];    // Changed from numOutput -> numHidden
 
             // Store Input Data to input-layer
             for (int x = 0; x < numInput; x++)
@@ -237,7 +237,7 @@ namespace LS_Lab1___Neural_Network.Components
             {
                 for (int y = 0; y < numHidden; y++)
                 {
-                    hoSums[x] += hOutput[y] * hoWeights[y][x];
+                    hoSums[y] += hOutput[y] * hoWeights[y][x];  // changed hoSums[x] -> hoSums[y]
                 }
             }
 
@@ -247,10 +247,9 @@ namespace LS_Lab1___Neural_Network.Components
                 hoSums[x] += oBiases[x];
             }
 
-            // Apply softOut to All hoSums and Store values to output-layer.
             this.output = ComputeSoftMax(hoSums);
-            return this.output;
 
+            return this.output;
         }
         private double HyperTan(double x)
         {
@@ -273,6 +272,16 @@ namespace LS_Lab1___Neural_Network.Components
             }
             return result;
         }
+        private double SoftMax(double x)
+        {
+            double max = double.MinValue;
+            max = x;
+
+            double scale = 0.0;
+            scale = Math.Exp(x - max);
+
+            return Math.Exp(x - max) / scale;
+        }
 
         public void Train(double[][] trainingData, int maxIterations, double maxAccuracy)
         {
@@ -281,8 +290,8 @@ namespace LS_Lab1___Neural_Network.Components
             double error = 0;
 
             // Initialize container arrays, and split training Data -> input/output
-            double[][] trainingInput = new double[numInput][];
-            double[][] trainingOutput = new double[numOutput][];
+            double[][] trainingInput = new double[trainingData.Length][];
+            double[][] trainingOutput = new double[trainingData.Length][];
             for (int y = 0; y < trainingData.Length; y++)
             {
                 trainingInput[y] = new double[numInput];
@@ -321,7 +330,9 @@ namespace LS_Lab1___Neural_Network.Components
                 accuracy = ComputeAccuracy(trainingOutput, currentIterationOutputs);
                 error = ComputeError(trainingOutput, currentIterationOutputs);
 
-                FirePerformanceInfo(error, accuracy, iterator);
+                if (FirePerformanceInfo != null) FirePerformanceInfo(error, accuracy, iterator);
+
+                iterator++;
             }
             // Handle delegates. 
             if (iterator >= maxIterations && FireMaxIterationsReached != null) FireMaxIterationsReached(iterator, accuracy);
@@ -458,10 +469,38 @@ namespace LS_Lab1___Neural_Network.Components
         public event TrainingMaxIterationsReached FireMaxIterationsReached;
         public event TrainingMaxAccuracyReached FireMaxAccuracyReached;
 
-        public void Test()
+        public void Test(double[][] TestData)
         {
-            // Test Iteration
-            // Return result
+            // Initialize container arrays, and split training Data -> input/output
+            double[][] TestInput = new double[numInput][];
+            double[][] TestOutput = new double[numOutput][];
+            for (int y = 0; y < TestData.Length; y++)
+            {
+                TestInput[y] = new double[numInput];
+                TestOutput[y] = new double[numOutput];
+
+                Array.Copy(TestData[y], TestInput[y], numInput);
+                Array.Copy(TestData[y], numInput - 1, TestOutput[y], 0, numOutput);
+            }
+
+            // Initialize container for iteration output.
+            double[][] currentIterationOutputs = new double[TestData.Length][];
+            for (int y = 0; y < numOutput; y++)
+            {
+                currentIterationOutputs[y] = new double[numOutput];
+            }
+
+            // Compute all training examples.
+            for (int i = 0; i < TestData.Length; i++)
+            {
+                currentIterationOutputs[i] = ComputeOutput(TestInput[i]);
+                AdjustWeights(output, TestOutput[i]);
+            }
+
+            double accuracy = ComputeAccuracy(TestOutput, currentIterationOutputs);
+            double error = ComputeError(TestOutput, currentIterationOutputs);
+
+            FirePerformanceInfo(error, accuracy, 0);
         }
 
         private double ComputeError(double[][] TargetOutput, double[][] NNOutput)
@@ -488,7 +527,7 @@ namespace LS_Lab1___Neural_Network.Components
                 int maxIndex = MaxIndex(NNOutput[i]);
                 int tMaxIndex = MaxIndex(TargetOutput[i]);
 
-                if (maxIndex == tMaxIndex)
+                if (NNOutput[i] == TargetOutput[i])
                 {
                     ++numCorrect;
                 }
@@ -513,6 +552,5 @@ namespace LS_Lab1___Neural_Network.Components
             }
             return bigIndex;
         }
-
     }
 }

@@ -157,7 +157,7 @@ namespace LS_Lab1___Neural_Network.Components
         /// <param name="FilePath"></param>
         /// <param name="nOfInputs"></param>
         /// <returns></returns>
-        public static double[,] CollectInputFileData(string FilePath, int nOfInputs)
+        public static double[,] CollectFileDataArray(string FilePath, int nOfInputs)
         {
             if (FileExist(FilePath) && nOfInputs <= CountFileRows(FilePath))
             {
@@ -202,7 +202,7 @@ namespace LS_Lab1___Neural_Network.Components
         /// <param name="nOfInputs"></param>
         /// <param name="CriticalInputIndex"></param>
         /// <returns></returns>
-        public static double[,] CollectInputFileData(string FilePath, int nOfInputs, int[] CriticalInputIndex)
+        public static double[,] CollectFileDataArray(string FilePath, int nOfInputs, int[] CriticalInputIndex)
         {
             if (FileExist(FilePath) && nOfInputs <= CountFileRows(FilePath) && CriticalInputIndex.Count() <= nOfInputs && CriticalIndexInRange(CriticalInputIndex, FilePath))
             {
@@ -240,20 +240,7 @@ namespace LS_Lab1___Neural_Network.Components
             return null;
         }
 
-        /// <summary>
-        /// Reads a file and stores a selected number of output elements to the format used in Etch-depth prediction NN.
-        /// </summary>
-        /// <param name="FilePath"></param>
-        /// <param name="nOfOutputs"></param>
-        /// <param name="SelectedOutputIndex"></param>
-        /// <returns></returns>
-        public static double[,] CollectOutputFileData(string FilePath, int nOfOutputs, int[] SelectedOutputIndex)
-        {
-            // This function does the same as "CollectInputFileData", but with a proper name. 
-            return CollectInputFileData(FilePath, nOfOutputs, SelectedOutputIndex);
-        }
-
-        public static double[][] CollectJaggedInputFileData(string FilePath, int nOfInputs, int[] CriticalInputIndex)
+        public static double[][] CollectJaggedFileDataArray(string FilePath, int nOfInputs, int[] CriticalInputIndex)
         {
             if (FileExist(FilePath) && nOfInputs <= CountFileColumns(FilePath) && CriticalInputIndex.Count() <= nOfInputs && CriticalIndexInRange(CriticalInputIndex, FilePath))
             {

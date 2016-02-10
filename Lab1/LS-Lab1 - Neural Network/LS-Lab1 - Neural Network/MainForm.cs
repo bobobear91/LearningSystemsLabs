@@ -135,7 +135,7 @@ namespace LS_Lab1___Neural_Network
             numericPercentage.Maximum = 99;
 
             int[] arrayCheck = { 2, 19, 20, 21 }; //TODO: check criticalIndex
-            trainingData = FileReader.CollectJaggedInputFileData("C://Users//dss10_000//Documents//GitHub//LearningSystemsLabs//Lab1//Data_Training.txt", 4, arrayCheck);
+            trainingData = FileReader.CollectJaggedFileDataArray("C://Users//dss10_000//Documents//GitHub//LearningSystemsLabs//Lab1//Data_Training.txt", 4, arrayCheck);
             btnTrain.Enabled = true;
         }
 
@@ -256,7 +256,7 @@ namespace LS_Lab1___Neural_Network
                     {
                         statusStripLabel.Text = string.Format("Loading {0}",title);
                         int[] arrayCheck =  { 2, 19, 20, 21}; //TODO: check criticalIndex
-                        tempData = FileReader.CollectJaggedInputFileData(temppath,3, arrayCheck);
+                        tempData = FileReader.CollectJaggedFileDataArray(temppath,3, arrayCheck);
                         statusStripLabel.Text = string.Format("Loading done: {0}", title);
                     };
                 syncContext.Send(item => action.Invoke(), null);
@@ -327,8 +327,8 @@ namespace LS_Lab1___Neural_Network
         private bool isNNTrained = false;
         private void btnTrain_Click(object sender, EventArgs e)
         {
-            NeuralNetwork NN = new NeuralNetwork(3, 5, 1, 0.05, 0.95);
-            //NN.Train(trainingData, 1000, 10000000);
+            NeuralNetwork NN = new NeuralNetwork(3, 5, 1, 0.005, 1);
+            NN.Train(trainingData, 1000, 0.95);
 
             MessageBox.Show("started training");
 
