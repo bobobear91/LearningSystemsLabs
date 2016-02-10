@@ -203,7 +203,7 @@ namespace LS_Lab1___Neural_Network.Components
         private double[] ComputeOutput(double[] TrainingDataInput)
         {
             double[] ihSums = new double[numHidden];
-            double[] hoSums = new double[numHidden];    // Changed from numOutput -> numHidden
+            double[] hoSums = new double[numOutput];
 
             // Store Input Data to input-layer
             for (int x = 0; x < numInput; x++)
@@ -237,7 +237,7 @@ namespace LS_Lab1___Neural_Network.Components
             {
                 for (int y = 0; y < numHidden; y++)
                 {
-                    hoSums[y] += hOutput[y] * hoWeights[y][x];  // changed hoSums[x] -> hoSums[y]
+                    hoSums[x] += hOutput[y] * hoWeights[y][x];
                 }
             }
 
@@ -247,8 +247,13 @@ namespace LS_Lab1___Neural_Network.Components
                 hoSums[x] += oBiases[x];
             }
 
-            this.output = ComputeSoftMax(hoSums);
+            //this.output = ComputeSoftMax(hoSums);
 
+            for (int o = 0; o < numOutput; o++)
+            {
+                this.output[o] = LogSigmoid(hoSums[o]);
+            }
+            
             return this.output;
         }
         private double HyperTan(double x)
@@ -281,6 +286,12 @@ namespace LS_Lab1___Neural_Network.Components
             scale = Math.Exp(x - max);
 
             return Math.Exp(x - max) / scale;
+        }
+        public double LogSigmoid(double x)
+        {
+            if (x < -45.0) return 0.0;
+            else if (x > 45.0) return 1.0;
+            else return 1.0 / (1.0 + Math.Exp(-x));
         }
 
         public void Train(double[][] trainingData, int maxIterations, double maxAccuracy)
@@ -318,7 +329,7 @@ namespace LS_Lab1___Neural_Network.Components
                 }
 
                 // Shuffle Sequence
-                trainingSequence = ShuffleSequence(trainingSequence);
+               // trainingSequence = ShuffleSequence(trainingSequence);
 
                 // Compute all training examples.
                 for (int i = 0; i < trainingData.Length; i++)
