@@ -134,9 +134,9 @@ namespace LS_Lab1___Neural_Network
             numericPercentage.Minimum = 1;
             numericPercentage.Maximum = 99;
 
-            int[] arrayCheck = { 2, 19, 20, 21 }; //TODO: check criticalIndex
-            trainingData = FileReader.CollectJaggedFileDataArray("C://Users//dss10_000//Documents//GitHub//LearningSystemsLabs//Lab1//Data_Training.txt", 4, arrayCheck);
-            btnTrain.Enabled = true;
+            //int[] arrayCheck = { 2, 19, 20, 21 }; //TODO: check criticalIndex
+           // trainingData = FileReader.CollectJaggedFileDataArray("C://Users//dss10_000//Documents//GitHub//LearningSystemsLabs//Lab1//Data_Training.txt", 4, arrayCheck);
+           // btnTrain.Enabled = true;
         }
 
         #endregion
@@ -255,9 +255,10 @@ namespace LS_Lab1___Neural_Network
                 Action action = () =>
                     {
                         statusStripLabel.Text = string.Format("Loading {0}",title);
-                        int[] arrayCheck =  { 2, 19, 20, 21}; //TODO: check criticalIndex
-                        tempData = FileReader.CollectJaggedFileDataArray(temppath,3, arrayCheck);
-                        statusStripLabel.Text = string.Format("Loading done: {0}", title);
+                        int[] arrayCheck =  { 1, 19, 20, 21}; //TODO: check criticalIndex
+                        tempData = FileReader.CollectJaggedFileDataArray(temppath,4, arrayCheck);
+                        trainingData = tempData; // TODO: I Added this to get data.
+                        statusStripLabel.Text = string.Format("Loading done: {0}", title);                  
                     };
                 syncContext.Send(item => action.Invoke(), null);
                 filepath = temppath;
