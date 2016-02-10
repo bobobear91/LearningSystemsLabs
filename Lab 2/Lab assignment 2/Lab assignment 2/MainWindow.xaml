@@ -12,23 +12,78 @@
         
         Title="MainWindow" Height="640" Width="720" MinHeight="640" MinWidth="720">
     <Grid>
+        <!--Grid for application-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0" Grid.Row="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Menu-->
+        <Menu x:Name="menu" Grid.Row="0" Grid.Column="0" Height="30" VerticalAlignment="Top" IsMainMenu="True">
+            <!--File-->
+            <MenuItem Header="_File" IsEnabled="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}">
+                <MenuItem Header="_New..." />
+                <Separator />
+                <MenuItem Header="_Open..." />
+                <Separator />
+                <MenuItem Header="_Save" />
+                <MenuItem Header="_Save As..." />
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+            
+            <!--Edit-->
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_New..." />
+                <Separator />
+                <MenuItem Header="_Open..." />
+            </MenuItem>
+            <MenuItem Header="_View" />
+            <MenuItem Header="_Window" />
+            <MenuItem Header="_Help" />
+        </Menu>
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <!--Row Definitions-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="*"/>
-                
-            </Grid.RowDefinitions>
 
+            </Grid.RowDefinitions>
+            <!--Column Definitions-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Grid.Row="0" MinWidth="80" Margin="5,5,5,5" Content="Send" HorizontalAlignment="Center" Width="100" IsEnabled="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}" Command="{Binding StartSimulation}"/>
+            <!--Start & Stop buttoms-->
+            <Grid Grid.Column="0" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
 
-            <ScrollViewer Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto"  Margin="0,5,0,5">
+
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Grid.Row="0" MinWidth="80" Margin="5,5,5,5" Content="Start" HorizontalAlignment="Center" Width="100" IsEnabled="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}" Command="{Binding StartSimulation}"/>
+                <Button Grid.Column="1" Grid.Row="0" MinWidth="80" Margin="5,5,5,5" Content="Reset" HorizontalAlignment="Center" Width="100" IsEnabled="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}" Command="{Binding ResetSimulation}"/>
+                <Button Grid.Column="2" Grid.Row="0" MinWidth="80" Margin="5,5,5,5" Content="Stop" HorizontalAlignment="Center" Width="100" IsEnabled="{Binding Path=IsRunning, UpdateSourceTrigger=PropertyChanged}" Command="{Binding StopSimulation}"/>
+
+            </Grid>
+
+            <!--Output-->
+            <Label Grid.Column="1" Grid.Row="1" Content="Traning output"/>
+            <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Auto"  Margin="5,5,5,5">
                 <StackPanel>
                     <ItemsControl ItemsSource="{Binding OutputText}">
                         <ItemsControl.ItemTemplate>
@@ -39,7 +94,8 @@
                     </ItemsControl>
                 </StackPanel>
             </ScrollViewer>
-            
+
+
         </Grid>
 
     </Grid>
