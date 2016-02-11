@@ -41,6 +41,12 @@ namespace Lab_assignment_2.ViewModel
         //public IList<MenuItemViewModel> MenuItems { get; private set; }
         //http://stackoverflow.com/questions/1392160/mvvm-dynamic-menu-ui-from-binding-with-viewmodel
 
+        //List for rules
+        //private ICommand removeSubjectCommand;
+        //public ICommand RemoveSubjectCommand
+        //{
+        //    get { return removeSubjectCommand ?? (removeSubjectCommand = new RelayCommand(param => this.RemoveSubject(), null)); }
+        //}
         #endregion
 
         #region Constructor
@@ -50,7 +56,13 @@ namespace Lab_assignment_2.ViewModel
             //      Member variables
             //****************************************************************
             OutputText = new ObservableCollection<string>();
+            Rulebook = new ObservableCollection<string>();
 
+            //Predefined rulebook
+            Rulebook.Add("1. IF (x1=short V long) AND (x2=middle V long) AND (x3=middle V long ) AND (x4=middle) THEN iris versicolor");
+            Rulebook.Add("2. IF (x3=short V middle) AND (x4=short) THEN iris setosa ");
+            Rulebook.Add("3. IF (x2=short V middle) AND (x3=long) AND (x4=long) THEN iris virginica");
+            Rulebook.Add("4. IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN iris versicolor");
 
             //****************************************************************
             //      Events 
@@ -59,12 +71,8 @@ namespace Lab_assignment_2.ViewModel
             ResetSimulation = new RelayCommand<object>(ResetSimulation_Event);
             StopSimulation = new RelayCommand<object>(StopSimulation_Event);
             OpenReadFile = new RelayCommand<object>(OpenReadfile_Event);
-
-
-
         }
         #endregion
-
 
         #region Events
         /// <summary>
@@ -114,16 +122,11 @@ namespace Lab_assignment_2.ViewModel
 
         #region Properties
         /// <summary>
-        /// 
-        /// </summary>
-        public ObservableCollection<string> OutputText { get; set; }
-
-        /// <summary>
-        /// 
+        /// Path of indata file
         /// </summary>
         private string filepath = string.Empty;
         /// <summary>
-        /// 
+        /// Filepath for the learning data
         /// </summary>
         public string Filepath
         {
@@ -139,11 +142,11 @@ namespace Lab_assignment_2.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// Is application running
         /// </summary>
         private bool isRunning = false;
         /// <summary>
-        /// 
+        /// Is application running
         /// </summary>
         public bool IsRunning
         {
@@ -159,11 +162,11 @@ namespace Lab_assignment_2.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// Is controls enabled
         /// </summary>
         private bool isEnabled = true;
         /// <summary>
-        /// 
+        /// Is Controls enabled
         /// </summary>
         public bool IsEnabled
         {
@@ -178,6 +181,18 @@ namespace Lab_assignment_2.ViewModel
             }
         }
 
+        #endregion
+
+        #region Obserable Collections
+        /// <summary>
+        /// Output for fuzzy logic machine
+        /// </summary>
+        public ObservableCollection<string> OutputText { get; set; }
+
+        /// <summary>
+        /// The rulebook of the fuzzy logic machine
+        /// </summary>
+        public ObservableCollection<string> Rulebook { get; set; }
         #endregion
     }
 }

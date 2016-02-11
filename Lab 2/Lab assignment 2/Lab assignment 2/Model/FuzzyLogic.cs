@@ -8,6 +8,29 @@ using System.Threading.Tasks;
 namespace Lab_assignment_2.Model
 {
     //https://github.com/MicheleBertoli/DotFuzzy
+    /// <summary>
+    /// 
+    /// </summary>
+    class FuzzyLogic
+    {
+        #region Variables
+
+        #endregion
+
+        #region Properties
+
+        #endregion
+
+        #region Constructor
+
+        #endregion
+
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     class FuzzyLogicRuleBook : Collection<FuzzyLogicRule>
     {
         #region Variables
@@ -64,6 +87,10 @@ namespace Lab_assignment_2.Model
         }
         #endregion
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
     class FuzzyLogicRule
     {
         #region Variables
