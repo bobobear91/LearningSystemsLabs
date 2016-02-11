@@ -370,17 +370,19 @@ namespace LS_Lab1___Neural_Network
 
         private void NN_FirePerformanceInfo(double Error, double Accuracy, int iterations)
         {
-            throw new NotImplementedException();
+
+            //MessageBox.Show("");
         }
 
         private void NN_FireMaxIterationsReached(int iterations, double accuracy)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(string.Format("Accuracy: {0} Iterations:{1}"), "Max iterations reached!");
+
         }
 
         private void NN_FireMaxAccuracyReached(double Accuracy, int iterations)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(string.Format("Accuracy: {0} Iterations:{1}"), "Max accuracy reached!");
         }
 
 
