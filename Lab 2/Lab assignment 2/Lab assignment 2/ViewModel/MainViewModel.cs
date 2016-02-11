@@ -57,11 +57,12 @@ namespace Lab_assignment_2.ViewModel
             //****************************************************************
             OutputText = new ObservableCollection<string>();
             Rulebook = new ObservableCollection<string>();
+
             //Predefined rulebook
-            Rulebook.Add("IF (x1=short V long) AND (x2=middle V long) AND (x3=middle V long ) AND (x4=middle) THEN iris versicolor");
-            Rulebook.Add("IF (x3=short V middle) AND (x4=short) THEN iris setosa ");
-            Rulebook.Add("IF (x2=short V middle) AND (x3=long) AND (x4=long) THEN iris virginica");
-            Rulebook.Add("IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN iris versicolor");
+            Rulebook.Add("1. IF (x1=short V long) AND (x2=middle V long) AND (x3=middle V long ) AND (x4=middle) THEN iris versicolor");
+            Rulebook.Add("2. IF (x3=short V middle) AND (x4=short) THEN iris setosa ");
+            Rulebook.Add("3. IF (x2=short V middle) AND (x3=long) AND (x4=long) THEN iris virginica");
+            Rulebook.Add("4. IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN iris versicolor");
 
             //****************************************************************
             //      Events 
