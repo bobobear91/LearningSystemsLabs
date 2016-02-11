@@ -256,7 +256,7 @@ namespace LS_Lab1___Neural_Network
                     {
                         statusStripLabel.Text = string.Format("Loading {0}",title);
                         int[] arrayCheck =  { 1, 19, 20, 21}; //TODO: check criticalIndex
-                        tempData = FileReader.CollectJaggedFileDataArray(temppath,4, arrayCheck);
+                        tempData = Data.TextFile.ReadFilePartToJaggedArray<double>(temppath, 4, arrayCheck);
                         trainingData = tempData; // TODO: I Added this to get data.
                         statusStripLabel.Text = string.Format("Loading done: {0}", title);                  
                     };
@@ -352,7 +352,6 @@ namespace LS_Lab1___Neural_Network
 
 
         }
-
 
         private void btnTest_Click(object sender, EventArgs e)
         {
