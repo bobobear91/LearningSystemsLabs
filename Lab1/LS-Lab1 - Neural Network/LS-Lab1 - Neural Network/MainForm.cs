@@ -45,6 +45,7 @@ namespace LS_Lab1___Neural_Network
 
         double[][] trainingData = null;
         double[][] testData = null;
+        NeuralNetwork NN;
 
         ToolTip tooltip;
         #endregion
@@ -90,6 +91,9 @@ namespace LS_Lab1___Neural_Network
             //Button - Test the neural network
             btnTest.Enabled = false;
 
+            //Button - Stop
+            btnStop.Click += BtnStop_Click;
+
             //Button - Train the neural network
             btnTrain.Enabled = false;
             btnTrain.Click += btnTrain_Click;
@@ -119,7 +123,7 @@ namespace LS_Lab1___Neural_Network
             //default values
             numericIterations.Minimum = 1; //10e0
             numericIterations.Value = 1000; //10e3
-            numericIterations.Maximum = 10000; //10e4
+            numericIterations.Maximum = 1000000; //10e6
 
             //
             numericLearnrate.Value = (decimal)0.005;
@@ -134,10 +138,21 @@ namespace LS_Lab1___Neural_Network
             numericPercentage.Minimum = 1;
             numericPercentage.Maximum = 99;
 
+            numericHidden.Value = 10;
+            numericHidden.Increment = 1;
+            numericHidden.Minimum = 1;
+            numericHidden.Maximum = 1000; //10e^3
+
             //int[] arrayCheck = { 2, 19, 20, 21 }; //TODO: check criticalIndex
-           // trainingData = FileReader.CollectJaggedFileDataArray("C://Users//dss10_000//Documents//GitHub//LearningSystemsLabs//Lab1//Data_Training.txt", 4, arrayCheck);
-           // btnTrain.Enabled = true;
+            // trainingData = FileReader.CollectJaggedFileDataArray("C://Users//dss10_000//Documents//GitHub//LearningSystemsLabs//Lab1//Data_Training.txt", 4, arrayCheck);
+            // btnTrain.Enabled = true;
+
+        
+
         }
+
+   
+
 
         #endregion
 
@@ -328,31 +343,56 @@ namespace LS_Lab1___Neural_Network
         private bool isNNTrained = false;
         private void btnTrain_Click(object sender, EventArgs e)
         {
-            NeuralNetwork NN = new NeuralNetwork(3, 5, 1, 0.005, 1);
-            NN.Train(trainingData, 1000, 0.95);
-
+ 
             MessageBox.Show("started training");
-
             //Checks if nn is already trained
             if (isNNTrained)
             {
                 if ((MessageBox.Show("Ops!", "It seems that the neural network is already train. Do you want to retrain?", MessageBoxButtons.YesNo) == DialogResult.No))
                     return;
             }
+            NN = new NeuralNetwork(3, (int)numericHidden.Value, 1, (int)numericLearnrate.Value, (double)numericMomentum.Value);
+            NN.FireMaxAccuracyReached += NN_FireMaxAccuracyReached;
+            NN.FireMaxIterationsReached += NN_FireMaxIterationsReached;
+            NN.FirePerformanceInfo += NN_FirePerformanceInfo;
             //Networked is trained
             Action action = () =>
             {
                 isNNTrained = btnTest.Enabled = true;
-                //double[] bestWeights = NeuralNetwork.Train(traningData, maxEpochs, learnRate, momentum);
+
+                NN.Train(trainingData, (int)numericIterations.Value, (double)((int)numericPercentage.Value/100));
                 MessageBox.Show("Traning Done!","Traning ");
+                
             };
             syncContext.Send(item => action.Invoke(), null);
-            //NeuralNetwork.
-            //Shows graph
-
-
         }
 
+
+        private void NN_FirePerformanceInfo(double Error, double Accuracy, int iterations)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void NN_FireMaxIterationsReached(int iterations, double accuracy)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void NN_FireMaxAccuracyReached(double Accuracy, int iterations)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+
+
+
+        private void BtnStop_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void btnTest_Click(object sender, EventArgs e)
         {
