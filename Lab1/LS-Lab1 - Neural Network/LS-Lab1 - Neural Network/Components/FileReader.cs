@@ -24,6 +24,21 @@ namespace LS_Lab1___Neural_Network.Components
             }
             return false;
         }
+        private static bool CheckFileEnding(string _filePath, string _fileEnd)
+        {
+            if (_filePath != null && _filePath.Count() >= 1)
+            {
+                if (_filePath.Substring(_filePath.Length - _fileEnd.Length, _fileEnd.Length) == _fileEnd)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
 
         public static class XML
         {
@@ -55,20 +70,20 @@ namespace LS_Lab1___Neural_Network.Components
 
         public static class TextFile
         {
-            public static T[,] ReadFileToArray<T>(string FilePath)
+            public static T[,] ReadFileToArray<T>(string _filePath)
             {
-                if (!FileExist(FilePath))
+                if (!FileExist(_filePath))
                 {
                     return null;
                 }
 
                 // Fetches information of Row/Column-size to determine the size of Data array.
-                int nOfRows = CountFileRows(FilePath);
-                int nOfColumns = CountFileColumns(FilePath);
+                int nOfRows = CountFileRows(_filePath);
+                int nOfColumns = CountFileColumns(_filePath);
                 T[,] fileData = new T[nOfRows, nOfColumns];
 
                 // Create streamReader, Open file.
-                System.IO.StreamReader file = new System.IO.StreamReader(FilePath);
+                System.IO.StreamReader file = new System.IO.StreamReader(_filePath);
 
                 // Iterator to fill 'fileData'-array with values from formatted textfile. 
                 for (int y = 0; y < nOfRows; y++)
@@ -92,16 +107,16 @@ namespace LS_Lab1___Neural_Network.Components
                 // Return complete array with data from file.
                 return fileData;
             }
-            public static T[][] ReadFileToJaggedArray<T>(string FilePath)
+            public static T[][] ReadFileToJaggedArray<T>(string _filePath)
             {
-                if (!FileExist(FilePath))
+                if (!FileExist(_filePath))
                 {
                     return null;
                 }
 
                 // Fetches information of Row/Column-size to determine the size of Data array.
-                int nOfRows = CountFileRows(FilePath);
-                int nOfColumns = CountFileColumns(FilePath);
+                int nOfRows = CountFileRows(_filePath);
+                int nOfColumns = CountFileColumns(_filePath);
                 T[][] fileData = new T[nOfRows][];
                 for (int y = 0; y < nOfRows; y++)
                 {
@@ -109,7 +124,7 @@ namespace LS_Lab1___Neural_Network.Components
                 }
 
                 // Create streamReader, Open file.
-                System.IO.StreamReader file = new System.IO.StreamReader(FilePath);
+                System.IO.StreamReader file = new System.IO.StreamReader(_filePath);
 
                 // Iterator to fill 'fileData'-array with values from formatted textfile. 
                 for (int y = 0; y < nOfRows; y++)
@@ -172,7 +187,7 @@ namespace LS_Lab1___Neural_Network.Components
                 {
                     throw;
                 }
-         
+
                 // Returns Formatted FileData-array.
                 return FileData;
             }
@@ -222,10 +237,51 @@ namespace LS_Lab1___Neural_Network.Components
                 return FileData;
             }
 
-            //WriteArrayToFile
-            public static void WriteArrayToFile<T>(string _filePath, T[][] _array)
+            public static void WriteArrayToFile<T>(string _filePath, T[,] _array, bool _overwrite)
             {
-                throw new NotImplementedException();
+                string[] lines = new string[_array.GetLength(0)];
+                for (int y = 0; y < _array.GetLength(0); y++)
+                {
+                    string line = "";
+                    for (int x = 0; x < _array.GetLength(1); x++)
+                    {
+                        line += Convert.ChangeType(_array[y,x], typeof(string));
+                    }
+                    lines[y] = line;
+                }
+
+                if (!FileExist(_filePath) || _overwrite)
+                {
+                    if (!CheckFileEnding(_filePath, ".txt"))
+                    {
+                        _filePath += ".txt";
+                    }
+
+                    System.IO.File.WriteAllLines(_filePath, lines);
+                }
+            }
+            public static void WriteJaggedArrayToFile<T>(string _filePath, T[][] _array, bool _overwrite)
+            {
+                string[] lines = new string[_array.Length];
+                for (int y = 0; y < _array.Length; y++)
+                {
+                    string line = "";
+                    for (int x = 0; x < _array[0].Length; x++)
+                    {
+                        line += Convert.ChangeType(_array[y][x], typeof(string));
+                    }
+                    lines[y] = line;
+                }
+
+                if (!FileExist(_filePath) || _overwrite)
+                {
+                    if (!CheckFileEnding(_filePath, ".txt"))
+                    {
+                        _filePath += ".txt";
+                    }
+
+                    System.IO.File.WriteAllLines(_filePath, lines);
+                }
             }
 
             #region Private TexFile-functions
