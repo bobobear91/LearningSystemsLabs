@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace LS_Lab1___Neural_Network.Components
 {
@@ -602,5 +603,72 @@ namespace LS_Lab1___Neural_Network.Components
             }
             return bigIndex;
         }
+
+        public void SaveNN(string filePath)
+        {
+            // Create a Instance of our container class NN_Data
+            NN_Data save_data = new NN_Data();
+            // And store all configuration-values from NN
+            save_data.NumInput = this.numInput;
+            save_data.NumHidden = this.numHidden;
+            save_data.NumOutput = this.numOutput;
+            save_data.LearnRate = this.learnRate;
+            save_data.Momentum = this.momentum;
+            save_data.Weights = Weights;
+
+            // Send obj to XML.Serialize and it will create a XML file described by NN_Data.
+            Data.XML.SerializeToFile<NN_Data>(save_data, filePath);
+        }
+        public void LoadNN(string filePath)
+        {
+            // Setup a container instance of NN_Data and fetch the file
+            NN_Data load_data = Data.XML.DeserializeFromFile<NN_Data>(filePath);
+
+            // Extract the values of the container. 
+            this.numInput = load_data.NumInput;
+            this.numHidden = load_data.NumHidden;
+            this.numOutput = load_data.NumOutput;
+            this.learnRate = load_data.LearnRate;
+            this.momentum = load_data.Momentum;
+
+            // Initialize Weights.
+            this.ihWeights = MakeMatrix(numInput, numHidden, 0.0);
+            this.hBiases = new double[numHidden];
+            this.hoWeights = MakeMatrix(numHidden, numOutput, 0.0);
+            this.oBiases = new double[numOutput];
+            Weights = load_data.Weights;
+
+            // Initialize Layers.
+            this.input = new double[numInput];
+            this.hOutput = new double[numHidden];
+            this.output = new double[numOutput];
+
+            // Initialize random generator.
+            this.rnd = new Random(0);
+
+            // Initialize Back-Propagation 'Weight' momentum arrays.
+            ihPrevWeightsDelta = MakeMatrix(numInput, numHidden, 0.0);
+            hPrevBiasesDelta = new double[numHidden];
+            hoPrevWeightsDelta = MakeMatrix(numHidden, numOutput, 0.0);
+            oPrevBiasesDelta = new double[numOutput];
+        }
+    }
+
+    [Serializable]
+    public class NN_Data
+    {
+        [XmlElement("NumInput")]
+        public int NumInput;
+        [XmlElement("NumHidden")]
+        public int NumHidden;
+        [XmlElement("NumOutput")]
+        public int NumOutput;
+        [XmlElement("LearnRate")]
+        public double LearnRate;
+        [XmlElement("Momentum")]
+        public double Momentum;
+        [XmlElement("Weights")]
+        public double[] Weights;
     }
 }
+
