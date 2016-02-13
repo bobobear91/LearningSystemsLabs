@@ -120,9 +120,9 @@ namespace Lab_assignment_2.ViewModel
 
         #endregion
 
-        #region Properties
+        #region String Properties
         /// <summary>
-        /// Path of indata file
+        /// Path of indata file, this only used to store data. If you want to change the variable, use property set instead.
         /// </summary>
         private string filepath = string.Empty;
         /// <summary>
@@ -130,7 +130,10 @@ namespace Lab_assignment_2.ViewModel
         /// </summary>
         public string Filepath
         {
-            get { return filepath; }
+            get
+            {
+                return string.Format("Filepath: {0}",(!string.IsNullOrEmpty(filepath) ? filepath : "No file loaded."));
+            }
             private set
             {
                 if (filepath != value)
@@ -141,6 +144,22 @@ namespace Lab_assignment_2.ViewModel
             }
         }
 
+        private string rulesfilepath = string.Empty;
+        public string RulesFilepath
+        {
+            get
+            {
+                return rulesfilepath;
+            }
+            set
+            {
+                NotifyPropertyChanged();
+                rulesfilepath = value;
+            }
+        }
+        #endregion
+
+        #region Boolean Properties
         /// <summary>
         /// Is application running
         /// </summary>
@@ -181,6 +200,25 @@ namespace Lab_assignment_2.ViewModel
             }
         }
 
+        /// <summary>
+        /// Is rules loaded from an XML-file
+        /// </summary>
+        private bool isRulesFromFile = false;
+        /// <summary>
+        /// Is rules loaded from an XML-file
+        /// </summary>
+        public bool IsRulesFromFile
+        {
+            get
+            {
+                return isRulesFromFile;
+            }
+            private set
+            {
+                NotifyPropertyChanged();
+                isRulesFromFile = value;
+            }
+        }
         #endregion
 
         #region Obserable Collections
@@ -193,6 +231,10 @@ namespace Lab_assignment_2.ViewModel
         /// The rulebook of the fuzzy logic machine
         /// </summary>
         public ObservableCollection<string> Rulebook { get; set; }
+        #endregion
+
+        #region Methods
+        
         #endregion
     }
 }

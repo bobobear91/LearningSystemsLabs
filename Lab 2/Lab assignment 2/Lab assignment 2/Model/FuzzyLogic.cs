@@ -14,10 +14,15 @@ namespace Lab_assignment_2.Model
     class FuzzyLogic
     {
         #region Variables
-
+        private FuzzyLogicRuleBook rulebook;
         #endregion
 
         #region Properties
+        public FuzzyLogicRuleBook Rules
+        {
+            get { return rulebook; }
+            set { rulebook = value; }
+        }
 
         #endregion
 
@@ -25,6 +30,14 @@ namespace Lab_assignment_2.Model
 
         #endregion
 
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    class LinguisticVariable
+    {
 
     }
 
