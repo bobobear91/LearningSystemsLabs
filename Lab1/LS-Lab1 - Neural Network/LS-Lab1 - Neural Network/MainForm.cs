@@ -351,7 +351,7 @@ namespace LS_Lab1___Neural_Network
                 if ((MessageBox.Show("Ops!", "It seems that the neural network is already train. Do you want to retrain?", MessageBoxButtons.YesNo) == DialogResult.No))
                     return;
             }
-            NN = new NeuralNetwork(3, (int)numericHidden.Value, 1, (int)numericLearnrate.Value, (double)numericMomentum.Value);
+            NN = new NeuralNetwork(3, (int)numericHidden.Value, 1, (double)numericLearnrate.Value, (double)numericMomentum.Value);
             NN.FireMaxAccuracyReached += NN_FireMaxAccuracyReached;
             NN.FireMaxIterationsReached += NN_FireMaxIterationsReached;
             NN.FirePerformanceInfo += NN_FirePerformanceInfo;
@@ -360,7 +360,7 @@ namespace LS_Lab1___Neural_Network
             {
                 isNNTrained = btnTest.Enabled = true;
 
-                NN.Train(trainingData, (int)numericIterations.Value, (double)((int)numericPercentage.Value/100));
+                NN.Train(trainingData, (int)numericIterations.Value, (double)(numericPercentage.Value/100));
                 MessageBox.Show("Traning Done!","Traning ");
                 
             };

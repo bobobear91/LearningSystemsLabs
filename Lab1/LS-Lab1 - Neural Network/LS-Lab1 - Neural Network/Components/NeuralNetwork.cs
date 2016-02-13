@@ -238,6 +238,7 @@ namespace LS_Lab1___Neural_Network.Components
             return normalizedData;
         }
 
+        // TODO: By Reeeeference!!!!!!! LOL. fixa alla metoder och dubbelkolla! 
         private double[] ComputeOutput(double[] TrainingDataInput)
         {
             double[] ihSums = new double[numHidden];
@@ -291,8 +292,11 @@ namespace LS_Lab1___Neural_Network.Components
             {
                 this.output[o] = LogSigmoid(hoSums[o]);
             }
-            
-            return this.output;
+
+            double[] result = new double[numOutput];
+            Array.Copy(this.output, result, numOutput);
+
+            return result;
         }
         private double HyperTan(double x)
         {
@@ -369,7 +373,7 @@ namespace LS_Lab1___Neural_Network.Components
                 }
 
                 // Shuffle Sequence
-               // trainingSequence = ShuffleSequence(trainingSequence);
+                trainingSequence = ShuffleSequence(trainingSequence);
 
                 // Compute all training examples.
                 for (int i = 0; i < trainingData.Length; i++)
