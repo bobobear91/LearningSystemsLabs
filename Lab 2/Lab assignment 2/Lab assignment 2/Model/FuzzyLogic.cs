@@ -36,9 +36,33 @@ namespace Lab_assignment_2.Model
     /// <summary>
     /// 
     /// </summary>
-    class LinguisticVariable
+    class FuzzyLinguistics
     {
+        #region Variables
+        private string name = string.Empty;
+        private double currentValue = 0;
+        #endregion
 
+        #region Properties
+        public string Name
+        {
+            get { return name; }
+            set { name = !string.IsNullOrEmpty(value) ? value : name; }
+        }
+        #endregion
+
+        #region Constructor
+        public FuzzyLinguistics(string name)
+        {
+            this.name = name;
+        }
+        public double Input
+        {
+            get { return currentValue; }
+            set { currentValue = value; }
+        }
+
+        #endregion
     }
 
     /// <summary>
