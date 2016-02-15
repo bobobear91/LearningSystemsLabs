@@ -338,7 +338,7 @@ namespace LS_Lab1___Neural_Network.Components
             else return 1.0 / (1.0 + Math.Exp(-x));
         }
 
-        public void Train(double[][] trainingData, int maxIterations, double maxAccuracy, int PerformanceEventInterval = 10, int AccuracyFilter = 100)
+        public void Train(double[][] trainingData, int maxIterations, double maxAccuracy, int PerformanceEventInterval = 10, int AccuracyFilter = 15)
         {
             stopTraining = false;
             int iterator = 0;
@@ -388,6 +388,12 @@ namespace LS_Lab1___Neural_Network.Components
                     {
                         AdjustWeights(output, trainingOutput[trainingSequence[i]]);
                     }
+
+                    if (i == trainingData.Length-1)
+                    {
+                        // Fire output comparison event.
+                        if (FireOutputComparison != null) FireOutputComparison(iterator, currentIterationOutputs[trainingSequence[i]][0], trainingOutput[trainingSequence[i]][0]);
+                    }
                 }
 
                 // makes sure that performance event isnt fired at every iteration. 
@@ -396,6 +402,7 @@ namespace LS_Lab1___Neural_Network.Components
                     // Compute Accuracy and error value at end of iteration
                     accuracy = ComputeAccuracy(trainingOutput, currentIterationOutputs, AccuracyFilter);
                     error = ComputeError(trainingOutput, currentIterationOutputs);
+                    //if (FireOutputComparison != null) FireOutputComparison(iterator, error, accuracy);
                 }
 
                 // Fire performance info event. 
@@ -406,6 +413,7 @@ namespace LS_Lab1___Neural_Network.Components
             // Handle delegates. 
             if (iterator >= maxIterations && FireMaxIterationsReached != null) FireMaxIterationsReached(iterator, accuracy);
             if (accuracy >= maxAccuracy && FireMaxAccuracyReached != null) FireMaxAccuracyReached(accuracy, iterator);
+            if (FireTrainingComplete != null) FireTrainingComplete();
         }
         private void AdjustWeights(double[] NNOutput, double[] targetOutput)
         {
@@ -533,16 +541,21 @@ namespace LS_Lab1___Neural_Network.Components
         {
             stopTraining = true;
         }
-
+        #region Training delegates
         public delegate void TrainingPerformanceInfo(double Error, double Accuracy, int iterations);
         public delegate void TrainingMaxIterationsReached(int iterations, double accuracy);      
         public delegate void TrainingMaxAccuracyReached(double Accuracy, int iterations);
+        public delegate void TrainingComplete();
+        public delegate void OutputComparison(int iterator, double NN_Output, double t_Output);
 
         public event TrainingPerformanceInfo FirePerformanceInfo;
         public event TrainingMaxIterationsReached FireMaxIterationsReached;
         public event TrainingMaxAccuracyReached FireMaxAccuracyReached;
+        public event TrainingComplete FireTrainingComplete;
+        public event OutputComparison FireOutputComparison;
+        #endregion
 
-        public void Test(double[][] TestData, int AccuracyFilter = 100)
+        public void Test(double[][] TestData, int AccuracyFilter = 15)
         {
             // Initialize container arrays, and split training Data -> input/output
             double[][] TestInput = new double[numInput][];
@@ -572,9 +585,15 @@ namespace LS_Lab1___Neural_Network.Components
 
             double accuracy = ComputeAccuracy(TestOutput, currentIterationOutputs, AccuracyFilter);
             double error = ComputeError(TestOutput, currentIterationOutputs);
-
-            FirePerformanceInfo(error, accuracy, 0);
+    
+            if (FirePerformanceInfo != null) FirePerformanceInfo(error, accuracy, 0);
+            if (FireTestingComplete != null) FireTestingComplete();
         }
+        #region Test delegates
+        public delegate void TestingComplete();
+
+        public event TestingComplete FireTestingComplete;
+        #endregion
 
         private double ComputeError(double[][] TargetOutput, double[][] NNOutput)
         {
@@ -619,7 +638,8 @@ namespace LS_Lab1___Neural_Network.Components
                     ++numWrong;
                 }
             }
-            return (numCorrect) / (numCorrect + numWrong);
+            double result = (double)(numCorrect) / ((double)numCorrect + numWrong);
+            return result;
         }
         private static int MaxIndex(double[] vector)
         {
