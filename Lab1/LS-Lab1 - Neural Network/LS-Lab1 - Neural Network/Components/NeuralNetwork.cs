@@ -34,6 +34,9 @@ namespace LS_Lab1___Neural_Network.Components
         double[][] hoPrevWeightsDelta;
         double[] oPrevBiasesDelta;
 
+        // state stuff. 
+        bool stopTraining;
+
         private Random rnd; 
 
         public int NumberOfInputs
@@ -238,7 +241,6 @@ namespace LS_Lab1___Neural_Network.Components
             return normalizedData;
         }
 
-        // TODO: By Reeeeference!!!!!!! LOL. fixa alla metoder och dubbelkolla! 
         private double[] ComputeOutput(double[] TrainingDataInput)
         {
             double[] ihSums = new double[numHidden];
@@ -336,12 +338,14 @@ namespace LS_Lab1___Neural_Network.Components
             else return 1.0 / (1.0 + Math.Exp(-x));
         }
 
-        public void Train(double[][] trainingData, int maxIterations, double maxAccuracy)
+        public void Train(double[][] trainingData, int maxIterations, double maxAccuracy, int PerformanceEventInterval = 10, int AccuracyFilter = 100)
         {
+            stopTraining = false;
             int iterator = 0;
             double accuracy = 0;
             double error = 0;
 
+            // Normalize all trainingData.
             trainingData = NormilizeData(trainingData);
 
             // Initialize container arrays, and split training Data -> input/output
@@ -363,7 +367,7 @@ namespace LS_Lab1___Neural_Network.Components
                trainingSequence[x] = x;
             }
 
-            while (iterator < maxIterations && accuracy < maxAccuracy)
+            while (iterator < maxIterations && accuracy < maxAccuracy && !stopTraining)
             {
                 // Initialize container for iteration output.
                 double[][] currentIterationOutputs = new double[trainingData.Length][];
@@ -379,12 +383,22 @@ namespace LS_Lab1___Neural_Network.Components
                 for (int i = 0; i < trainingData.Length; i++)
                 {
                     currentIterationOutputs[trainingSequence[i]] = ComputeOutput(trainingInput[trainingSequence[i]]);
-                    AdjustWeights(output, trainingOutput[trainingSequence[i]]);
+                    // if NN_answer != correct_answer the adjust weights
+                    if (currentIterationOutputs[trainingSequence[i]] != trainingOutput[trainingSequence[i]])
+                    {
+                        AdjustWeights(output, trainingOutput[trainingSequence[i]]);
+                    }
                 }
 
-                accuracy = ComputeAccuracy(trainingOutput, currentIterationOutputs);
-                error = ComputeError(trainingOutput, currentIterationOutputs);
+                // makes sure that performance event isnt fired at every iteration. 
+                if (iterator % PerformanceEventInterval == 0)
+                {
+                    // Compute Accuracy and error value at end of iteration
+                    accuracy = ComputeAccuracy(trainingOutput, currentIterationOutputs, AccuracyFilter);
+                    error = ComputeError(trainingOutput, currentIterationOutputs);
+                }
 
+                // Fire performance info event. 
                 if (FirePerformanceInfo != null) FirePerformanceInfo(error, accuracy, iterator);
 
                 iterator++;
@@ -515,6 +529,10 @@ namespace LS_Lab1___Neural_Network.Components
 
             return sequence;
         }
+        public void StopTraining()
+        {
+            stopTraining = true;
+        }
 
         public delegate void TrainingPerformanceInfo(double Error, double Accuracy, int iterations);
         public delegate void TrainingMaxIterationsReached(int iterations, double accuracy);      
@@ -524,7 +542,7 @@ namespace LS_Lab1___Neural_Network.Components
         public event TrainingMaxIterationsReached FireMaxIterationsReached;
         public event TrainingMaxAccuracyReached FireMaxAccuracyReached;
 
-        public void Test(double[][] TestData)
+        public void Test(double[][] TestData, int AccuracyFilter = 100)
         {
             // Initialize container arrays, and split training Data -> input/output
             double[][] TestInput = new double[numInput][];
@@ -552,7 +570,7 @@ namespace LS_Lab1___Neural_Network.Components
                 AdjustWeights(output, TestOutput[i]);
             }
 
-            double accuracy = ComputeAccuracy(TestOutput, currentIterationOutputs);
+            double accuracy = ComputeAccuracy(TestOutput, currentIterationOutputs, AccuracyFilter);
             double error = ComputeError(TestOutput, currentIterationOutputs);
 
             FirePerformanceInfo(error, accuracy, 0);
@@ -572,17 +590,27 @@ namespace LS_Lab1___Neural_Network.Components
             }
             return sumSquaredError / TargetOutput.Length;
         }
-        private double ComputeAccuracy(double[][] TargetOutput, double[][] NNOutput)
+        private double ComputeAccuracy(double[][] TargetOutput, double[][] NNOutput, int nOfDecimals)
         {
             int numCorrect = 0;
             int numWrong = 0;
+            bool answerCorrect = false;
 
-            for (int i = 0; i < TargetOutput.Length; i++)
+            for (int y = 0; y < TargetOutput.Length; y++)
             {
-                int maxIndex = MaxIndex(NNOutput[i]);
-                int tMaxIndex = MaxIndex(TargetOutput[i]);
+                answerCorrect = true;
+                for (int x = 0; x < TargetOutput[0].Length; x++)
+                {
+                    double nn_answer = Math.Round(NNOutput[y][x], nOfDecimals);
+                    double t_answer = Math.Round(TargetOutput[y][x], nOfDecimals);
 
-                if (NNOutput[i] == TargetOutput[i])
+                    if (nn_answer != t_answer)
+                    {
+                        answerCorrect = false;
+                        break;
+                    }
+                }
+                if (answerCorrect)
                 {
                     ++numCorrect;
                 }
