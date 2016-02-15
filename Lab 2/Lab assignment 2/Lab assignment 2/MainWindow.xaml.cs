@@ -35,6 +35,9 @@ namespace Lab_assignment_2
             //***********************************************************************
             this.viewModel = new MainViewModel();
             this.DataContext = viewModel;
+            //Binds the close action to the view model
+            if (viewModel.CloseAction == null)
+                viewModel.CloseAction = new Action(() => this.Close());
 
         }
     }

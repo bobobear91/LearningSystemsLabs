@@ -7,6 +7,7 @@ namespace Lab_assignment_2.Handlers
     {
         readonly Action<T> _execute = null;
         readonly Predicate<T> _canExecute = null;
+        private object saveAsFile_Event;
 
         public RelayCommand(Action<T> execute)
             : this(execute, null)
@@ -20,6 +21,11 @@ namespace Lab_assignment_2.Handlers
 
             _execute = execute;
             _canExecute = canExecute;
+        }
+
+        public RelayCommand(object saveAsFile_Event)
+        {
+            this.saveAsFile_Event = saveAsFile_Event;
         }
 
         public bool CanExecute(object parameter)

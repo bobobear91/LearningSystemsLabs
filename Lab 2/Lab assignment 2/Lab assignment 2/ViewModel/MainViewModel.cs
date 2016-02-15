@@ -11,11 +11,20 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
+using Lab_assignment_2.Model;
 
 namespace Lab_assignment_2.ViewModel
 {
     class MainViewModel : BaseViewModel
     {
+        #region Variables
+        FuzzyLogic fuzzyLogic;
+        #endregion
+
+        #region Actions
+        public Action CloseAction { get; set; }
+        #endregion
+
         #region View-Events
         /// <summary>
         /// Event for starting the simulation
@@ -37,6 +46,27 @@ namespace Lab_assignment_2.ViewModel
         /// </summary>
         public ICommand OpenReadFile { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand SaveFile { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand SaveAsFile { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand NewFuzzyLogic { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand Quit { get; private set; }
+
+
         //TODO:
         //public IList<MenuItemViewModel> MenuItems { get; private set; }
         //http://stackoverflow.com/questions/1392160/mvvm-dynamic-menu-ui-from-binding-with-viewmodel
@@ -56,13 +86,27 @@ namespace Lab_assignment_2.ViewModel
             //      Member variables
             //****************************************************************
             OutputText = new ObservableCollection<string>();
-            Rulebook = new ObservableCollection<string>();
 
+            //****************************************************************
+            //      a
+            //****************************************************************
+            IsEnabled = false;
+
+            //****************************************************************
+            //      a
+            //****************************************************************
+            fuzzyLogic = new FuzzyLogic();
             //Predefined rulebook
-            Rulebook.Add("1. IF (x1=short V long) AND (x2=middle V long) AND (x3=middle V long ) AND (x4=middle) THEN iris versicolor");
-            Rulebook.Add("2. IF (x3=short V middle) AND (x4=short) THEN iris setosa ");
-            Rulebook.Add("3. IF (x2=short V middle) AND (x3=long) AND (x4=long) THEN iris virginica");
-            Rulebook.Add("4. IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN iris versicolor");
+            //IF (x1=short V long) AND (x2=middle V long) AND (x3=middle V long ) AND (x4=middle) THEN Iris Versicolor
+            //IF(x3 = short V middle) AND(x4 = short) THEN Iris Setosa
+            //IF (x2=short V middle) AND (x3=long) AND (x4=long) THEN Iris Virginica
+            //IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor
+
+            //
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=short OR long) AND (x2=middle OR long) AND (x3=middle OR long ) AND (x4=middle) THEN Iris Versicolor"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x3 = short OR middle) AND(x4 = short) THEN Iris Setosa"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2=short OR middle) AND (x3=long) AND (x4=long) THEN Iris Virginica"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor"));
 
             //****************************************************************
             //      Events 
@@ -71,7 +115,18 @@ namespace Lab_assignment_2.ViewModel
             ResetSimulation = new RelayCommand<object>(ResetSimulation_Event);
             StopSimulation = new RelayCommand<object>(StopSimulation_Event);
             OpenReadFile = new RelayCommand<object>(OpenReadfile_Event);
+            SaveFile = new RelayCommand<object>(Savefile_Event);
+            SaveAsFile = new RelayCommand<object>(SaveAsFile_Event);
+            NewFuzzyLogic = new RelayCommand<object>(NewFuzzyLogic_Event);
+            Quit = new RelayCommand<object>(Quit_Event);
+
         }
+        
+
+
+
+
+
         #endregion
 
         #region Events
@@ -85,6 +140,8 @@ namespace Lab_assignment_2.ViewModel
             //Starts the Simulation & Enabled Stop buttom
             IsRunning = true;
             IsEnabled = false;
+
+            //Action that returns 
         }
 
         /// <summary>
@@ -117,7 +174,33 @@ namespace Lab_assignment_2.ViewModel
             OpenFileDialog dialog = new OpenFileDialog();
         }
 
+        private void NewFuzzyLogic_Event(object obj)
+        {
+            IsEnabled = true;
+        }
 
+        private void SaveAsFile_Event(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Savefile_Event(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Closes application
+        /// </summary>
+        /// <param name="obj"></param>
+        private void Quit_Event(object obj)
+        {
+            if (CloseAction != null)
+            {
+                CloseAction();
+
+            }
+        }
         #endregion
 
         #region String Properties
@@ -180,6 +263,7 @@ namespace Lab_assignment_2.ViewModel
             }
         }
 
+
         /// <summary>
         /// Is controls enabled
         /// </summary>
@@ -200,6 +284,7 @@ namespace Lab_assignment_2.ViewModel
             }
         }
 
+
         /// <summary>
         /// Is rules loaded from an XML-file
         /// </summary>
@@ -219,6 +304,28 @@ namespace Lab_assignment_2.ViewModel
                 isRulesFromFile = value;
             }
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool isReady = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsReady
+        {
+            get { return isReady; }
+            private set
+            {
+                if (value != isReady)
+                {
+                    isReady = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Obserable Collections
@@ -230,11 +337,32 @@ namespace Lab_assignment_2.ViewModel
         /// <summary>
         /// The rulebook of the fuzzy logic machine
         /// </summary>
-        public ObservableCollection<string> Rulebook { get; set; }
+        public ObservableCollection<string> Rulebook
+        {
+            get
+            {
+                ObservableCollection<string> rulebook = new ObservableCollection<string>();
+                if (fuzzyLogic != null)
+                {
+                    if (fuzzyLogic.Rules.Count > 0)
+                    {
+                        int i = 1;
+                        foreach (var rules in fuzzyLogic.Rules)
+                        {
+                            rulebook.Add(string.Format("{0} {1}", i, (!string.IsNullOrEmpty(rules.Rule) ? rules.Rule : "Error!")));
+                            i++;
+                        }
+                        
+                    }
+
+                }
+                return rulebook;
+            }
+        }
         #endregion
 
         #region Methods
-        
+
         #endregion
     }
 }

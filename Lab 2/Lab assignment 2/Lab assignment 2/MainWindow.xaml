@@ -25,14 +25,14 @@
         <Menu x:Name="menu" Grid.Row="0" Grid.Column="0" Height="30" VerticalAlignment="Top" IsMainMenu="True">
             <!--File-->
             <MenuItem Header="_File" IsEnabled="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}">
-                <MenuItem Header="_New..." />
+                <MenuItem Header="_New..." Command="{Binding NewFuzzyLogic}"/>
                 <Separator />
-                <MenuItem Header="_Open..." />
+                <MenuItem Header="_Open..." Command="{Binding OpenReadFile}"/>
                 <Separator />
-                <MenuItem Header="_Save" />
-                <MenuItem Header="_Save As..." />
+                <MenuItem Header="_Save" Command="{Binding SaveFile}"/>
+                <MenuItem Header="_Save As..." Command="{Binding SaveAsFile}"/>
                 <Separator />
-                <MenuItem Header="_Exit" />
+                <MenuItem Header="_Exit" Command="{Binding Quit}"/>
             </MenuItem>
             
             <!--Edit-->
