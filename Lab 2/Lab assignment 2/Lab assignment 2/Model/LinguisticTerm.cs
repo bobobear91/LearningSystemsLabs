@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace Lab_assignment_2.Model
         private string name = string.Empty;
         private double currentValue = 0;
 
-        private MembershipFunctionCollection membershipFunctionCollection = new MembershipFunctionCollection();
+        private Collection<MembershipFunction> membershipFunctionCollection = new Collection<MembershipFunction>();
 
         #endregion
 
@@ -23,6 +24,18 @@ namespace Lab_assignment_2.Model
             get { return name; }
             set { name = !string.IsNullOrEmpty(value) ? value : name; }
         }
+
+
+        public double Input
+        {
+            get { return currentValue; }
+            set { currentValue = value; }
+        }
+        public Collection<MembershipFunction> MembershipFunctions
+        {
+            get { return membershipFunctionCollection; }
+            set { membershipFunctionCollection = value; }
+        }
         #endregion
 
         #region Constructor
@@ -31,28 +44,19 @@ namespace Lab_assignment_2.Model
             this.name = name;
         }
 
-        public LinguisticTerm(string name, MembershipFunctionCollection membershipFunctionCollection)
+        public LinguisticTerm(string name, Collection<MembershipFunction> membershipFunctionCollection)
         {
             this.Name = name;
-            this.MembershipFunctionCollection = membershipFunctionCollection;
+            this.MembershipFunctions = membershipFunctionCollection;
         }
 
-        public double Input
-        {
-            get { return currentValue; }
-            set { currentValue = value; }
-        }
-        public MembershipFunctionCollection MembershipFunctionCollection
-        {
-            get { return membershipFunctionCollection; }
-            set { membershipFunctionCollection = value; }
-        }
 
         #endregion
 
+        #region Methods
         public double Fuzzify(string membershipFunctionName)
         {
-            MembershipFunction membershipFunction = this.membershipFunctionCollection.Find(membershipFunctionName);
+            MembershipFunction membershipFunction = Find(membershipFunctionName);
 
             if ((membershipFunction.X0 <= this.currentValue) && (this.currentValue < membershipFunction.X1))
                 return (this.currentValue - membershipFunction.X0) / (membershipFunction.X1 - membershipFunction.X0);
@@ -106,6 +110,31 @@ namespace Lab_assignment_2.Model
         {
             return this.MaxValue() - this.MinValue();
         }
-    }
 
+        /// <summary>
+        /// Finds a linguistic variable in a collection.
+        /// </summary>
+        /// <param name="linguisticVariableName">Linguistic variable name.</param>
+        /// <returns>The linguistic variable, if founded.</returns>
+        public MembershipFunction Find(string linguisticVariableName)
+        {
+            MembershipFunction linguisticVariable = null;
+
+            foreach (MembershipFunction variable in MembershipFunctions)
+            {
+                if (variable.Name == linguisticVariableName)
+                {
+                    linguisticVariable = variable;
+                    break;
+                }
+            }
+
+            if (linguisticVariable == null)
+                throw new Exception("LinguisticVariable not found: " + linguisticVariableName);
+            else
+                return linguisticVariable;
+        }
+
+        #endregion
+    }
 }

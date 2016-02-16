@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:Lab_assignment_2.ViewModel"
         mc:Ignorable="d"
         
-        Title="MainWindow" Height="640" Width="Auto" MinHeight="640" MinWidth="720">
+        Title="Fuzzy controller" Height="640" Width="Auto" MinHeight="640" MinWidth="720">
     <!--Grid for application-->
     <Grid>
         <!--Row definitions for the application-->
@@ -52,7 +52,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="80"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
 
             </Grid.RowDefinitions>
             
@@ -126,7 +127,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <!--Fuzzy logic Rules-->
-                <Label Grid.Column="0" Grid.Row="0" Content="Fuzzy Logic Rules!" FontSize="18"/>
+                <Label Grid.Column="0" Grid.Row="0" Content="Logic Rules" FontSize="18"/>
                 <ScrollViewer Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="5,5,5,5">
                     <StackPanel>
                         <ItemsControl ItemsSource="{Binding Rulebook}">
@@ -143,10 +144,48 @@
                 <Button Grid.Column="0" Grid.Row="3" MinWidth="80" Margin="5,5,5,5" Content="Add new rule" HorizontalAlignment="Center" Width="100" IsEnabled="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}" Command="{Binding StartSimulation}"/>
 
             </Grid>
-            
-            
-            
-            
+
+            <!--Terms-->
+            <Grid Grid.Column="0" Grid.Row="3">
+                <!--Row definitions-->
+                <Grid.RowDefinitions>
+                    <!--label row-->
+                    <RowDefinition Height="Auto"/>
+                    <!--list row-->
+                    <RowDefinition Height="Auto"/>
+                    <!--Add new rule row-->
+                    <RowDefinition Height="Auto"/>
+                    <!--Button for new row-->
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!--Column defintions-->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Fuzzy logic Rules-->
+                <Label Grid.Column="0" Grid.Row="0" Content="Lingustics terms" FontSize="18"/>
+                <ScrollViewer Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="5,5,5,5">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding LinguisticTerms}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Path=.}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!--Add new rules bar-->
+                <Button Grid.Column="0" Grid.Row="3" MinWidth="80" Margin="5,5,5,5" Content="Add new rule" HorizontalAlignment="Center" Width="100" IsEnabled="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}" Command="{Binding StartSimulation}"/>
+
+            </Grid>
+
+
+
+
             <!--Rightside-->
             
             <!--Output-->

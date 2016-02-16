@@ -1,0 +1,1419 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<!-- saved from url=(0073)https://www.facstaff.bucknell.edu/mastascu/eControlHTML/Fuzzy/Fuzzy1.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+   
+   <meta name="keywords" content="Fuzzy Control Systems, Membership Functions, firing levels, moment, centroid, truth value,">
+   <meta name="description" content="Block diagrams in feedback control systems">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (WinNT; I) [Netscape]">
+   <title>An Introduction To FUzzy Control Systems</title>
+<script language="JavaScript">
+	var RightAnswer, UserAnswer, Delta;
+	var Factor, Alpha = 500000, Rightness = 1;
+
+	function evaluateAnswer(form, RightAnswer){
+		UserAnswer = eval(form.InputValue.value);
+		Delta = (UserAnswer-RightAnswer)/RightAnswer;
+		Factor = Alpha * Delta * Delta * Delta * Delta * Delta * Delta;
+		Rightness = Math.floor((100*Rightness)/(1 + Factor));
+		form.Grade.value=Rightness;
+		Rightness = 1;
+	
+	}
+
+
+</script>
+<style type="text/css"></style></head>
+<body>
+<font ><font color="#CC0000"><font size="+2">Fuzzy
+Logic</font></font></font>
+<blockquote><font ><a href="https://www.facstaff.bucknell.edu/mastascu/eControlHTML/Fuzzy/Fuzzy1.html#Introduction">Introduction
+To Fuzzy Logic</a></font>
+<blockquote><font ><a href="https://www.facstaff.bucknell.edu/mastascu/eControlHTML/Fuzzy/Fuzzy1.html#MembershipFunctions">Fuzzy
+Membership Functions</a></font>
+<blockquote><font >A Simple Fuzzy Control System</font></blockquote>
+</blockquote>
+</blockquote>
+
+<hr width="100%">
+<br><font ><font color="#003300"><font size="+1">Why
+Fuzzy Logic?</font></font></font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Fuzzy logic is an interesting subject to contemplate.</font>
+</p><ul>
+<li>
+<font ><font color="#990000">The name implies that
+you have to be a bit fuzzy headed to use fuzzy logic!</font></font></li>
+
+<li>
+<font ><font color="#990000">One main claim to fame
+for fuzzy logic is that it is useful in designing control systems - in
+spite of the fact that design techniques for control systems abound.</font></font></li>
+
+<li>
+<font ><font color="#990000">For any number of reasons,
+fuzzy logic and fuzzy control system design methods have become a controversial
+topic.</font></font></li>
+</ul>
+
+<hr width="100%"><font ><font color="#003300"><font size="+1">Why
+Fuzzy Logic? - What the Experts Have to Say!</font></font></font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Fuzzy theory is wrong, wrong, and pernicious.&nbsp; What we need is more
+logical thinking, not less.&nbsp; The danger of fuzzy logic is that it
+will encourage the sort of imprecise thinking that has brought us so much
+trouble.&nbsp; Fuzzy logic is the cocaine of science.</font>
+</p><div align="right"><font ><font color="#000099">Professor
+William Kahan</font></font>
+<br><font ><font color="#000099">University of California
+at Berkeley</font></font></div>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Fuzzification"
+is a kind of scientific permissiveness.&nbsp; It tends to result in socially
+appealing slogans unaccompanied by the discipline of hard scientific work
+and patient observation.</font>
+<div align="right"><font ><font color="#000099">Professor
+Rudolf Kalman</font></font>
+<br><font ><font color="#000099">University of Florida
+at Gainesville</font></font></div>
+<font >As complexity increases, precise statements
+lose meaning and meaningful statements lose precision.</font>
+<div align="right"><font ><font color="#000099">Professor
+Lofti Zadeh</font></font>
+<br><font ><font color="#000099">University of California
+at Berkeley</font></font>
+<br><font ><font color="#000099">quoted in McNeill
+&amp; Freiberger, p 43</font></font></div>
+<font >So far as the laws of mathematics refer to reality,
+they are not certain.&nbsp; And so far as they are certain, they do not
+refer to reality.</font>
+<div align="right"><font ><font color="#000099">Albert
+Einstein</font></font>
+<br><font ><font color="#000099">in Geometry &amp;
+Experience</font></font></div>
+
+<hr width="100%"><font ><font color="#003300"><font size="+1">Where
+are the Fuzzy Systems? - What are They Doing Now?</font></font></font>
+<ul>
+<li>
+<font ><font color="#990000">Shifting gears in automatic
+transmissions in cars</font></font></li>
+
+<li>
+<font ><font color="#990000">Focussing your camera
+and camcorder</font></font></li>
+
+<li>
+<font ><font color="#990000">Running the cruise controls
+on many cars</font></font></li>
+
+<li>
+<font ><font color="#990000">Running subways in Japan</font></font></li>
+
+<li>
+<font ><font color="#990000">Controlling dishwashers
+and washing machines</font></font></li>
+
+<li>
+<font ><font color="#990000">and many, many more!</font></font></li>
+</ul>
+
+<hr width="100%"><font ><font color="#003300"><font size="+1">Fuzzy
+Logic - Background- Your Goals</font></font></font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Goals of this lesson are:</font>
+</p><blockquote><img src="./An Introduction To FUzzy Control Systems_files/Bullet1.gif" height="10" width="10"><font ><font color="#000066"><font size="+0">Given
+a system to be controlled,</font></font></font></blockquote>
+
+<blockquote>
+<blockquote><img src="./An Introduction To FUzzy Control Systems_files/Bullet2.gif" height="10" width="10"><font ><font color="#990000"><font size="+0">&nbsp;
+Design a simple fuzzy controller using:</font></font></font>
+<ul>
+<li>
+<font ><font color="#990000">Membership functions for
+the controlled variable,</font></font></li>
+
+<li>
+<font ><font color="#990000">A Simple Rule Base,</font></font></li>
+
+<li>
+<font ><font color="#990000">The Centroid Method for
+Computation (Defuzzification) of the Control Effort</font></font></li>
+</ul>
+</blockquote>
+</blockquote>
+
+<hr width="100%">
+<br><a name="Introduction"></a><font ><font color="#003300"><font size="+1">Introduction/Background</font></font></font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Study of Fuzzy logic is a study of a kind of logic.&nbsp; We are all familiar
+with some of the principles of logic.&nbsp; Fuzzy logic builds on traditional
+logic and extends traditional logic so that fuzzy logic can solve some
+long standing problems in traditional logic.</font>
+</p><p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Like many other things, it all started with the ancient Greeks, who first
+formalized logic.&nbsp; Aristotle may not have been the first to assert
+the one statement at the foundations of traditional logic, but he certainly
+is the earliest on record to have done so.&nbsp; In one form or another,
+Aristotle is credited with claiming:</font>
+</p><center>
+<p><font ><font color="#990000">A thing either is or
+it is not.</font></font></p></center>
+
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The essence of the claim is that there is no other possibility, and in
+particular, there is nothing between the two possibilities, and it has
+come to be known as the law of the excluded middle.&nbsp; Let's look at
+some examples.</font>
+</p><p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Here are some examples of the law of the excluded middle.</font>
+</p><ul>
+<li>
+<font ><font color="#990000">A statement is either
+true or it is not.&nbsp; In other words a statement is either </font><font color="#000066">TRUE</font><font color="#990000">
+or </font><font color="#000066">FALSE</font><font color="#990000">.</font></font></li>
+
+<li>
+<font ><font color="#990000">A thing is either </font><font color="#000066">living</font><font color="#990000">
+or </font><font color="#000066">dead</font><font color="#990000">.</font></font></li>
+
+<li>
+<font ><font color="#990000">A being is either </font><font color="#000066">intelligent</font><font color="#990000">
+or </font><font color="#000066">not</font><font color="#990000">.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Let's
+examine those examples of the law of the excluded middle.</font>
+<ul>
+<li>
+<font ><font color="#990000">A statement is either
+true or it is not.&nbsp; In other words a statement is either TRUE or FALSE.&nbsp;
+That seems pretty much the case.</font></font></li>
+
+<li>
+<font ><font color="#990000">A thing is either living
+or dead.&nbsp; Now we have viruses that lie somewhere between the world
+of inanimate molecules and living things.</font></font></li>
+
+<li>
+<font ><font color="#990000">A being is either intelligent
+or not.&nbsp; But there are serious problems with chimpanzees that can
+communicate with sign language.</font></font></li>
+</ul>
+<font >And that leaves us with only the first statement
+that we can be comfortable with.</font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Now consider this rather horrible little statement.&nbsp; If all statements
+are either TRUE or FALSE, which is the case for this statement?</font>
+</p><ul>
+<li>
+<font ><font color="#990000">This statement is </font><font color="#000066">FALSE</font><font color="#990000">.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Think
+carefully about this statement.&nbsp; Is it TRUE or is it FALSE?&nbsp;
+Consider this then.</font>
+<ul>
+<li>
+<font ><font color="#990000">If the statement above
+is </font><font color="#000066">TRUE</font><font color="#990000">, then
+it must be </font><font color="#000066">FALSE</font><font color="#990000">
+because that's what the statement says.</font></font></li>
+
+<li>
+<font ><font color="#990000">If the statement above
+is </font><font color="#000066">FALSE</font><font color="#990000">, then
+it must be </font><font color="#000066">TRUE</font><font color="#990000">.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clearly
+we have a problem here, and it is not trivial.&nbsp; This is a statement
+that cannot be either TRUE or FALSE.&nbsp; But what else can it be?</font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Fuzzy logic and fuzzy set theory eliminate paradoxes like the statement
+above by</font>
+<br><font >assigning a continuum of truth values to
+statements.</font>
+</p><ul>
+<li>
+<font ><font color="#990000">Instead of assuming a
+statement must be true or false fuzzy logic permits degrees of truth.</font></font></li>
+
+<li>
+<font ><font color="#990000">For example, consider
+the statement "Pat is tall".&nbsp; Suppose Pat is right around six feet
+tall.&nbsp; Suppose, also, that we take tall to mean six feet or taller.</font></font></li>
+
+<li>
+<font ><font color="#990000">If Pat is .0001 inch under
+six feet, then Pat is not tall.</font></font></li>
+
+<li>
+<font ><font color="#990000">In other words, the statement
+"Pat is tall" would not be true.</font></font></li>
+
+<li>
+<font ><font color="#990000">If we were to increase
+Pat's height by .0002 inches, then we would consider Pat tall, and the
+statement "Pat is tall" would be true.</font></font></li>
+
+<li>
+<font ><font color="#990000">You would be right if
+you thought that was a pretty fine distinction to make.</font></font></li>
+
+<li>
+<font ><font color="#990000">If you didn't think it
+was a pretty fine line to draw consider what happens if Pat is above six
+feet in the morning (After sleeping anyone is a little taller.) and just
+under six feet in the evening.&nbsp; (After standing a day, anyone is a
+little shorter.)</font></font></li>
+
+<li>
+<font ><font color="#990000">Do you think that Pat
+is tall in the morning and not tall in the evening?</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; There's
+an interesting situation here.</font>
+<ul>
+<li>
+<font ><font color="#990000">The problem doesn't lie
+in the precision of the height measurement.</font></font></li>
+
+<li>
+<font ><font color="#990000">Actually, the more precisely
+we know the height, the more difficult it is for us to accept the sharp,
+arbitrary classification.</font></font></li>
+
+<li>
+<font ><font color="#990000">It's probably that our
+concept of&nbsp; "tall" is inherently fuzzy.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In
+life we sometimes must accept shades of truth, or grades of truth.</font>
+<ul>
+<li>
+<font ><font color="#990000">In formal logic and in
+electronics we deal with things that have only two truth values, zero (0
+or FALSE) and one (1 or TRUE).</font></font></li>
+
+<li>
+<font ><font color="#990000">When we design logic circuits
+we use zeroes and ones for FALSE and TRUE.&nbsp; Let's keep the idea of
+zero for FALSE and one for TRUE.</font></font></li>
+
+<li>
+<font ><font color="#990000">However, let's consider
+the possibility of partial truth.&nbsp; If Pat is six feet tall, then the
+statement "Pat is tall" might have a truth value of .9.</font></font></li>
+
+<li>
+<font ><font color="#990000">Another way of stating
+this might be to say "Pat is a member of the set of tall people with a
+membership grade of 0.9."</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The
+concept of grades of truth or grades of membership in sets is something
+that, at this writing, does not seem to come naturally to many even though
+it is something that many of us actually use in making decisions in our
+life.</font>
+<ul>
+<li>
+<font ><font color="#990000">We choose a place to live
+or a career to follow not because of yes or no factors.</font></font></li>
+
+<li>
+<font ><font color="#990000">Rather, we tend to think
+in terms of the truth value of statements like "This place is a good place
+to live." or "This career is one for which I am well suited".</font></font></li>
+
+<li>
+<font ><font color="#990000">We use fuzzy truth measures
+in our lives, often because we have no choice.</font></font></li>
+
+<li>
+<font ><font color="#990000">However, engineers are
+now choosing to incorporate fuzzy logic rules in control of trains, washing
+machines and cameras.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If
+the underlying reasoning seems a little obscure, then it is time to begin
+to look at how ideas about fuzzy logic get to be incorporated into products
+that work better.&nbsp; That's a pretty good distance to go, so let's get
+started.</font>
+<ul>
+<li>
+<font ><font color="#990000">We need to formalize the
+intuitive ideas about partial truth and partial membership that we uncovered
+earlier.</font></font></li>
+</ul>
+
+<hr width="100%"><a name="MembershipFunctions"></a><font ><font color="#003300"><font size="+1">Fuzzy
+Membership Functions</font></font></font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+An appealing way to represent some ideas about truth of statements and
+membership functions is to draw a graph of a membership function.</font>
+</p><ul>
+<li>
+<font ><font color="#990000">Shown below is a graph
+of a membership function for a traditional logic case where the graph is
+a graph of the truth value of the statement:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">X is Tall,&nbsp; assuming</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Tall means more than 6
+feet.</font></font></li>
+</ul>
+</ul>
+</ul>
+
+<center><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A01.gif" height="214" width="357"></center>
+
+<p><font >Next is a similar graph.&nbsp; It represents
+a membership function for a fuzzy case.</font>
+</p><ul>
+<li>
+<font ><font color="#990000">Shown below is a graph
+of a membership function for a fuzzy logic case where the graph is a graph
+of the truth value of the statement:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">X is Tall, assuming</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Someone more than 6 feet
+is tall.</font></font></li>
+</ul>
+</ul>
+</ul>
+
+<center><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A02.gif" height="214" width="357"></center>
+<font >In this fuzzy membership function you can give
+varying interpretations to what it means.&nbsp; Here are some examples.</font>
+<ul>
+<li>
+<font ><font color="#990000">For a person exactly six
+(6) feet tall, the value of the membership function is 0.5.&nbsp; That
+means:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">That person has a membership
+value of 0.5 in the set of tall people.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">In the usual case, that
+isn't possible.&nbsp; You're either in (value of membership = 1) or you
+are out (value of membership = 0).</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">The truth of the statement
+"</font><font color="#000066">This person is tall</font><font color="#990000">"
+is 0.5.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">In the usual case, the
+statement is either TRUE (value of the truth of the statement = 1) or it
+is FALSE (value of the truth of the statement = 0).</font></font></li>
+</ul>
+</ul>
+</ul>
+<font >This plot lets you compare the fuzzy membership
+function with the crisp membership function.</font>
+<center>
+<p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A03.gif" height="214" width="357"></p></center>
+
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Membership functions are a useful and integral part of fuzzy control systems.&nbsp;
+However, in fuzzy control, it is often more convenient to use membership
+functions that are not smooth - like the one above.&nbsp; Instead, it is
+often the case that membership functions are composed of straight lines
+- because the computation of the membership value is much simpler in that
+case.</font>
+</p><p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Here's a membership function of the type we want to examine.&nbsp; This
+particular membership</font>
+<br><font >function can be used to determine the truth
+value of the statement:</font>
+</p><center>
+<p><font ><font color="#990000">The room is very hot.</font></font>
+</p><p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A04.gif" height="358" width="525"></p></center>
+
+<hr width="100%"><font ><font color="#990000">Problem</font></font>
+<p><font ><font color="#990000">P1</font><font color="#000099">&nbsp;
+Assume that you measure the temperature of the root, and you get 80 degrees.&nbsp;
+Determine the truth value of the statement:</font></font>
+</p><center>
+<p><font ><font color="#990000">"The room is very hot."</font></font></p></center>
+
+<p></p><form method="POST" name="Q2"><font ><font color="#000099">Enter
+your answer in the box below, then click the button to submit your answer.&nbsp;
+You will get a grade on a 0 (completely wrong) to 100 (perfectly accurate
+answer) scale.</font></font>
+<center><input type="text" ,="" name="InputValue"><input type="button" value="Check My Answer" onclick="evaluateAnswer(this.form,0.33);">
+<p><font ><font color="#990000">Your grade is:</font></font><input type="text" ,="" name="Grade"></p></center></form>
+
+<hr width="100%">
+<br><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Here's another kind of membership function.&nbsp; This membership function
+gives truth value for the statement:</font>
+<center>
+<p><font ><font color="#990000">The room is very cold.</font></font>
+</p><p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A05.gif" height="358" width="525"></p></center>
+
+<hr width="100%"><font ><font color="#990000">Problem</font></font>
+<p><font ><font color="#990000">P2</font><font color="#000099">&nbsp;
+Assume that you measure the temperature of the root, and you get 60 degrees.&nbsp;
+Determine the truth value of the statement:</font></font>
+</p><center>
+<p><font ><font color="#990000">"The room is very cold."</font></font></p></center>
+
+<p></p><form method="POST" name="Q2"><font ><font color="#000099">Enter
+your answer in the box below, then click the button to submit your answer.&nbsp;
+You will get a grade on a 0 (completely wrong) to 100 (perfectly accurate
+answer) scale.</font></font>
+<center><input type="text" ,="" name="InputValue"><input type="button" value="Check My Answer" onclick="evaluateAnswer(this.form,0.33);">
+<p><font ><font color="#990000">Your grade is:</font></font><input type="text" ,="" name="Grade"></p></center></form>
+
+<hr width="100%"><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Finally, here's a triangular membership function that gives truth values
+for the statement:</font>
+<center>
+<p><font ><font color="#990000">The temperature of
+the room is OK.</font></font>
+</p><p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A06.gif" height="358" width="525"></p></center>
+
+<hr width="100%"><font ><font color="#990000">Problem</font></font>
+<p><font ><font color="#990000">P3</font><font color="#000099">&nbsp;&nbsp;&nbsp;
+Assume that you measure the temperature of the root, and you get 60 degrees.&nbsp;
+Determine the truth value of the statement:</font></font>
+</p><center>
+<p><font ><font color="#990000">"The temperature of
+the room is OK."</font></font></p></center>
+
+<p></p><form method="POST" name="Q2"><font ><font color="#000099">Enter
+your answer in the box below, then click the button to submit your answer.&nbsp;
+You will get a grade on a 0 (completely wrong) to 100 (perfectly accurate
+answer) scale.</font></font>
+<center><input type="text" ,="" name="InputValue"><input type="button" value="Check My Answer" onclick="evaluateAnswer(this.form,0.667);">
+<p><font ><font color="#990000">Your grade is:</font></font><input type="text" ,="" name="Grade"></p></center></form>
+
+<hr width="100%"><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Let's review all of these membership functions.&nbsp; Here they are together.&nbsp;
+There's one interesting observation to make.</font>
+<center>
+<p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A07.gif" height="358" width="525"></p></center>
+
+<ul>
+<li>
+<font ><font color="#990000">Two different membership
+functions can both have non-zero truth values.</font></font></li>
+
+<li>
+<font ><font color="#990000">Assuming a measurement
+of 80 degrees, the truth value of the statement</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">"The temperature of the
+room is OK." is 0.67.&nbsp; (The black function)</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">While, the truth value
+of the statement</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">"The temperature of the
+room is very hot." is 0.33.&nbsp; (The red function)</font></font></li>
+</ul>
+</ul>
+
+<hr width="100%"><font ><font color="#006600"><font size="+1">Fuzzy
+Control</font></font></font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Membership functions are a useful and integral part of fuzzy control systems.&nbsp;
+Let us examine a control problem that we can solve with a fuzzy approach.&nbsp;
+Let's take a look at a very simple fuzzy control system.&nbsp; We'll use
+the membership functions from the last section.</font>
+</p><ul>
+<li>
+<font ><font color="#990000">Here are the membership
+functions.&nbsp; They can be used to measure the truth value of the three
+statements:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#000066">The room is very cold.</font></font></li>
+
+<li>
+<font ><font color="#000066">The temperature of the
+room is OK.</font></font></li>
+
+<li>
+<font ><font color="#000066">The room is very hot.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">And, for any temperature,
+one or more of these functions can have a non-zero value.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Now,
+to build/design a control system, we will need something else - something
+we haven't encountered before - a rule base.&nbsp; A rule base is exactly
+what the phrase implies.&nbsp; It is a set of rules for doing the control.&nbsp;
+The rule base tells you how to change the control effort.&nbsp; Here's
+an example rule base for a simple fuzzy control system.</font>
+<ul>
+<li>
+<font ><font color="#000066">If the room is very cold,
+then the control effort is high.</font></font></li>
+
+<li>
+<font >If the temperature of the room is OK, then the
+control effort is medium.</font></li>
+
+<li>
+<font ><font color="#990000">If the room is very hot,
+then the control effort is low.</font></font></li>
+</ul>
+
+<center><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A07.gif" height="358" width="525"></center>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Different
+colors are used here to show the correlation between the statements in
+the rule base and the function.&nbsp; The <u><font color="#990000">rule
+base</font></u> consists of statements with two parts.&nbsp; Here's the
+rule base again.</font>
+<ul>
+<li>
+<font ><font color="#000066"><b>If the room is very
+cold</b>, then the control effort is high.</font></font></li>
+
+<li>
+<font ><b>If the temperature of the room is OK</b>,
+then the control effort is medium.</font></li>
+
+<li>
+<font ><font color="#990000"><b>If the room is very
+hot</b>, then the control effort is low.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The
+statements in <b>bold text</b> are the <u><font color="#990000">antecedents</font></u>,
+and the regular text parts are the <u><font color="#990000">consequents</font></u>
+in the rule base.&nbsp; In any event, this rule base - when implemented
+- will give us a fuzzy control system.</font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Now, let's examine the control algorithm for fuzzy control - proportional
+and others.&nbsp; Here's the algorithm.</font>
+</p><ul>
+<li>
+<font ><font color="#990000">Measure the variable to
+be controlled.&nbsp; Temperature would be an example of a variable to be
+controlled.</font></font></li>
+
+<li>
+<font ><font color="#990000">From the measured value,
+determine the truth value of all antecedents in the rule base.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">NOTE:&nbsp; These truth
+values are usually referred to as the </font><font color="#000066">firing
+levels</font><font color="#990000"> for the rules in the rule base.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">From the firing levels
+of the rules in the rule base, defuzzify to obtain the level(s) of control
+effort.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We'll
+take these different steps up separately.&nbsp; The first step in the algorithm
+is:</font>
+<ul>
+<li>
+<font ><font color="#990000">Measure the variable to
+be controlled.&nbsp; Temperature would be an example of a variable to be
+controlled.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We'll
+assume that you have a way of measuring temperature and getting the resultant
+value into a computer program, say one written in C or Visual Basic.</font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The second step in the algorithm is:</font>
+</p><ul>
+<li>
+<font ><font color="#990000">From the measured value,
+determine the truth value of all antecedents in the rule base.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">NOTE:&nbsp; These truth
+values are usually referred to as the </font><font color="#000066">firing
+levels</font><font color="#990000"> for the rules in the rule base.</font></font></li>
+</ul>
+</ul>
+
+<hr width="100%"><font ><font color="#990000">Problem</font></font>
+<p><font ><font color="#990000">P4</font><font color="#000099">&nbsp;&nbsp;</font><font color="#000066">
+
+</font><font color="#000099">Assume that you measure the temperature of
+the root, and you get 60 degrees.&nbsp; Determine the firing level of the
+antecedent statment:</font></font>
+</p><center>
+<p><font ><font color="#000099"><b>"If the room is
+very cold</b>, then the control effort is high."</font></font></p></center>
+
+<p><font ><font color="#000099">Use this set of graphs
+for your calculation.</font></font>
+</p><center>
+<p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A07.gif" height="358" width="525"></p></center>
+
+<p></p><form method="POST" name="Q2"><font ><font color="#000099">Enter
+your answer in the box below, then click the button to submit your answer.&nbsp;
+You will get a grade on a 0 (completely wrong) to 100 (perfectly accurate
+answer) scale.</font></font>
+<center><input type="text" ,="" name="InputValue"><input type="button" value="Check My Answer" onclick="evaluateAnswer(this.form,0.33);">
+<p><font ><font color="#990000">Your grade is:</font></font><input type="text" ,="" name="Grade"></p></center></form>
+
+<p>
+</p><hr width="100%"><font ><font color="#990000">Problem</font></font>
+<p><font ><font color="#990000">P5</font><font color="#000099">&nbsp;&nbsp;&nbsp;
+Assume that you measure the temperature of the root, and you get 60 degrees.&nbsp;
+Determine the firing level of the antecedent statment:</font></font>
+</p><center>
+<p><b><font ><font color="#000066">"</font>If the temperature
+of the room is OK</font></b><font >, then the control
+effort is medium.<font color="#000066">"</font></font></p></center>
+
+<p><font ><font color="#000099">Use this set of graphs
+for your calculation.</font></font>
+</p><center>
+<p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A07.gif" height="358" width="525"></p></center>
+
+<p></p><form method="POST" name="Q2"><font ><font color="#000099">Enter
+your answer in the box below, then click the button to submit your answer.&nbsp;
+You will get a grade on a 0 (completely wrong) to 100 (perfectly accurate
+answer) scale.</font></font>
+<center><input type="text" ,="" name="InputValue"><input type="button" value="Check My Answer" onclick="evaluateAnswer(this.form,0.667);">
+<p><font ><font color="#990000">Your grade is:</font></font><input type="text" ,="" name="Grade"></p></center></form>
+
+<hr width="100%"><font ><font color="#990000">Problem</font></font>
+<p><font ><font color="#990000">P6</font><font color="#000099">&nbsp;&nbsp;&nbsp;
+Assume that you measure the temperature of the root, and you get 60 degrees.&nbsp;
+Determine the firing level of the antecedent statment:</font></font>
+</p><center>
+<p><font ><b><font color="#000066">"</font><font color="#990000">If
+the room is very hot</font></b><font color="#990000">, then the control
+effort is low.</font><font color="#000066">"</font></font></p></center>
+
+<p><font ><font color="#000099">Use this set of graphs
+for your calculation.</font></font>
+</p><center>
+<p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A07.gif" height="358" width="525"></p></center>
+
+<p><font ><font color="#000099">Click on the box to
+enter your answer.</font></font>
+</p><center><form method="POST"><input type="button" value="     0     " onclick="alert(&#39;Right.  The temperature is so low the firing level is zero.&#39;);"><img src="./An Introduction To FUzzy Control Systems_files/Spacer.gif" height="1" width="72"><input type="button" value="     &gt;0     " onclick="alert(&#39;No!  It is zero!&#39;);"></form></center>
+
+<p>
+</p><hr width="100%">
+<br><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+We need to go a little slower when it comes to computing the control effort.</font>
+<ul>
+<li>
+<font ><font color="#990000">We will assume that the
+control effort is represented with membership functions also.&nbsp; In
+particular, we need to have membership functions for the three different
+antecedents:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#000000">Control effort is high.</font></font></li>
+
+<li>
+<font ><font color="#000066">Control effort is medium.</font></font></li>
+
+<li>
+<font ><font color="#990000">Control effort is low.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Here are some membership
+functions we can use.&nbsp; These are not unique, but they will work for
+us.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">L is for "Control effort
+is low" (red),</font></font></li>
+
+<li>
+<font ><font color="#000066">M is for "Control effort
+is medium" (blue).</font></font></li>
+
+<li>
+<font ><font color="#000000">H is for "Control effor
+is high" (black).</font></font></li>
+</ul>
+</ul>
+
+<center><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A09.gif" height="310" width="437"></center>
+
+<p><font >&nbsp;Now, we need an algorithm for defuzzification
+(and isn't that a great word?).</font>
+</p><ul>
+<li>
+<font ><font color="#990000">The defuzzification algorithm
+should use the firing levels calculated in the first steps of&nbsp; the
+control algorithm.</font></font></li>
+
+<li>
+<font ><font color="#990000">One way - commonly used
+- is to use the firing levels to weight the control effort membership functions.</font></font></li>
+
+<li>
+<font ><font color="#990000">In other words, we will
+first multiply the appropriate control effort membership functions by the
+firing levels.</font></font></li>
+
+<li>
+<font ><font color="#990000">Next, we add up the resulting
+functions.</font></font></li>
+</ul>
+<font >Here are the membership functions for the antecedents
+again.</font>
+<center>
+<p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A07.gif" height="358" width="525"></p></center>
+
+<p><font >Go back to the problems above where you got
+the firing levels for each of the membership functions.&nbsp; The firing
+levels you should have found are as follows.</font>
+</p><ul>
+<li>
+<font ><font color="#990000">If the room is very cold
+- </font><font color="#000066">0.333</font></font></li>
+
+<li>
+<font ><font color="#990000">If the temperature of
+the room is OK - </font><font color="#000000">0.667</font></font></li>
+
+<li>
+<font ><font color="#990000">If the room is very hot
+-&nbsp; </font><font color="#CC0000">0</font></font></li>
+</ul>
+<font >Then, we are going to multiply these firing
+levels by L(C), M(C) and H(C) - the membership functions for the control
+effort.&nbsp; If we multiply the control effort membership functions by
+the firing levels, we will get the graphs shown below - which actually
+contains three graphs!</font>
+<center>
+<p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A10.gif" height="271" width="268"></p></center>
+
+<ul>
+<li>
+<font ><font color="#990000">0.333 (firing level for
+very cold) * H(C) (high control effort)</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">That's the smaller triangular
+function at the right in the plot.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#000066">0.667 (firing level for
+OK) * M(C) (M(C) is for medium control effort.)</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#000066">That's the larger blue
+triangle in the middle of the plot.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#000000">0.00 (firing level for
+very hot) * L(C) (L(C) is for low control effort.)</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#000000">That's the black triangle
+of ZERO height.&nbsp; It's not really visible.</font></font></li>
+</ul>
+</ul>
+<font >Here is the sum of those three functions - <font color="#FF6600">shown
+in orange</font>.</font>
+<center>
+<p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A11.gif" height="240" width="239"></p></center>
+
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+We still have one unanswered question - and it is important.</font>
+</p><ul>
+<li>
+<font ><font color="#990000">How do we get from this
+composite function to a value for the control effort?</font></font></li>
+
+<li>
+<font ><font color="#990000">The commonest way to get
+a single number for the control effort is this:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Compute the center of
+gravity (centroid) of the composite function.</font></font></li>
+</ul>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Good
+grief, now we have to remember how to compute a centroid!&nbsp; Well, here's
+the definition of the centroid of a function.</font>
+<center>
+<p><font ><font color="#000066">Centroid = Moment of
+Function/Area of Function</font></font></p></center>
+
+<ul>
+<li>
+<font ><font color="#990000">For the composite function,
+the area is the integral of the function over the entire function.</font></font></li>
+
+<li>
+<font ><font color="#990000">For the composite function,
+the moment of the function is the integral of the function multiplied by
+the variable.</font></font></li>
+
+<li>
+<font ><font color="#990000">In practice, the integral
+will only be taken over a finite interval since the function is non-zero
+only on a finite interval.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Now,
+if we can express the centroid as a function of the parameters of the membership
+functions, we have a chance to get a simple expression.&nbsp; Let's work
+on that.</font>
+<ul>
+<li>
+<font ><font color="#990000">The composite function
+(shown in orange in the plot above) is a weighted sum of the individual
+membership functions for the control effort (Low, Medium and High in our
+example).</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Call the membership functions
+</font><font color="#000066">Cold(T)
+(Cold)</font><font color="#990000">,
+</font><font color="#000066">OK(T)
+(OK)</font><font color="#990000"> and
+</font><font color="#000066">Hot(T)
+(Hot)</font><font color="#990000">.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">The weights are the firing
+levels of the associated antecedent functions in the rule base.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Call the firing levels
+</font></font><b><font color="#000066"><font face="Symbol">a</font><font ><sub>C</sub></font></font></b><font ><font color="#990000">,
+</font></font><b><font color="#000066"><font face="Symbol">a</font><font ><sub>O</sub></font></font></b><font ><font color="#990000">,
+and </font></font><b><font color="#000066"><font face="Symbol">a</font><font ><sub>H</sub></font></font></b><font ><font color="#990000">.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Now, we multiply the firing
+levels my the control effort functions.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Call the control effort
+functions </font><font color="#000066">L(C) (Low)</font><font color="#990000">,
+</font><font color="#000066">M(C)
+(Medium)</font><font color="#990000"> and </font><font color="#000066">H(C)
+(High)</font><font color="#990000">.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Here's the expression
+for the composite function.</font></font></li>
+
+<ul>
+<li>
+<font color="#000066"><font >Composite function = </font><b><font face="Symbol">a</font><font ><sub>C</sub></font></b><font >H(C)
++&nbsp; </font><b><font face="Symbol">a</font><font ><sub>O</sub></font></b><font >M(C)
++&nbsp; </font><b><font face="Symbol">a</font><font ><sub>H</sub></font></b><font >.L(C)</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Next, note that each of
+the control effort membership functions is a triangle.</font></font></li>
+
+<li>
+<font ><font color="#990000">For each triangle, the
+height is 1, and we will call the width, W.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Then the area of each
+triangle is W/2.</font></font></li>
+
+<li>
+<font ><font color="#990000">Note, for our example
+functions, the width is 100 (percent of max control effort).</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Now, we can compute the
+area of the composite function in terms of these areas.</font></font></li>
+</ul>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Now,
+the area of the composite function can be computed.&nbsp; Note that the
+areas (integrals) of H(C), M(C) and L(C) all equal W/2, where W is the
+total width of the triangle.</font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Next examine the moment of a triangle function.&nbsp; Here's the derivation
+for the moment.</font>
+</p><ul>
+<li>
+<font ><font color="#990000"><a href="https://www.facstaff.bucknell.edu/mastascu/eControlHTML/Fuzzy/Fuzzy1.html#Undamped Natural Frequency" onmouseover="HelpWindow=window.open(&#39;HelpTriangularMoment.html&#39;,&#39;HelpWindowA&#39;,&#39;status=0,width=200,height=600&#39;); return false">Get
+an expression for the function, Tri(C).</a></font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">For C in the interval
+from L (Left/Low point) to M (Mid point), Tri(C) can be written as:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Tri(C) = (C - L)/(M -
+L)</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">For C in the interval
+from M to R (Rightmost point),Tri(C) can be written as:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Tri(C) = 1 - (C - M)/(R
+- M)</font></font></li>
+</ul>
+</ul>
+
+<li>
+<font ><font color="#990000"><a href="https://www.facstaff.bucknell.edu/mastascu/eControlHTML/Fuzzy/Fuzzy1.html#Undamped Natural Frequency" onmouseover="HelpWindow=window.open(&#39;HelpTriangularMomentA.html&#39;,&#39;HelpWindowA&#39;,&#39;status=0,width=200,height=600&#39;); return false">Now,
+integrate to get the moment.</a></font></font></li>
+</ul>
+
+<center><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A13.gif" height="60" width="150"></center>
+
+<ul>
+<li>
+<font ><font color="#990000">The integration should
+be broken into two parts - two intervals - to simplify.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">For C in the interval
+from L (Left/Low point) to M (Mid point), Tri(C) can be written as:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Tri(C) = (C - L)/(M -
+L)</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">For C in the interval
+from M to R (Rightmost point),Tri(C) can be written as:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Tri(C) = 1 - (C - M)/(R
+- M)</font></font></li>
+</ul>
+</ul>
+
+<li>
+<font ><font color="#990000">Now, integrate from L
+to M:</font></font></li>
+</ul>
+
+<center><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A14.gif" height="67" width="170"></center>
+
+<ul>
+<ul>
+<li>
+<font ><font color="#990000">The result is:&nbsp;&nbsp;
+Moment<b><sub>Left</sub></b> = (1/3)M<b><sup>2</sup></b> - (1/6)LM - (1/6)L<b><sup>2</sup></b></font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Similarly, integrate the
+function over the right half of the interval:</font></font></li>
+</ul>
+
+<center><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A15.gif" height="67" width="191"></center>
+
+<ul>
+<ul>
+<li>
+<font ><font color="#990000">The result is:&nbsp;&nbsp;
+Moment<b><sub>Right</sub></b> = (-1/3)M<b><sup>2</sup></b> + (1/6)MR +
+(1/6)R<b><sup>2</sup></b></font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Add the two to get the
+moment:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Moment =&nbsp;&nbsp;&nbsp;
+Moment<b><sub>Left</sub></b> + Moment<b><sub>Right</sub></b></font></font></li>
+
+<li>
+<font ><font color="#990000">Moment = (1/3)M<b><sup>2</sup></b>
+- (1/6)LM - (1/6)L<b><sup>2</sup></b> + (-1/3)M<b><sup>2</sup></b> + (1/6)MR
++ (1/6)R<b><sup>2</sup></b></font></font></li>
+
+<li>
+<font ><font color="#990000">Moment = (1/6)MR + (1/6)R<b><sup>2</sup></b>
+- (1/6)LM - (1/6)L<b><sup>2</sup></b></font></font></li>
+
+<li>
+<font ><font color="#990000">Moment = (1/6)[R(M + R)
+- L(M + L)]</font></font></li>
+</ul>
+</ul>
+
+<hr width="100%">
+<br><font ><font color="#990000">Example</font></font>
+<p><font ><font color="#990000">E1</font><font color="#000099">&nbsp;&nbsp;
+In the graph below, compute the moment of the Medium Control Effort Membership
+function (shown in blue as M(C)).&nbsp;&nbsp; Note, for this function:</font></font>
+</p><ul>
+<li>
+<font ><font color="#000099">L = 0,</font></font></li>
+
+<li>
+<font ><font color="#000099">M = 50,</font></font></li>
+
+<li>
+<font ><font color="#000099">R = 100</font></font></li>
+</ul>
+
+<center>
+<p><br><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A09.gif" height="310" width="437"></p></center>
+<font ><font color="#000099">Putting the values for
+L, M and R into the expression above, we have:</font></font>
+<ul>
+<li>
+<font ><font color="#990000">Moment = (1/6)[R(M + R)
+- L(M + L)]</font></font></li>
+
+<li>
+<font ><font color="#990000">Moment = (1/6)[100(50
++ 100) - 0(50 + 0)]</font></font></li>
+
+<li>
+<font ><font color="#990000">Moment = (1/6)[15,000]
+= 2500</font></font></li>
+</ul>
+
+<hr width="100%"><font ><font color="#990000">Problem</font></font>
+<p><font ><font color="#990000">P7</font><font color="#000099">&nbsp;&nbsp;&nbsp;
+In the graph below, compute the moment of the High Control Effort Membership
+function (shown in black as H(C)).&nbsp;&nbsp; Note, for this function:</font></font>
+</p><ul>
+<li>
+<font ><font color="#990000">L = 50,</font></font></li>
+
+<li>
+<font ><font color="#990000">M = 100,</font></font></li>
+
+<li>
+<font ><font color="#990000">R = 150</font></font></li>
+</ul>
+
+<center>
+<p><br><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A09.gif" height="310" width="437"></p></center>
+
+<p></p><form method="POST" name="Q2"><font ><font color="#000099">Enter
+your answer in the box below, then click the button to submit your answer.&nbsp;
+You will get a grade on a 0 (completely wrong) to 100 (perfectly accurate
+answer) scale.</font></font>
+<center><input type="text" ,="" name="InputValue"><input type="button" value="Check My Answer" onclick="evaluateAnswer(this.form,5000);">
+<p><font ><font color="#990000">Your grade is:</font></font><input type="text" ,="" name="Grade"></p>
+<hr width="100%"></center></form>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Now,
+let's compute the centroid of the medium function, M(C).&nbsp; In the example
+above we found:</font>
+<ul>
+<li>
+<font ><font color="#990000">Moment = 2500</font></font></li>
+</ul>
+<font >We can also compute the area as half of the
+product of the height (1) and the width (from 0 to 100):</font>
+<ul>
+<li>
+<font ><font color="#990000">Area = (1/2)[100 - 0]
+= 50</font></font></li>
+</ul>
+<font >Then, we know that the centroid is given by:</font>
+<ul>
+<li>
+<font ><font color="#990000">Centroid = Moment/Area</font></font></li>
+
+<li>
+<font ><font color="#990000">Centroid = 2500/50 = 50</font></font></li>
+</ul>
+<font >And, that should make sense to you.</font>
+<br>
+<hr width="100%"><font ><font color="#990000">Problem</font></font>
+<p><font ><font color="#990000">P8</font><font color="#000099">&nbsp;&nbsp;
+In the graph below, compute the centroid of the High Control Effort Membership
+function (shown in black as H(C)).&nbsp;&nbsp; Note, for this function:</font></font>
+</p><ul>
+<li>
+<font ><font color="#990000">L = 50,</font></font></li>
+
+<li>
+<font ><font color="#990000">M = 100,</font></font></li>
+
+<li>
+<font ><font color="#990000">R = 150</font></font></li>
+</ul>
+
+<center>
+<p><br><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A09.gif" height="310" width="437"></p></center>
+
+<p></p><form method="POST" name="Q2"><font ><font color="#000099">Enter
+your answer in the box below, then click the button to submit your answer.&nbsp;
+You will get a grade on a 0 (completely wrong) to 100 (perfectly accurate
+answer) scale.</font></font>
+<center><input type="text" ,="" name="InputValue"><input type="button" value="Check My Answer" onclick="evaluateAnswer(this.form,100);">
+<p><font ><font color="#990000">Your grade is:</font></font><input type="text" ,="" name="Grade"></p>
+<hr width="100%"></center></form>
+<font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Now,
+let's go back to the control computation we were looking at earlier.&nbsp;
+We now have all the numerical results we need.&nbsp; Here is the composite
+function discussed earlier.&nbsp; The control effort is the centroid of
+the composite function.</font>
+<center>
+<p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A11.gif" height="240" width="239"></p></center>
+
+<p><font >Previously, we computed the firing levels
+of the three membership functions for Very Cold, OK (Medium) and Very Hot.&nbsp;
+Here are those firing levels.</font>
+</p><ul>
+<li>
+<font ><font color="#990000">0.333 (firing level for
+very cold)</font></font></li>
+
+<li>
+<font ><font color="#000066">0.667 (firing level for
+OK)</font></font></li>
+
+<li>
+<font ><font color="#000000">0.00 (firing level for
+very hot)</font></font></li>
+</ul>
+<font >From these firing levels, we constructed a composite
+membership function for the Control Effort.&nbsp; That composite function
+is shown in the graph above.&nbsp; It is constructed as follows.</font>
+<ul>
+<li>
+<font ><font color="#990000">0.333 (firing level for
+very cold) * H(C) (high control effort)</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">That's the smaller triangular
+function at the right in the plot.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#000066">0.667 (firing level for
+OK) * M(C) (M(C) is for medium control effort.)</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#000066">That's the larger blue
+triangle in the middle of the plot.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#000000">0.00 (firing level for
+very hot) * L(C) (L(C) is for low control effort.)</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#000000">That's the black triangle
+of ZERO height.&nbsp; It's not really visible.</font></font></li>
+</ul>
+</ul>
+<font >The sum of these three functions (Firing level
+x Control Effort Membership Function) is the orange function shown in the
+figure.&nbsp; The "orange" function - the composite function is given by:</font>
+<ul>
+<li>
+<font ><font color="#993300">Composite function(C)</font>
+= <font color="#990000">0.333*H(C)</font> + <font color="#000066">0.667*M(C)</font>
++ 0.0*L(C)</font></li>
+</ul>
+<font >The centroid for the composite function is the
+control effort level that we will use in this situation.&nbsp; That centroid
+is given by:</font>
+<ul>
+<li>
+<font ><font color="#993300">Centroid of Composite
+function(C)</font> =</font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">0.333*Centroid of H(C)</font>
++</font></li>
+
+<li>
+<font ><font color="#000066">0.667*Centroid of M(C)</font>
++</font></li>
+
+<li>
+<font >0.0*Centroid of L(C)</font></li>
+</ul>
+</ul>
+<font >Here is the function again.</font>
+<center>
+<p><img src="./An Introduction To FUzzy Control Systems_files/Fuzzy1A11.gif" height="240" width="239"></p></center>
+
+<p><font >The numerical values for the centroids are:</font>
+</p><ul>
+<li>
+<font ><font color="#993300">Centroids of Control Effort
+Membership Functions:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Centroid of H(C) = 100</font></font></li>
+
+<li>
+<font ><font color="#000066">Centroid of M(C) = 50</font></font></li>
+
+<li>
+<font >Centroid of L(C) = 0</font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">The computed control effort
+is then:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Control Effort = 0.333x100
++ 0.667x50 + 0x0</font></font></li>
+
+<li>
+<font ><font color="#990000">Control Effort = 0.667</font></font></li>
+</ul>
+</ul>
+<font >So, the control law (the computation for the
+actual control effort) reduces to:</font>
+<ul>
+<li>
+<font ><font color="#990000">Determine the firing levels
+for each of the membership functions in the antecedents.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">This is usually referred
+to as measuring the "firing levels".</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Multiply the firing levels
+by the corresponding Control Effort Membership Functions to obtain a composite
+function.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">The correspondence is
+determined by the rule base.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Determine the centroid
+of the composite function to determine the control effort to apply.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">This last step is referred
+to as "defuzzification".</font></font></li>
+</ul>
+</ul>
+<font >Simple as this approach seems, it does often
+work, and it is a reasonable way to implement a control system.&nbsp; It
+has some pros and cons.</font>
+<ul>
+<li>
+<font ><font color="#990000">You can easily add more
+rules to the rule base, and they can be compound rules:</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">Example:&nbsp; If A is
+true and B is false, then do C.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">You can't easily predict
+performance.</font></font></li>
+</ul>
+
+<hr width="100%"><a name="MarksOfAcceptance"></a><font ><font color="#006600"><font size="+1">Marks
+of Acceptance of Fuzzy Logic</font></font></font>
+<p><font >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+At this point, Fuzzy Logic, Fuzzy Set Theory and Fuzzy control are all
+accepted and widely used.&nbsp; As illustrations:</font>
+</p><ul>
+<li>
+<font ><font color="#990000">Visit one of many fuzzy
+web pages.</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000"><a href="http://www.quadralay.com/www/Fuzzy/tutorial.html">http://www.quadralay.com/www/Fuzzy/tutorial.html</a></font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Note Zadeh's "Profile"
+in IEEE Spectrum, June 1995, pp32-35 and Bart Kosko's "Profile" in IEEE
+Spectrum, February 1996, pp58-62.</font></font></li>
+
+<li>
+<font ><font color="#990000">Read any copy of IEEE
+Transactions on Fuzzy Systems.</font></font></li>
+
+<li>
+<font ><font color="#990000">Note that MatLab sells
+two toolboxes</font></font></li>
+
+<ul>
+<li>
+<font ><font color="#990000">The Fuzzy Systems Toolbox</font></font></li>
+
+<li>
+<font ><font color="#990000">The Fuzzy Logic Toolbox.</font></font></li>
+</ul>
+
+<li>
+<font ><font color="#990000">Buy one of Bart Kosko's
+books, especially "Fuzzy Thinking" to get yourself started.</font></font></li>
+</ul>
+
+
+
+</body></html>

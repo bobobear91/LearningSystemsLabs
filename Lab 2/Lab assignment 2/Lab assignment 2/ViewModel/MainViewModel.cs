@@ -18,7 +18,7 @@ namespace Lab_assignment_2.ViewModel
     class MainViewModel : BaseViewModel
     {
         #region Variables
-        FuzzyLogic fuzzyLogic;
+        private FuzzyLogic fuzzyLogic;
         #endregion
 
         #region Actions
@@ -93,7 +93,7 @@ namespace Lab_assignment_2.ViewModel
             IsEnabled = false;
 
             //****************************************************************
-            //      a
+            //      Fuzzy logic controller
             //****************************************************************
             fuzzyLogic = new FuzzyLogic();
             //Predefined rulebook
@@ -108,10 +108,10 @@ namespace Lab_assignment_2.ViewModel
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2=short OR middle) AND (x3=long) AND (x4=long) THEN Iris Virginica"));
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor"));
 
-            LinguisticTerm irisTerms = new LinguisticTerm("Water");
-            irisTerms.MembershipFunctionCollection.Add(new MembershipFunction("Short", 0, 0, 20, 40));
-            irisTerms.MembershipFunctionCollection.Add(new MembershipFunction("Middle", 30, 50, 50, 70));
-            irisTerms.MembershipFunctionCollection.Add(new MembershipFunction("Long", 50, 80, 100, 100));
+            LinguisticTerm irisTerms = new LinguisticTerm("Iris");
+            irisTerms.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 20, 40));
+            irisTerms.MembershipFunctions.Add(new MembershipFunction("Middle", 30, 50, 50, 70));
+            irisTerms.MembershipFunctions.Add(new MembershipFunction("Long", 50, 80, 100, 100));
 
             fuzzyLogic.Linguistics.Add(irisTerms);
 
@@ -129,8 +129,8 @@ namespace Lab_assignment_2.ViewModel
             Quit = new RelayCommand<object>(Quit_Event);
 
 
-            double[,] data = Data.TextFile.ReadFileToArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
-            NotifyPropertyChanged("");
+            //double[,] data = Data.TextFile.ReadFileToArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
+            //NotifyPropertyChanged("");
 
         }
         
@@ -351,19 +351,50 @@ namespace Lab_assignment_2.ViewModel
                 ObservableCollection<string> rulebook = new ObservableCollection<string>();
                 if (fuzzyLogic != null)
                 {
-                    if (fuzzyLogic.Rules.Count > 0)
+                    int i = 1;
+                    foreach (var rules in fuzzyLogic.Rules)
                     {
-                        int i = 1;
-                        foreach (var rules in fuzzyLogic.Rules)
-                        {
-                            rulebook.Add(string.Format("{0} {1}", i, (!string.IsNullOrEmpty(rules.Rule) ? rules.Rule : "Error!")));
-                            i++;
-                        }
-                        
+                        rulebook.Add(string.Format("{0} {1}", i, (!string.IsNullOrEmpty(rules.Rule) ? rules.Rule : "Error!")));
+                        i++;
                     }
 
                 }
                 return rulebook;
+            }
+        }
+
+        public ObservableCollection<string> LinguisticTerms
+        {
+            get
+            {
+                ObservableCollection<string> lingustics = new ObservableCollection<string>();
+                if (fuzzyLogic != null)
+                {
+                    int i = 1;
+                    foreach (var lingu in fuzzyLogic.Linguistics)
+                    {
+                        lingustics.Add(string.Format("{0}. {1} |Current Input:{2}|", i, (!string.IsNullOrEmpty(lingu.Name) ? lingu.Name : "Error!"), lingu.Input));
+                        if (lingu.MembershipFunctions.Count > 0)
+                        {
+                            lingustics.Add("Membership functions");
+                            lingustics.Add("-------------------------------------");
+                            foreach (var membershipfunctions in lingu.MembershipFunctions)
+                            {
+
+                                lingustics.Add(string.Format("    {0} X1:{1} X2:{2} X3:{3} X4:{4}", 
+                                    (!string.IsNullOrEmpty(membershipfunctions.Name) ? membershipfunctions.Name : "Error!"),
+                                    membershipfunctions.X0, 
+                                    membershipfunctions.X1, 
+                                    membershipfunctions.X2,
+                                    membershipfunctions.X3));
+                            }
+                            lingustics.Add("-------------------------------------");
+                        }
+                        i++;
+                    }
+
+                }
+                return lingustics;
             }
         }
         #endregion

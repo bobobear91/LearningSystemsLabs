@@ -351,34 +351,5 @@ namespace Lab_assignment_2.Model
         #endregion
     }
 
-    public class MembershipFunctionCollection : Collection<MembershipFunction>
-    {
-        #region Public Methods
 
-        /// <summary>
-        /// Finds a linguistic variable in a collection.
-        /// </summary>
-        /// <param name="linguisticVariableName">Linguistic variable name.</param>
-        /// <returns>The linguistic variable, if founded.</returns>
-        public MembershipFunction Find(string linguisticVariableName)
-        {
-            MembershipFunction linguisticVariable = null;
-
-            foreach (MembershipFunction variable in this)
-            {
-                if (variable.Name == linguisticVariableName)
-                {
-                    linguisticVariable = variable;
-                    break;
-                }
-            }
-
-            if (linguisticVariable == null)
-                throw new Exception("LinguisticVariable not found: " + linguisticVariableName);
-            else
-                return linguisticVariable;
-        }
-
-        #endregion
-    }
 }
