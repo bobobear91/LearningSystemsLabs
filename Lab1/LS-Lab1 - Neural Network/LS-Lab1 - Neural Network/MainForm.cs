@@ -308,6 +308,9 @@ namespace LS_Lab1___Neural_Network
                     NN.FireMaxIterationsReached += NN_RecieveMaxIterationsReached;
                     NN.FirePerformanceInfo += NN_RecievePerformanceInfo;
                     NN.FireTrainingComplete += NN_RecieveTrainingComplete;
+                    NN.FireOutputComparison += NN_RecieveOutputComparison;
+                    NN.FireTestingComplete += NN_RecieveTestingComplete;
+                    NN.FireTestingResultInfo += NN_RecieveTestingResultInfo;
 
                     NN.LoadNN(dialog.FileName);
 
@@ -395,6 +398,11 @@ namespace LS_Lab1___Neural_Network
         //TODO
         private void btnTrain_Click(object sender, EventArgs e)
         {
+            if (trainingData == null)
+            {
+                MessageBox.Show("No TrainingData loaded!");
+                return;
+            }
             // Check if NN is null. "first use"
             if (NN == null)
             {
@@ -404,6 +412,8 @@ namespace LS_Lab1___Neural_Network
                 NN.FirePerformanceInfo += NN_RecievePerformanceInfo;
                 NN.FireTrainingComplete += NN_RecieveTrainingComplete;
                 NN.FireOutputComparison += NN_RecieveOutputComparison;
+                NN.FireTestingComplete += NN_RecieveTestingComplete;
+                NN.FireTestingResultInfo += NN_RecieveTestingResultInfo;
             }
             // Alerts configuration change
             if (numericHidden.Value != NN.NumberOfHidden)
@@ -416,6 +426,8 @@ namespace LS_Lab1___Neural_Network
                     NN.FirePerformanceInfo += NN_RecievePerformanceInfo;
                     NN.FireTrainingComplete += NN_RecieveTrainingComplete;
                     NN.FireOutputComparison += NN_RecieveOutputComparison;
+                    NN.FireTestingComplete += NN_RecieveTestingComplete;
+                    NN.FireTestingResultInfo += NN_RecieveTestingResultInfo;
                 }
                 else
                 {
@@ -432,7 +444,7 @@ namespace LS_Lab1___Neural_Network
                 //MessageBox.Show("Traning Done!","Traning ");
             };
 
-            SetupPerformanceChart((int)numericIterations.Value, 0);
+            SetupPerformanceChart(true);
             btnTrain.Enabled = false;
             btnTest.Enabled = false;
             btnReset.Enabled = false;
@@ -470,21 +482,36 @@ namespace LS_Lab1___Neural_Network
             else
             {
                 btnTrain.Enabled = true;
+                this.Invoke(new MethodInvoker(() => btnTest.Enabled = true));
+                this.Invoke(new MethodInvoker(() => btnReset.Enabled = true));
+                this.Invoke(new MethodInvoker(() => btnStop.Enabled = false));
             }
         }
 
-        private void SetupPerformanceChart(int width, int height)
+        private void SetupPerformanceChart(bool isTraining)
         {
             PerformanceChart.ChartAreas.Clear();
             PerformanceChart.Series.Clear();
 
             PerformanceChart.ChartAreas.Add("Output_Compare");
-            PerformanceChart.ChartAreas["Output_Compare"].AxisX.Minimum = 0;
-            PerformanceChart.ChartAreas["Output_Compare"].AxisX.Maximum = 800;
-            PerformanceChart.ChartAreas["Output_Compare"].AxisX.Interval = width / 10;
-            PerformanceChart.ChartAreas["Output_Compare"].AxisY.Minimum = 0;
-            PerformanceChart.ChartAreas["Output_Compare"].AxisY.Maximum = 0.5;
-            PerformanceChart.ChartAreas["Output_Compare"].AxisY.Interval = 1 / 10;
+            if (isTraining)
+            {
+                PerformanceChart.ChartAreas["Output_Compare"].AxisX.Minimum = 0;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisX.Maximum = 700;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisX.Interval = 500;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisY.Minimum = 0;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisY.Maximum = 0.5;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisY.Interval = 1 / 10;
+            }
+            else
+            {
+                PerformanceChart.ChartAreas["Output_Compare"].AxisX.Minimum = 0;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisX.Maximum = 67;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisX.Interval = 10;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisY.Minimum = 0;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisY.Maximum = 0.5;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisY.Interval = 1 / 10;
+            }
 
             PerformanceChart.Series.Add("Target Output");
             PerformanceChart.Series["Target Output"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
@@ -502,50 +529,60 @@ namespace LS_Lab1___Neural_Network
 
         private void NN_RecieveOutputComparison(int iterator, double NN_Output, double t_Output)
         {
-            //this.Invoke(new MethodInvoker(() => PerformanceChart.Series["Target Output"].Points.AddXY(iterator, t_Output)));
-            //this.Invoke(new MethodInvoker(() => PerformanceChart.Series["Neural-Network Output"].Points.AddXY(iterator, NN_Output))); 
             this.Invoke(new MethodInvoker(() => updateChart(iterator, NN_Output, t_Output)));
+        }
+
+        private void NN_RecieveTestingComplete()
+        {
+            if (btnTrain.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(() => btnTrain.Enabled = true));
+                this.Invoke(new MethodInvoker(() => btnTest.Enabled = true));
+                this.Invoke(new MethodInvoker(() => btnReset.Enabled = true));
+                this.Invoke(new MethodInvoker(() => btnStop.Enabled = false));
+            }
+            else
+            {
+                btnTrain.Enabled = true;
+                this.Invoke(new MethodInvoker(() => btnTest.Enabled = true));
+                this.Invoke(new MethodInvoker(() => btnReset.Enabled = true));
+                this.Invoke(new MethodInvoker(() => btnStop.Enabled = false));
+            }
+        }
+
+        private void NN_RecieveTestingResultInfo(double accuracy, double error)
+        {
+            MessageBox.Show(string.Format("Accuracy: {0}% error:{1}", Math.Round(accuracy,3)*100, error), "Testing Complete!");
         }
 
         private void updateChart(int iterator, double NN_Output, double t_Output)
         {
+            if (doSplitOutput_box.Checked)
+            {
+                NN_Output += 0.05;
+                t_Output += 0.3;
+                PerformanceChart.ChartAreas["Output_Compare"].AxisY.Interval = 100;
+            }
+            else
+            {
+                PerformanceChart.ChartAreas["Output_Compare"].AxisY.Interval = 1 / 10;
+            }
+
             PerformanceChart.Series["Target Output"].Points.AddXY(iterator, t_Output);
             PerformanceChart.Series["Neural-Network Output"].Points.AddXY(iterator, NN_Output);
 
-            if (PerformanceChart.Series["Target Output"].Points.Count > 800)
+            if (PerformanceChart.Series["Target Output"].Points.Count > 700)
             {
                 PerformanceChart.ChartAreas["Output_Compare"].AxisX.Minimum++;
                 PerformanceChart.ChartAreas["Output_Compare"].AxisX.Maximum++;
-                //PerformanceChart.Series["Target Output"].Points.RemoveAt(0);
-                //PerformanceChart.Series["Neural-Network Output"].Points.RemoveAt(0);
+                PerformanceChart.Series["Target Output"].Points.RemoveAt(0);
+                PerformanceChart.Series["Neural-Network Output"].Points.RemoveAt(0);
             }
         }
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
             NN.StopTraining();
-        }
-
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            // Check if NN is null. "first use"
-            if (NN == null)
-            {
-                MessageBox.Show("Cant test an untrained Neural-Network.");
-                return;
-            }
-
-            Action action = () =>
-            {
-                NN.Test(testData, (int)numericAccuracyFilter.Value);
-            };
-
-            btnTrain.Enabled = false;
-            btnTest.Enabled = false;
-            btnReset.Enabled = false;
-            btnStop.Enabled = true;
-            Thread TestingAction = new Thread(() => action());
-            TestingAction.Start();
         }
 
         private void btnShowTrainMatrix_Click(object sender, EventArgs e)
@@ -578,7 +615,37 @@ namespace LS_Lab1___Neural_Network
                 NN.FirePerformanceInfo += NN_RecievePerformanceInfo;
                 NN.FireTrainingComplete += NN_RecieveTrainingComplete;
                 NN.FireOutputComparison += NN_RecieveOutputComparison;
+                NN.FireTestingComplete += NN_RecieveTestingComplete;
+                NN.FireTestingResultInfo += NN_RecieveTestingResultInfo;
             }
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            // Check if NN is null. "first use"
+            if (NN == null)
+            {
+                MessageBox.Show("Cant test an untrained Neural-Network.");
+                return;
+            }
+            if (testData == null)
+            {
+                MessageBox.Show("No TestData loaded!");
+                return;
+            }
+
+            Action action = () =>
+            {
+                NN.Test(testData, (int)numericAccuracyFilter.Value);
+            };
+
+            SetupPerformanceChart(false);
+            btnTrain.Enabled = false;
+            btnTest.Enabled = false;
+            btnReset.Enabled = false;
+            btnStop.Enabled = true;
+            Thread TestingAction = new Thread(() => action());
+            TestingAction.Start();
         }
     }
 }

@@ -79,6 +79,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.PerformanceChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.doSplitOutput_box = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel9 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
@@ -411,6 +412,7 @@
             this.btnTest.TabIndex = 17;
             this.btnTest.Text = "Test";
             this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // btnTrain
             // 
@@ -612,12 +614,13 @@
             this.tableLayoutPanel7.ColumnCount = 1;
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel7.Controls.Add(this.PerformanceChart, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.doSplitOutput_box, 0, 1);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(168, 3);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 2;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80.8765F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 19.12351F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 93.02789F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.972112F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(328, 502);
             this.tableLayoutPanel7.TabIndex = 0;
             // 
@@ -628,8 +631,18 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PerformanceChart.Location = new System.Drawing.Point(3, 3);
             this.PerformanceChart.Name = "PerformanceChart";
-            this.PerformanceChart.Size = new System.Drawing.Size(322, 399);
+            this.PerformanceChart.Size = new System.Drawing.Size(322, 460);
             this.PerformanceChart.TabIndex = 0;
+            // 
+            // doSplitOutput_box
+            // 
+            this.doSplitOutput_box.AutoSize = true;
+            this.doSplitOutput_box.Location = new System.Drawing.Point(3, 469);
+            this.doSplitOutput_box.Name = "doSplitOutput_box";
+            this.doSplitOutput_box.Size = new System.Drawing.Size(86, 17);
+            this.doSplitOutput_box.TabIndex = 1;
+            this.doSplitOutput_box.Text = "Split Outputs";
+            this.doSplitOutput_box.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel5
             // 
@@ -677,7 +690,6 @@
             // 
             this.numericAccuracyFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericAccuracyFilter.DecimalPlaces = 3;
             this.numericAccuracyFilter.Location = new System.Drawing.Point(3, 29);
             this.numericAccuracyFilter.Maximum = new decimal(new int[] {
             15,
@@ -767,7 +779,7 @@
             // 
             this.numericMomentum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericMomentum.DecimalPlaces = 3;
+            this.numericMomentum.DecimalPlaces = 4;
             this.numericMomentum.Location = new System.Drawing.Point(3, 29);
             this.numericMomentum.Maximum = new decimal(new int[] {
             10,
@@ -806,7 +818,12 @@
             // 
             this.numericLearnrate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericLearnrate.DecimalPlaces = 3;
+            this.numericLearnrate.DecimalPlaces = 4;
+            this.numericLearnrate.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            196608});
             this.numericLearnrate.Location = new System.Drawing.Point(3, 29);
             this.numericLearnrate.Maximum = new decimal(new int[] {
             10,
@@ -945,6 +962,7 @@
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
+            this.tableLayoutPanel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PerformanceChart)).EndInit();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
@@ -1046,6 +1064,7 @@
         private System.Windows.Forms.ToolStripMenuItem loadNeuralNetworkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveNeuralNetworkToolStripMenuItem;
         private System.Windows.Forms.DataVisualization.Charting.Chart PerformanceChart;
+        private System.Windows.Forms.CheckBox doSplitOutput_box;
     }
 }
 

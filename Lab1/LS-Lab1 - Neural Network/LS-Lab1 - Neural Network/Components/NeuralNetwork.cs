@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -36,6 +37,7 @@ namespace LS_Lab1___Neural_Network.Components
 
         // state stuff. 
         bool stopTraining;
+        bool stopTesting;
 
         private Random rnd; 
 
@@ -540,6 +542,7 @@ namespace LS_Lab1___Neural_Network.Components
         public void StopTraining()
         {
             stopTraining = true;
+            stopTesting = true;
         }
         #region Training delegates
         public delegate void TrainingPerformanceInfo(double Error, double Accuracy, int iterations);
@@ -557,9 +560,12 @@ namespace LS_Lab1___Neural_Network.Components
 
         public void Test(double[][] TestData, int AccuracyFilter = 15)
         {
+            stopTesting = false;
+            // Normalize all testdata.
+            TestData = NormilizeData(TestData);
             // Initialize container arrays, and split training Data -> input/output
-            double[][] TestInput = new double[numInput][];
-            double[][] TestOutput = new double[numOutput][];
+            double[][] TestInput = new double[TestData.Length][];
+            double[][] TestOutput = new double[TestData.Length][];
             for (int y = 0; y < TestData.Length; y++)
             {
                 TestInput[y] = new double[numInput];
@@ -571,28 +577,40 @@ namespace LS_Lab1___Neural_Network.Components
 
             // Initialize container for iteration output.
             double[][] currentIterationOutputs = new double[TestData.Length][];
-            for (int y = 0; y < numOutput; y++)
+            for (int y = 0; y < TestData.Length; y++)
             {
                 currentIterationOutputs[y] = new double[numOutput];
             }
 
-            // Compute all training examples.
+            // Compute all testing examples.
             for (int i = 0; i < TestData.Length; i++)
             {
                 currentIterationOutputs[i] = ComputeOutput(TestInput[i]);
-                AdjustWeights(output, TestOutput[i]);
+                AdjustWeights(currentIterationOutputs[i], TestOutput[i]);
+
+                if (FireOutputComparison != null) FireOutputComparison(i, currentIterationOutputs[i][0], TestOutput[i][0]);
+
+                if (stopTesting)
+                {
+                    return;
+                }
+                Thread.Sleep(50);
+
             }
 
             double accuracy = ComputeAccuracy(TestOutput, currentIterationOutputs, AccuracyFilter);
             double error = ComputeError(TestOutput, currentIterationOutputs);
-    
+
+            if (FireTestingResultInfo != null) FireTestingResultInfo(accuracy, error);
             if (FirePerformanceInfo != null) FirePerformanceInfo(error, accuracy, 0);
             if (FireTestingComplete != null) FireTestingComplete();
         }
         #region Test delegates
         public delegate void TestingComplete();
+        public delegate void TestingResultInfo(double accuracy, double error);
 
         public event TestingComplete FireTestingComplete;
+        public event TestingResultInfo FireTestingResultInfo;
         #endregion
 
         private double ComputeError(double[][] TargetOutput, double[][] NNOutput)
