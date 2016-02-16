@@ -15,6 +15,10 @@ namespace Lab_assignment_2.Model
     {
         #region Variables
         private FuzzyLogicRuleBook rulebook = new FuzzyLogicRuleBook();
+        //private Collection<FuzzyLogicRule> rulebook = new Collection<FuzzyLogicRule>();
+        private Collection<LinguisticTerm> linguisticVariableCollection = new Collection<LinguisticTerm>();
+        private string consequent = String.Empty;
+
         #endregion
 
         #region Properties
@@ -24,136 +28,32 @@ namespace Lab_assignment_2.Model
             set { rulebook = value; }
         }
 
+        public Collection<LinguisticTerm> Linguistics
+        {
+            get { return linguisticVariableCollection; }
+            set { linguisticVariableCollection = value; }
+        }
+
+        /// <summary>
+        /// The consequent variable name.
+        /// </summary>
+        public string Consequent
+        {
+            get { return consequent; }
+            set { consequent = value; }
+        }
         #endregion
 
         #region Constructor
 
         #endregion
 
-
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class FuzzyLinguistics
-    {
-        #region Variables
-        private string name = string.Empty;
-        private double currentValue = 0;
-
-        private MembershipFunctionCollection membershipFunctionCollection = new MembershipFunctionCollection();
-
-        #endregion
-
-        #region Properties
-        public string Name
+        #region Private Methods
+        public LinguisticTerm FindLingustics(string linguisticVariableName)
         {
-            get { return name; }
-            set { name = !string.IsNullOrEmpty(value) ? value : name; }
-        }
-        #endregion
+            LinguisticTerm linguisticVariable = null;
 
-        #region Constructor
-        public FuzzyLinguistics(string name)
-        {
-            this.name = name;
-        }
-
-        public FuzzyLinguistics(string name, MembershipFunctionCollection membershipFunctionCollection)
-        {
-            this.Name = name;
-            this.MembershipFunctionCollection = membershipFunctionCollection;
-        }
-
-        public double Input
-        {
-            get { return currentValue; }
-            set { currentValue = value; }
-        }
-        public MembershipFunctionCollection MembershipFunctionCollection
-        {
-            get { return membershipFunctionCollection; }
-            set { membershipFunctionCollection = value; }
-        }
-
-        #endregion
-
-        public double Fuzzify(string membershipFunctionName)
-        {
-            MembershipFunction membershipFunction = this.membershipFunctionCollection.Find(membershipFunctionName);
-
-            if ((membershipFunction.X0 <= this.currentValue) && (this.currentValue < membershipFunction.X1))
-                return (this.currentValue - membershipFunction.X0) / (membershipFunction.X1 - membershipFunction.X0);
-            else if ((membershipFunction.X1 <= this.currentValue) && (this.currentValue <= membershipFunction.X2))
-                return 1;
-            else if ((membershipFunction.X2 < this.currentValue) && (this.currentValue <= membershipFunction.X3))
-                return (membershipFunction.X3 - this.currentValue) / (membershipFunction.X3 - membershipFunction.X2);
-            else
-                return 0;
-        }
-
-        /// <summary>
-        /// Returns the minimum value of the linguistic variable.
-        /// </summary>
-        /// <returns>The minimum value of the linguistic variable.</returns>
-        public double MinValue()
-        {
-            double minValue = this.membershipFunctionCollection[0].X0;
-
-            for (int i = 1; i < this.membershipFunctionCollection.Count; i++)
-            {
-                if (this.membershipFunctionCollection[i].X0 < minValue)
-                    minValue = this.membershipFunctionCollection[i].X0;
-            }
-
-            return minValue;
-        }
-
-        /// <summary>
-        /// Returns the maximum value of the linguistic variable.
-        /// </summary>
-        /// <returns>The maximum value of the linguistic variable.</returns>
-        public double MaxValue()
-        {
-            double maxValue = this.membershipFunctionCollection[0].X3;
-
-            for (int i = 1; i < this.membershipFunctionCollection.Count; i++)
-            {
-                if (this.membershipFunctionCollection[i].X3 > maxValue)
-                    maxValue = this.membershipFunctionCollection[i].X3;
-            }
-
-            return maxValue;
-        }
-
-        /// <summary>
-        /// Returns the difference between MaxValue() and MinValue().
-        /// </summary>
-        /// <returns>The difference between MaxValue() and MinValue().</returns>
-        public double Range()
-        {
-            return this.MaxValue() - this.MinValue();
-        }
-    }
-
-    /// <summary>
-    /// Represents a collection of rules.
-    /// </summary>
-    public class FuzzyLinguisticsCollection : Collection<FuzzyLinguistics>
-    {
-        #region Public Methods
-
-        /// <summary>
-        /// Finds a linguistic variable in a collection.
-        /// </summary>
-        /// <param name="linguisticVariableName">Linguistic variable name.</param>
-        /// <returns>The linguistic variable, if founded.</returns>
-        public FuzzyLinguistics Find(string linguisticVariableName)
-        {
-            FuzzyLinguistics linguisticVariable = null;
-
-            foreach (FuzzyLinguistics variable in this)
+            foreach (LinguisticTerm variable in Linguistics)
             {
                 if (variable.Name == linguisticVariableName)
                 {
@@ -167,49 +67,90 @@ namespace Lab_assignment_2.Model
             else
                 return linguisticVariable;
         }
-
         #endregion
+
+        private LinguisticTerm GetConsequent()
+        {
+            return this.FindLingustics(this.consequent);
+        }
+
+        private double Parse(string text)
+        {
+            int counter = 0;
+            int firstMatch = 0;
+
+            if (!text.StartsWith("("))
+            {
+                string[] tokens = text.Split();
+                return FindLingustics(tokens[0]).Fuzzify(tokens[2]);
+            }
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                switch (text[i])
+                {
+                    case '(':
+                        counter++;
+                        if (counter == 1)
+                            firstMatch = i;
+                        break;
+
+                    case ')':
+                        counter--;
+                        if ((counter == 0) && (i > 0))
+                        {
+                            string substring = text.Substring(firstMatch + 1, i - firstMatch - 1);
+                            string substringBrackets = text.Substring(firstMatch, i - firstMatch + 1);
+                            int length = substringBrackets.Length;
+                            text = text.Replace(substringBrackets, Parse(substring).ToString());
+                            i = i - (length - 1);
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            return Evaluate(text);
+        }
+
+        private double Evaluate(string text)
+        {
+            string[] tokens = text.Split();
+            string connective = "";
+            double value = 0;
+
+            for (int i = 0; i <= ((tokens.Length / 2) + 1); i = i + 2)
+            {
+                double tokenValue = Convert.ToDouble(tokens[i]);
+
+                switch (connective)
+                {
+                    case "AND":
+                        if (tokenValue < value)
+                            value = tokenValue;
+                        break;
+
+                    case "OR":
+                        if (tokenValue > value)
+                            value = tokenValue;
+                        break;
+
+                    default:
+                        value = tokenValue;
+                        break;
+                }
+
+                if ((i + 1) < tokens.Length)
+                    connective = tokens[i + 1];
+            }
+
+            return value;
+        }
+
     }
 
-
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    class FuzzyLogicRule
-    {
-        #region Variables
-        private string rule = string.Empty;
-        private double value = 0;
-        #endregion
-
-        #region Properties
-        public string Rule
-        {
-            get { return rule; }
-            set { rule = value; }
-        }
-
-        public double Value
-        {
-            get { return value; }
-            set { this.value = value; }
-        }
-        #endregion
-
-        #region Constructor
-        public FuzzyLogicRule(string ruletext)
-        {
-            this.rule = ruletext;
-        }
-        public FuzzyLogicRule(string ruletext, double value)
-        {
-            this.rule = ruletext;
-            this.value = value;
-        }
-        #endregion
-    }
 
     /// <summary>
     /// 
@@ -227,6 +168,11 @@ namespace Lab_assignment_2.Model
         #endregion
 
         #region Methods
+        private string[] TokenizeString(string text)
+        {
+            return null;
+        }
+
         private string Validate(string text)
         {
             int count = 0;

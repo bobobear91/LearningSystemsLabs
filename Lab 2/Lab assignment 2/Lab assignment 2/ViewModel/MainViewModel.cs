@@ -108,6 +108,14 @@ namespace Lab_assignment_2.ViewModel
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2=short OR middle) AND (x3=long) AND (x4=long) THEN Iris Virginica"));
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor"));
 
+            LinguisticTerm irisTerms = new LinguisticTerm("Water");
+            irisTerms.MembershipFunctionCollection.Add(new MembershipFunction("Short", 0, 0, 20, 40));
+            irisTerms.MembershipFunctionCollection.Add(new MembershipFunction("Middle", 30, 50, 50, 70));
+            irisTerms.MembershipFunctionCollection.Add(new MembershipFunction("Long", 50, 80, 100, 100));
+
+            fuzzyLogic.Linguistics.Add(irisTerms);
+
+
             //****************************************************************
             //      Events 
             //****************************************************************
@@ -120,13 +128,12 @@ namespace Lab_assignment_2.ViewModel
             NewFuzzyLogic = new RelayCommand<object>(NewFuzzyLogic_Event);
             Quit = new RelayCommand<object>(Quit_Event);
 
+
+            double[,] data = Data.TextFile.ReadFileToArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
+            NotifyPropertyChanged("");
+
         }
         
-
-
-
-
-
         #endregion
 
         #region Events

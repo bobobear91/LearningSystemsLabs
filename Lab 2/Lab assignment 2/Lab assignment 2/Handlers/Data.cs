@@ -95,6 +95,7 @@ namespace Lab_assignment_2.Handlers
                         if (!IsNumericType(tmpData[x]))
                         {
                             tmpData[x] = tmpData[x].Replace('.', ',');
+                            tmpData[x] = tmpData[x].ToUpper();
                         }
                         // Stores temporary created tmpData in fileData array.
                         fileData[y, x] = (T)Convert.ChangeType(tmpData[x], typeof(T));

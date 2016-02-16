@@ -57,11 +57,10 @@
     </ApplicationDefinition>
     <Compile Include="Handlers\Data.cs" />
     <Compile Include="Handlers\MathHelper.cs" />
-    <Compile Include="Handlers\XMLManager.cs" />
     <Compile Include="Model\FuzzyLogic.cs" />
-    <Compile Include="Model\FuzzySetsEnum.cs" />
+    <Compile Include="Model\FuzzyLogicRule.cs" />
+    <Compile Include="Model\LinguisticTerm.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="ViewModel\IClosable.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
