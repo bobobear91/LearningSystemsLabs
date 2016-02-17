@@ -49,7 +49,7 @@ namespace Lab_assignment_2.Model
         #endregion
 
         #region Private Methods
-        public LinguisticTerm FindLingustics(string linguisticVariableName)
+        private LinguisticTerm FindLingustics(string linguisticVariableName)
         {
             LinguisticTerm linguisticVariable = null;
 
@@ -67,7 +67,7 @@ namespace Lab_assignment_2.Model
             else
                 return linguisticVariable;
         }
-        #endregion
+
 
         private LinguisticTerm GetConsequent()
         {
@@ -148,6 +148,8 @@ namespace Lab_assignment_2.Model
 
             return value;
         }
+        #endregion
+
 
     }
 
@@ -157,15 +159,6 @@ namespace Lab_assignment_2.Model
     /// </summary>
     class FuzzyLogicRuleBook : Collection<FuzzyLogicRule>
     {
-        #region Variables
-        #endregion
-
-        #region Properties
-        #endregion
-
-        #region Constructor
-
-        #endregion
 
         #region Methods
         private string[] TokenizeString(string text)

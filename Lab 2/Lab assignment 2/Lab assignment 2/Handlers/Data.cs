@@ -92,13 +92,16 @@ namespace Lab_assignment_2.Handlers
                     string[] tmpData = file.ReadLine().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     for (int x = 0; x < nOfColumns; x++)
                     {
-                        if (!IsNumericType(tmpData[x]))
+                        if (!string.IsNullOrEmpty(tmpData[x]))
                         {
-                            tmpData[x] = tmpData[x].Replace('.', ',');
-                            tmpData[x] = tmpData[x].ToUpper();
+                            if (!IsNumericType(tmpData[x]))
+                            {
+                                tmpData[x] = tmpData[x].Replace('.', ',');
+                                tmpData[x] = tmpData[x].ToUpper();
+                            }
+                            // Stores temporary created tmpData in fileData array.
+                            fileData[y, x] = (T)Convert.ChangeType(tmpData[x], typeof(T));
                         }
-                        // Stores temporary created tmpData in fileData array.
-                        fileData[y, x] = (T)Convert.ChangeType(tmpData[x], typeof(T));
                     }
                 }
 

@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:Lab_assignment_2.ViewModel"
         mc:Ignorable="d"
         
-        Title="Fuzzy controller" Height="640" Width="Auto" MinHeight="640" MinWidth="720">
+        Title="Fuzzy controller" Height="Auto" Width="Auto" MinHeight="640" MinWidth="720">
     <!--Grid for application-->
     <Grid>
         <!--Row definitions for the application-->

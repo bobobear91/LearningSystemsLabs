@@ -98,12 +98,12 @@ namespace Lab_assignment_2.ViewModel
             fuzzyLogic = new FuzzyLogic();
             //Predefined rulebook
             //IF (x1=short V long) AND (x2=middle V long) AND (x3=middle V long ) AND (x4=middle) THEN Iris Versicolor
-            //IF(x3 = short V middle) AND(x4 = short) THEN Iris Setosa
+            //IF (x3 = short V middle) AND(x4 = short) THEN Iris Setosa
             //IF (x2=short V middle) AND (x3=long) AND (x4=long) THEN Iris Virginica
             //IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor
 
             //
-            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=short OR long) AND (x2=middle OR long) AND (x3=middle OR long ) AND (x4=middle) THEN Iris Versicolor"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=short OR long) AND (x2= middle OR long) AND (x3=middle OR long ) AND (x4=middle) THEN Iris Versicolor"));
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x3 = short OR middle) AND(x4 = short) THEN Iris Setosa"));
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2=short OR middle) AND (x3=long) AND (x4=long) THEN Iris Virginica"));
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor"));
@@ -129,8 +129,7 @@ namespace Lab_assignment_2.ViewModel
             Quit = new RelayCommand<object>(Quit_Event);
 
 
-            //double[,] data = Data.TextFile.ReadFileToArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
-            //NotifyPropertyChanged("");
+            double[,] data = Data.TextFile.ReadFileToArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
 
         }
         
@@ -243,8 +242,8 @@ namespace Lab_assignment_2.ViewModel
             }
             set
             {
-                NotifyPropertyChanged();
                 rulesfilepath = value;
+                NotifyPropertyChanged();
             }
         }
         #endregion
