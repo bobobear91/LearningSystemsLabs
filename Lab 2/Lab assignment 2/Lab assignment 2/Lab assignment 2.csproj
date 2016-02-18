@@ -56,6 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Handlers\Data.cs" />
+    <Compile Include="Handlers\FuzzyLogicException.cs" />
     <Compile Include="Handlers\MathHelper.cs" />
     <Compile Include="Model\FuzzyLogic.cs" />
     <Compile Include="Model\FuzzyLogicRule.cs" />

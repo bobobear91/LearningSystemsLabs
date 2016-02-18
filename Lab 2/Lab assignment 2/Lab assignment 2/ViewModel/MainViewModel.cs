@@ -102,12 +102,21 @@ namespace Lab_assignment_2.ViewModel
             //IF (x2=short V middle) AND (x3=long) AND (x4=long) THEN Iris Virginica
             //IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor
 
-            //
-            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=short OR long) AND (x2= middle OR long) AND (x3=middle OR long ) AND (x4=middle) THEN Iris Versicolor"));
-            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x3 = short OR middle) AND(x4 = short) THEN Iris Setosa"));
-            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2=short OR middle) AND (x3=long) AND (x4=long) THEN Iris Virginica"));
-            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor"));
+            //Tries to add the rules and validate them
+            try
+            {
+                fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=short OR long) AND (x2= middle OR long) AND (x3=middle OR long ) AND (x4=middle) THEN Iris Versicolor"));
+                fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x3 = short OR middle) AND (x4 = short) THEN Iris Setosa"));
+                fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2=short OR middle) AND (x3=long) AND (x4=long) THEN Iris Virginica"));
+                fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor"));
 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
             LinguisticTerm irisTerms = new LinguisticTerm("Iris");
             irisTerms.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 20, 40));
             irisTerms.MembershipFunctions.Add(new MembershipFunction("Middle", 30, 50, 50, 70));
@@ -306,8 +315,8 @@ namespace Lab_assignment_2.ViewModel
             }
             private set
             {
-                NotifyPropertyChanged();
                 isRulesFromFile = value;
+                NotifyPropertyChanged();
             }
         }
 
@@ -353,7 +362,7 @@ namespace Lab_assignment_2.ViewModel
                     int i = 1;
                     foreach (var rules in fuzzyLogic.Rules)
                     {
-                        rulebook.Add(string.Format("{0} {1}", i, (!string.IsNullOrEmpty(rules.Rule) ? rules.Rule : "Error!")));
+                        rulebook.Add(string.Format("{0}. {1}", i, (!string.IsNullOrEmpty(rules.Rule) ? rules.Rule : "Error!")));
                         i++;
                     }
 

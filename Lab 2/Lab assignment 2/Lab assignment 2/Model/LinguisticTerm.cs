@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Lab_assignment_2.Model
 {
-
     public class LinguisticTerm
     {
         #region Variables

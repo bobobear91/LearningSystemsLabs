@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!--Column definitions for the application-->
         <Grid.ColumnDefinitions>
@@ -205,5 +206,8 @@
 
         </Grid>
 
+
+
+        <StatusBar Grid.RowSpan="2" Grid.Column="0"  HorizontalAlignment="Left" Height="25"  VerticalAlignment="Bottom" Width="100"/>
     </Grid>
 </Window>
