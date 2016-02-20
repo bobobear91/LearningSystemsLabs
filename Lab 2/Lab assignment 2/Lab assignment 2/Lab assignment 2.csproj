@@ -61,6 +61,7 @@
     <Compile Include="Model\FuzzyLogic.cs" />
     <Compile Include="Model\FuzzyLogicRule.cs" />
     <Compile Include="Model\LinguisticTerm.cs" />
+    <Compile Include="Model\MembershipFunction.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
