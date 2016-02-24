@@ -17,7 +17,7 @@ namespace Lab_assignment_2.Handlers
         /// <returns></returns>
         private static bool FileExist(string FilePath)
         {
-            if (System.IO.File.Exists(FilePath))
+            if (File.Exists(FilePath))
             {
                 // Returns true if the file exists.
                 return true;

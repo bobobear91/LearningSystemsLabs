@@ -1,20 +1,21 @@
 ﻿using Lab_assignment_2.Handlers;
-
+using Lab_assignment_2.Model;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.Win32;
-using Lab_assignment_2.Model;
+
 
 namespace Lab_assignment_2.ViewModel
 {
+    //http://www.codeproject.com/Articles/151161/Fuzzy-Framework
     class MainViewModel : BaseViewModel
     {
         #region Variables

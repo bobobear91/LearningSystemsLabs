@@ -150,7 +150,5 @@ namespace Lab_assignment_2.Model
         }
         #endregion
 
-        
-
     }
 }

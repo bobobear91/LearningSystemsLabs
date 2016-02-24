@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lab_assignment_2.ViewModel
 {
@@ -19,6 +15,5 @@ namespace Lab_assignment_2.ViewModel
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
-
     }
 }
