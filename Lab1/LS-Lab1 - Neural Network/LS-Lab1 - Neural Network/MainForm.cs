@@ -453,21 +453,20 @@ namespace LS_Lab1___Neural_Network
             TrainingAction.Start();
         }
 
-        private void NN_RecievePerformanceInfo(double Error, double Accuracy, int iterations)
+        private void NN_RecievePerformanceInfo(int iterations, double Error, double Accuracy)
         {
-
             //MessageBox.Show("");
         }
 
-        private void NN_RecieveMaxIterationsReached(int iterations, double accuracy)
+        private void NN_RecieveMaxIterationsReached(int iterations, double accuracy, double error)
         {
-            MessageBox.Show(string.Format("Accuracy: {0}% Iterations:{1}", Math.Round(accuracy, 3) * 100, iterations), "Max iterations reached!");
+            MessageBox.Show(string.Format("Accuracy: {0}% Error: {1} Iterations:{2}", Math.Round(accuracy, 4) * 100, error, iterations), "Max iterations reached!");
 
         }
 
-        private void NN_RecieveMaxAccuracyReached(double Accuracy, int iterations)
+        private void NN_RecieveMaxAccuracyReached(int iterations, double Accuracy, double error)
         {
-            MessageBox.Show(string.Format("Accuracy: {0} Iterations:{1}", Accuracy, iterations),"Max accuracy reached!");
+            MessageBox.Show(string.Format("Accuracy: {0}% Error: {1} Iterations:{2}", Math.Round(Accuracy, 4) * 100, error, iterations),"Max accuracy reached!");
         }
 
         private void NN_RecieveTrainingComplete()
@@ -552,7 +551,7 @@ namespace LS_Lab1___Neural_Network
 
         private void NN_RecieveTestingResultInfo(double accuracy, double error)
         {
-            MessageBox.Show(string.Format("Accuracy: {0}% error:{1}", Math.Round(accuracy,3)*100, error), "Testing Complete!");
+            MessageBox.Show(string.Format("Accuracy: {0}% error:{1}", Math.Round(accuracy,4)*100, error), "Testing Complete!");
         }
 
         private void updateChart(int iterator, double NN_Output, double t_Output)

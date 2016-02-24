@@ -408,13 +408,13 @@ namespace LS_Lab1___Neural_Network.Components
                 }
 
                 // Fire performance info event. 
-                if (FirePerformanceInfo != null) FirePerformanceInfo(error, accuracy, iterator);
+                if (FirePerformanceInfo != null) FirePerformanceInfo(iterator, accuracy, error);
 
                 iterator++;
             }
             // Handle delegates. 
-            if (iterator >= maxIterations && FireMaxIterationsReached != null) FireMaxIterationsReached(iterator, accuracy);
-            if (accuracy >= maxAccuracy && FireMaxAccuracyReached != null) FireMaxAccuracyReached(accuracy, iterator);
+            if (iterator >= maxIterations && FireMaxIterationsReached != null) FireMaxIterationsReached(iterator, accuracy, error);
+            if (accuracy >= maxAccuracy && FireMaxAccuracyReached != null) FireMaxAccuracyReached(iterator, accuracy, error);
             if (FireTrainingComplete != null) FireTrainingComplete();
         }
         private void AdjustWeights(double[] NNOutput, double[] targetOutput)
@@ -545,9 +545,9 @@ namespace LS_Lab1___Neural_Network.Components
             stopTesting = true;
         }
         #region Training delegates
-        public delegate void TrainingPerformanceInfo(double Error, double Accuracy, int iterations);
-        public delegate void TrainingMaxIterationsReached(int iterations, double accuracy);      
-        public delegate void TrainingMaxAccuracyReached(double Accuracy, int iterations);
+        public delegate void TrainingPerformanceInfo(int iterations, double Accuracy, double Error);
+        public delegate void TrainingMaxIterationsReached(int iterations, double accuracy, double error);      
+        public delegate void TrainingMaxAccuracyReached(int iterations, double Accuracy, double error);
         public delegate void TrainingComplete();
         public delegate void OutputComparison(int iterator, double NN_Output, double t_Output);
 
@@ -602,7 +602,7 @@ namespace LS_Lab1___Neural_Network.Components
             double error = ComputeError(TestOutput, currentIterationOutputs);
 
             if (FireTestingResultInfo != null) FireTestingResultInfo(accuracy, error);
-            if (FirePerformanceInfo != null) FirePerformanceInfo(error, accuracy, 0);
+            if (FirePerformanceInfo != null) FirePerformanceInfo(0, accuracy, error);
             if (FireTestingComplete != null) FireTestingComplete();
         }
         #region Test delegates
