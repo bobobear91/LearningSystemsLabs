@@ -1,13 +1,13 @@
 ﻿namespace Lab_assignment_2.Handlers
 {
-    class MathHelper
+    static class MathHelper
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private double[][] NormilizeData(double[][] data)
+        public static double[][] NormilizeData(double[][] data)
         {
             // Compute the max and min value for each column in 'data'.
             double[] maxValues = new double[data[0].Length];

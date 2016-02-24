@@ -8,13 +8,30 @@ namespace Lab_assignment_2.Model
 {
     public class MembershipFunction
     {
-        #region Private Properties
-
+        #region Private Variables
+        /// <summary>
+        /// 
+        /// </summary>
         private string name = String.Empty;
+        /// <summary>
+        /// 
+        /// </summary>
         private double x0 = 0;
+        /// <summary>
+        /// 
+        /// </summary>
         private double x1 = 0;
+        /// <summary>
+        /// 
+        /// </summary>
         private double x2 = 0;
+        /// <summary>
+        /// 
+        /// </summary>
         private double x3 = 0;
+        /// <summary>
+        /// 
+        /// </summary>
         private double value = 0;
 
         #endregion
@@ -22,18 +39,24 @@ namespace Lab_assignment_2.Model
         #region Constructors
 
         /// <summary>
-        /// Default constructor.
+        /// Default constructor. String is empty, x0-x3 is 0
         /// </summary>
         public MembershipFunction()
         {
         }
 
-        /// <param name="name">The name that identificates the membership function.</param>
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name = "name" > The name that identificates the membership function.</param>
         public MembershipFunction(string name)
         {
             this.Name = name;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="name">The name that identificates the linguistic variable.</param>
         /// <param name="x0">The value of the (x0, 0) point.</param>
         /// <param name="x1">The value of the (x1, 1) point.</param>

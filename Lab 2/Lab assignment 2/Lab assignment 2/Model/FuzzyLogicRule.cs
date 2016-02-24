@@ -12,8 +12,19 @@ namespace Lab_assignment_2.Model
     class FuzzyLogicRule
     {
         #region Variables
+        /// <summary>
+        /// 
+        /// </summary>
         private string rule = string.Empty;
+
+        /// <summary>
+        /// 
+        /// </summary>
         private double value = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
         private string rulePlainText = string.Empty;
         #endregion
 
@@ -40,17 +51,32 @@ namespace Lab_assignment_2.Model
         #region Constructor
         public FuzzyLogicRule(string ruletext)
         {
-            this.rule = Validate(ruletext);
+            this.rule = (ruletext);
             this.rulePlainText = ruletext;
         }
         public FuzzyLogicRule(string ruletext, double value)
         {
-            this.rule = Validate(ruletext);
+            this.rule = (ruletext);
             this.rulePlainText = ruletext;
             this.value = value;
         }
         #endregion
 
+
+
+        #region Public Methods
+        /// <summary>
+        /// Returns the conditions of the rule. 
+        /// The part of the rule between IF and THEN. 
+        /// </summary>
+        /// <returns>The conditions of the rule.</returns> 
+        public string Conditions()
+         { 
+             return this.rule.Substring(this.rule.IndexOf("IF ") + 3, this.rule.IndexOf(" THEN") - 3); 
+         }
+        #endregion
+
+        #region Private Methods
         private string Validate(string text)
         {
             //
@@ -95,5 +121,6 @@ namespace Lab_assignment_2.Model
 
             return text;
         }
+        #endregion
     }
 }

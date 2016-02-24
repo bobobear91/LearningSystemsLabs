@@ -4,6 +4,9 @@ using System.Runtime.CompilerServices;
 
 namespace Lab_assignment_2.ViewModel
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class BaseViewModel : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged

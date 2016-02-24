@@ -10,26 +10,44 @@ namespace Lab_assignment_2.Model
     public class LinguisticTerm
     {
         #region Variables
+        /// <summary>
+        /// 
+        /// </summary>
         private string name = string.Empty;
+        /// <summary>
+        /// 
+        /// </summary>
         private double currentValue = 0;
 
+        /// <summary>
+        /// 
+        /// </summary>
         private Collection<MembershipFunction> membershipFunctionCollection = new Collection<MembershipFunction>();
 
         #endregion
 
         #region Properties
+        /// <summary>
+        /// 
+        /// </summary>
         public string Name
         {
             get { return name; }
             set { name = !string.IsNullOrEmpty(value) ? value : name; }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public double Input
         {
             get { return currentValue; }
             set { currentValue = value; }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Collection<MembershipFunction> MembershipFunctions
         {
             get { return membershipFunctionCollection; }
@@ -53,7 +71,7 @@ namespace Lab_assignment_2.Model
         #endregion
 
         #region Methods
-        public double Fuzzify(string membershipFunctionName)
+        public double Fuzzification(string membershipFunctionName)
         {
             MembershipFunction membershipFunction = Find(membershipFunctionName);
 

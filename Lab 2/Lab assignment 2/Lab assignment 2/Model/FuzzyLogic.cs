@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace Lab_assignment_2.Model
 {
-    //https://github.com/MicheleBertoli/DotFuzzy
     /// <summary>
     /// 
     /// </summary>
     class FuzzyLogic
     {
         #region Variables
-        private Collection<FuzzyLogicRule> rulebook = new Collection<FuzzyLogicRule>();
-        //private Collection<FuzzyLogicRule> rulebook = new Collection<FuzzyLogicRule>();
+        private Collection<FuzzyLogicRule> fuzzyrulebook = new Collection<FuzzyLogicRule>();
         private Collection<LinguisticTerm> linguisticVariableCollection = new Collection<LinguisticTerm>();
         private string consequent = String.Empty;
 
@@ -24,8 +22,8 @@ namespace Lab_assignment_2.Model
         #region Properties
         public Collection<FuzzyLogicRule> Rules
         {
-            get { return rulebook; }
-            set { rulebook = value; }
+            get { return fuzzyrulebook; }
+            set { fuzzyrulebook = value; }
         }
 
         public Collection<LinguisticTerm> Linguistics
@@ -82,7 +80,7 @@ namespace Lab_assignment_2.Model
             if (!text.StartsWith("("))
             {
                 string[] tokens = text.Split();
-                return FindLingustics(tokens[0]).Fuzzify(tokens[2]);
+                return FindLingustics(tokens[0]).Fuzzification(tokens[2]);
             }
 
             for (int i = 0; i < text.Length; i++)
@@ -147,6 +145,40 @@ namespace Lab_assignment_2.Model
             }
 
             return value;
+        }
+        #endregion
+
+        #region Public Methods
+        public double Defuzzification()
+        {
+            double numerator = 0;
+            double denominator = 0;
+
+            // Reset values
+            foreach (MembershipFunction membershipFunction in GetConsequent().MembershipFunctions)
+            {
+                membershipFunction.Value = 0;
+            }
+
+
+            foreach (FuzzyLogicRule fuzzyRule in fuzzyrulebook)
+            {
+                fuzzyRule.Value = Parse(fuzzyRule.Conditions());
+
+                string[] tokens = fuzzyRule.Rule.Split();
+                MembershipFunction membershipFunction = this.GetConsequent().Find(tokens[tokens.Length - 1]);
+
+                if (fuzzyRule.Value > membershipFunction.Value)
+                    membershipFunction.Value = fuzzyRule.Value;
+            }
+
+            foreach (MembershipFunction membershipFunction in this.GetConsequent().MembershipFunctions)
+            {
+                numerator += membershipFunction.Centorid() * membershipFunction.Area();
+                denominator += membershipFunction.Area();
+            }
+
+            return numerator / denominator;
         }
         #endregion
 

@@ -16,6 +16,10 @@ using System.Windows.Input;
 namespace Lab_assignment_2.ViewModel
 {
     //http://www.codeproject.com/Articles/151161/Fuzzy-Framework
+    //    //https://github.com/MicheleBertoli/DotFuzzy
+    /// <summary>
+    /// 
+    /// </summary>
     class MainViewModel : BaseViewModel
     {
         #region Variables
@@ -104,13 +108,27 @@ namespace Lab_assignment_2.ViewModel
             //IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor
 
             //Tries to add the rules and validate them
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=short OR long) AND (x2= middle OR long) AND (x3=middle OR long ) AND (x4=middle) THEN Iris Versicolor"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x3 = short OR middle) AND (x4 = short) THEN Iris Setosa"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2=short OR middle) AND (x3=long) AND (x4=long) THEN Iris Virginica"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor"));
+
+            LinguisticTerm irisTerms = new LinguisticTerm("Iris");
+            irisTerms.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 20, 40));
+            irisTerms.MembershipFunctions.Add(new MembershipFunction("Middle", 30, 50, 50, 70));
+            irisTerms.MembershipFunctions.Add(new MembershipFunction("Long", 50, 80, 100, 100));
+
+            fuzzyLogic.Linguistics.Add(irisTerms);
+
+            //Fetches data
+            double[][] data = Data.TextFile.ReadFileToJaggedArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
+
+            //Normalize the data
+            double[][] normalizeddata = MathHelper.NormilizeData(data);
             try
             {
-                fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=short OR long) AND (x2= middle OR long) AND (x3=middle OR long ) AND (x4=middle) THEN Iris Versicolor"));
-                fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x3 = short OR middle) AND (x4 = short) THEN Iris Setosa"));
-                fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2=short OR middle) AND (x3=long) AND (x4=long) THEN Iris Virginica"));
-                fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor"));
-
+ 
+               // fuzzyLogic.Defuzzify()
             }
             catch (Exception)
             {
@@ -118,12 +136,8 @@ namespace Lab_assignment_2.ViewModel
                 throw;
             }
             
-            LinguisticTerm irisTerms = new LinguisticTerm("Iris");
-            irisTerms.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 20, 40));
-            irisTerms.MembershipFunctions.Add(new MembershipFunction("Middle", 30, 50, 50, 70));
-            irisTerms.MembershipFunctions.Add(new MembershipFunction("Long", 50, 80, 100, 100));
 
-            fuzzyLogic.Linguistics.Add(irisTerms);
+            //denormalize the data
 
 
             //****************************************************************
@@ -139,7 +153,6 @@ namespace Lab_assignment_2.ViewModel
             Quit = new RelayCommand<object>(Quit_Event);
 
 
-            double[,] data = Data.TextFile.ReadFileToArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
 
         }
         
