@@ -121,7 +121,8 @@ namespace Lab_assignment_2.ViewModel
             fuzzyLogic.Linguistics.Add(irisTerms);
 
             //Fetches data
-            double[][] data = Data.TextFile.ReadFileToJaggedArray<double>("C:\\Users\\dss10_000\\Documents\\GitHub\\LearningSystemsLabs\\Lab 2\\iris.txt");//"D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
+            //double[][] data = Data.TextFile.ReadFileToJaggedArray<double>("C:\\Users\\dss10_000\\Documents\\GitHub\\LearningSystemsLabs\\Lab 2\\iris.txt");//"D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
+            double[][] data = Data.TextFile.ReadFileToJaggedArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
 
             //Normalize the data
             double[][] normalizeddata = MathHelper.NormilizeData(data);
