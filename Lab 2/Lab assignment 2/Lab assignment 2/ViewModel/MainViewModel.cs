@@ -108,10 +108,10 @@ namespace Lab_assignment_2.ViewModel
             //IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor
 
             //Tries to add the rules and validate them
-            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=short OR long) AND (x2= middle OR long) AND (x3=middle OR long ) AND (x4=middle) THEN Iris Versicolor"));
-            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x3 = short OR middle) AND (x4 = short) THEN Iris Setosa"));
-            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2=short OR middle) AND (x3=long) AND (x4=long) THEN Iris Virginica"));
-            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1 IS Short OR Long) AND (x2 IS Middle OR long) AND (x3 IS Middle OR Long) AND (x4 IS Middle) THEN Iris Versicolor"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x3 IS Short OR Middle) AND (x4 IS Short) THEN Iris Setosa"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2 IS Short OR Middle) AND (x3 IS Long) AND (x4 IS Long) THEN Iris Virginica"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1 IS Middle) AND (x2=short OR Middle) AND (x3 IS Short) and (x4 IS Long) THEN Iris Versicolor"));
 
             LinguisticTerm irisTerms = new LinguisticTerm("Iris");
             irisTerms.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 20, 40));
