@@ -51,7 +51,7 @@ namespace Lab_assignment_2.Model
         #region Constructor
         public FuzzyLogicRule(string ruletext)
         {
-            this.rule = (ruletext);
+            this.rule = Validate(ruletext);
             this.rulePlainText = ruletext;
         }
         public FuzzyLogicRule(string ruletext, double value)
