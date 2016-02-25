@@ -122,9 +122,18 @@ namespace Lab_assignment_2.ViewModel
             fuzzyLogic.Linguistics.Add(irisTerms);
 
             //Fetches data
-            //double[][] data = Data.TextFile.ReadFileToJaggedArray<double>("C:\\Users\\dss10_000\\Documents\\GitHub\\LearningSystemsLabs\\Lab 2\\iris.txt");//"D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
-            double[][] data = Data.TextFile.ReadFileToJaggedArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
-
+            string macAdress = Data.GetMacAdress();
+            double[][] data;
+            switch (macAdress) // just add your own case with directory =) 
+            {
+                case "448A5B8CF7AC":
+                    data = Data.TextFile.ReadFileToJaggedArray<double>("C:\\Users\\dss10_000\\Documents\\GitHub\\LearningSystemsLabs\\Lab 2\\iris.txt");
+                    break;
+                default:
+                    data = Data.TextFile.ReadFileToJaggedArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
+                    break;
+            }
+           
             //Normalize the data
             double[][] normalizeddata = MathHelper.NormilizeData(data);
             try

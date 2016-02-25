@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Net.NetworkInformation;
 
 namespace Lab_assignment_2.Handlers
 {
@@ -38,6 +39,22 @@ namespace Lab_assignment_2.Handlers
                 }
             }
             return false;
+        }
+
+        public static string GetMacAdress()
+        {
+            IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
+            NetworkInterface[] nif = NetworkInterface.GetAllNetworkInterfaces();
+
+            foreach (NetworkInterface adapter in nif)
+            {
+                PhysicalAddress adress = adapter.GetPhysicalAddress();
+                if (adress.ToString() != "")
+                {
+                    return adress.ToString();
+                }
+            }
+            return "no mac-adress found!";
         }
 
         public static class XML
