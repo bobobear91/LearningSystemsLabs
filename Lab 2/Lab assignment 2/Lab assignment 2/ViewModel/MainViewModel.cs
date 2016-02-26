@@ -108,7 +108,7 @@ namespace Lab_assignment_2.ViewModel
             //IF (x1=middle) AND (x2=short  middle) AND (x3=short) and (x4=long) THEN Iris Versicolor
 
             //Tries to add the rules and validate them
-            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1 IS Short OR Long) AND (x2 IS Middle) OR (x2 IS Long) AND (x3 IS Middle OR Long) AND (x4 IS Middle) THEN Iris IS Versicolor"));
+            fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1 IS Short) OR (x1 IS Long) AND (x2 IS Middle) OR (x2 IS Long) AND (x3 IS Middle) OR (x3 IS Long) AND (x4 IS Middle) THEN Iris IS Versicolor"));
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x3 IS Short OR Middle) AND (x4 IS Short) THEN Iris IS Setosa"));
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2 IS Short) OR (x2 IS Middle) AND (x3 IS Long) AND (x4 IS Long) THEN Iris IS Virginica"));
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1 IS Middle) AND (x2 IS Short) OR (x2 IS Middle) AND (x3 IS Short) AND (x4 IS Long) THEN Iris IS Versicolor"));
@@ -137,6 +137,14 @@ namespace Lab_assignment_2.ViewModel
             x4Terms.MembershipFunctions.Add(new MembershipFunction("Long", 0.6, 1, 1, 1));
             fuzzyLogic.Linguistics.Add(x4Terms);
 
+            LinguisticTerm iris = new LinguisticTerm("Iris");
+            iris.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 0, 0));
+            iris.MembershipFunctions.Add(new MembershipFunction("Middle", 0, 0.5, 0.5, 0.5));
+            iris.MembershipFunctions.Add(new MembershipFunction("Long", 0, 1, 1, 1));
+
+            fuzzyLogic.Linguistics.Add(iris);
+
+            fuzzyLogic.Consequent = "Iris";
             //Fetches data
             string macAdress = Data.GetMacAdress();
             double[][] data;
@@ -149,20 +157,32 @@ namespace Lab_assignment_2.ViewModel
                     data = Data.TextFile.ReadFileToJaggedArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
                     break;
             }
-           
+
             //Normalize the data
             double[][] normalizeddata = MathHelper.NormilizeData(data);
-            try
+            for (int i = 0; i < normalizeddata.Length; i++)
             {
- 
-               // fuzzyLogic.Defuzzify()
-            }
-            catch (Exception)
-            {
+                double x1 = normalizeddata[i][0];
+                double x2 = normalizeddata[i][1];
+                double x3 = normalizeddata[i][2];
+                double x4 = normalizeddata[i][3];
+                double r = normalizeddata[i][4];
 
-                throw;
+                try
+                {
+                    x1Terms.Input = x1;
+                    x2Terms.Input = x2;
+                    x3Terms.Input = x3;
+                    x4Terms.Input = x4;
+
+                    double b = fuzzyLogic.Defuzzification();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
             }
-            
 
             //denormalize the data
 

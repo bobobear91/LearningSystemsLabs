@@ -77,12 +77,14 @@ namespace Lab_assignment_2.Model
             int counter = 0;
             int firstMatch = 0;
 
+            //If text do not start with (
             if (!text.StartsWith("("))
             {
                 string[] tokens = text.Split();
                 return FindLingustics(tokens[0]).Fuzzification(tokens[2]);
             }
 
+            //Get the placement of first ( and the second )
             for (int i = 0; i < text.Length; i++)
             {
                 switch (text[i])
@@ -97,10 +99,16 @@ namespace Lab_assignment_2.Model
                         counter--;
                         if ((counter == 0) && (i > 0))
                         {
+                            //The question without brackets
                             string substring = text.Substring(firstMatch + 1, i - firstMatch - 1);
+                            //The question with brackets
                             string substringBrackets = text.Substring(firstMatch, i - firstMatch + 1);
+                            //Lenght of the substring with brackets
                             int length = substringBrackets.Length;
+
+                            //Replaces Bracketssubstring on the full text WITH the answer of fuzzification  
                             text = text.Replace(substringBrackets, Parse(substring).ToString());
+
                             i = i - (length - 1);
                         }
                         break;
@@ -118,7 +126,7 @@ namespace Lab_assignment_2.Model
             string[] tokens = text.Split();
             string connective = "";
             double value = 0;
-
+            int p = ((tokens.Length / 2) + 1);
             for (int i = 0; i <= ((tokens.Length / 2) + 1); i = i + 2)
             {
                 double tokenValue = Convert.ToDouble(tokens[i]);
@@ -149,10 +157,16 @@ namespace Lab_assignment_2.Model
         #endregion
 
         #region Public Methods
+        //public double Fu
+
         public double Defuzzification()
         {
+
+            //WHY
             double numerator = 0;
             double denominator = 0;
+
+
 
             // Reset values
             foreach (MembershipFunction membershipFunction in GetConsequent().MembershipFunctions)
@@ -160,9 +174,14 @@ namespace Lab_assignment_2.Model
                 membershipFunction.Value = 0;
             }
 
+
+
             // Something Somwthing Something dark side. 
             foreach (FuzzyLogicRule fuzzyRule in fuzzyrulebook)
             {
+                //Fuzzification
+                // INPUT: The part of the rule between IF and THEN. 
+                //
                 fuzzyRule.Value = Parse(fuzzyRule.Conditions());
 
                 string[] tokens = fuzzyRule.Rule.Split();
@@ -177,6 +196,8 @@ namespace Lab_assignment_2.Model
                 numerator += membershipFunction.Centorid() * membershipFunction.Area();
                 denominator += membershipFunction.Area();
             }
+
+
 
             return numerator / denominator;
         }
