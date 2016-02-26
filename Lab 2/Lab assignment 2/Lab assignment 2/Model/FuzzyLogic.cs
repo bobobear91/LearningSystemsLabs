@@ -78,9 +78,11 @@ namespace Lab_assignment_2.Model
             int firstMatch = 0;
 
             //If text do not start with (
+            //Todo: change into a function
             if (!text.StartsWith("("))
             {
                 string[] tokens = text.Split();
+                //Find the matching Lingustic and call Fuzzification on it's binding variabel
                 return FindLingustics(tokens[0]).Fuzzification(tokens[2]);
             }
 
@@ -161,36 +163,46 @@ namespace Lab_assignment_2.Model
 
         public double Defuzzification()
         {
-
-            //WHY
             double numerator = 0;
             double denominator = 0;
 
 
 
-            // Reset values
+            // For every membership function in the Consequent Linguestic Term
             foreach (MembershipFunction membershipFunction in GetConsequent().MembershipFunctions)
             {
+                //The return value of the fuzzification
                 membershipFunction.Value = 0;
             }
 
 
 
-            // Something Somwthing Something dark side. 
+            //FUZZIFICATION
+            //For every rule in rulebook
+                //Parse
+                    
             foreach (FuzzyLogicRule fuzzyRule in fuzzyrulebook)
             {
                 //Fuzzification
                 // INPUT: The part of the rule between IF and THEN. 
-                //
+                // Parse
+                // Returns Evaluate (ex 1 or 0 and 1)
+                //  
                 fuzzyRule.Value = Parse(fuzzyRule.Conditions());
 
                 string[] tokens = fuzzyRule.Rule.Split();
+                
+                //Gets the Consequent Linguestic Term and the Memberfunction of the Answer to the rule (the last word)
                 MembershipFunction membershipFunction = this.GetConsequent().Find(tokens[tokens.Length - 1]);
 
+                //If FuzzyRules Value is greater than membership function of that value, set membershipfunction to that value
+                //First iteration is the membership function of the answer 0, 
+                //Unclear
                 if (fuzzyRule.Value > membershipFunction.Value)
                     membershipFunction.Value = fuzzyRule.Value;
             }
 
+            //For every membership function in the Consequent Linguestic Term         
             foreach (MembershipFunction membershipFunction in this.GetConsequent().MembershipFunctions)
             {
                 numerator += membershipFunction.Centorid() * membershipFunction.Area();

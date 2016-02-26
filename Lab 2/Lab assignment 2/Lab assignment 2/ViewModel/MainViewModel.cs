@@ -138,9 +138,9 @@ namespace Lab_assignment_2.ViewModel
             fuzzyLogic.Linguistics.Add(x4Terms);
 
             LinguisticTerm iris = new LinguisticTerm("Iris");
-            iris.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 0, 0));
-            iris.MembershipFunctions.Add(new MembershipFunction("Middle", 0, 0.5, 0.5, 0.5));
-            iris.MembershipFunctions.Add(new MembershipFunction("Long", 0, 1, 1, 1));
+            iris.MembershipFunctions.Add(new MembershipFunction("Versicolor", 0, 0, 0, 0));
+            iris.MembershipFunctions.Add(new MembershipFunction("Setosa", 0, 0.5, 0.5, 0.5));
+            iris.MembershipFunctions.Add(new MembershipFunction("Virginica", 0, 1, 1, 1));
 
             fuzzyLogic.Linguistics.Add(iris);
 
@@ -170,12 +170,17 @@ namespace Lab_assignment_2.ViewModel
 
                 try
                 {
+                    //Sets the current network of lingustics term
                     x1Terms.Input = x1;
                     x2Terms.Input = x2;
                     x3Terms.Input = x3;
                     x4Terms.Input = x4;
+                    
+                    //Fuzzification
 
+                    //Defuzzification
                     double b = fuzzyLogic.Defuzzification();
+
                 }
                 catch (Exception)
                 {

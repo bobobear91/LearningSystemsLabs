@@ -20,7 +20,7 @@ namespace Lab_assignment_2.Model
         private double currentValue = 0;
 
         /// <summary>
-        /// 
+        /// Membership collection
         /// </summary>
         private Collection<MembershipFunction> membershipFunctionCollection = new Collection<MembershipFunction>();
 
@@ -28,7 +28,7 @@ namespace Lab_assignment_2.Model
 
         #region Properties
         /// <summary>
-        /// 
+        /// Name of Linguistic
         /// </summary>
         public string Name
         {
@@ -37,7 +37,7 @@ namespace Lab_assignment_2.Model
         }
 
         /// <summary>
-        /// 
+        /// The input for the Linguistic
         /// </summary>
         public double Input
         {
@@ -46,7 +46,7 @@ namespace Lab_assignment_2.Model
         }
 
         /// <summary>
-        /// 
+        /// Collection
         /// </summary>
         public Collection<MembershipFunction> MembershipFunctions
         {
