@@ -160,7 +160,7 @@ namespace Lab_assignment_2.Model
                 membershipFunction.Value = 0;
             }
 
-
+            // Something Somwthing Something dark side. 
             foreach (FuzzyLogicRule fuzzyRule in fuzzyrulebook)
             {
                 fuzzyRule.Value = Parse(fuzzyRule.Conditions());

@@ -113,13 +113,29 @@ namespace Lab_assignment_2.ViewModel
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x2 IS Short) OR (x2 IS Middle) AND (x3 IS Long) AND (x4 IS Long) THEN Iris IS Virginica"));
             fuzzyLogic.Rules.Add(new FuzzyLogicRule("IF (x1 IS Middle) AND (x2 IS Short) OR (x2 IS Middle) AND (x3 IS Short) AND (x4 IS Long) THEN Iris IS Versicolor"));
 
+            LinguisticTerm x1Terms = new LinguisticTerm("x1");
+            x1Terms.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 0, 0.6));
+            x1Terms.MembershipFunctions.Add(new MembershipFunction("Middle", 0, 0.6, 0.6, 1));
+            x1Terms.MembershipFunctions.Add(new MembershipFunction("Long", 0.6, 1, 1, 1));
+            fuzzyLogic.Linguistics.Add(x1Terms);
 
-            LinguisticTerm irisTerms = new LinguisticTerm("Iris");
-            irisTerms.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 20, 40));
-            irisTerms.MembershipFunctions.Add(new MembershipFunction("Middle", 30, 50, 50, 70));
-            irisTerms.MembershipFunctions.Add(new MembershipFunction("Long", 50, 80, 100, 100));
+            LinguisticTerm x2Terms = new LinguisticTerm("x2");
+            x2Terms.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 0, 0.6));
+            x2Terms.MembershipFunctions.Add(new MembershipFunction("Middle", 0, 0.6, 0.6, 1));
+            x2Terms.MembershipFunctions.Add(new MembershipFunction("Long", 0.6, 1, 1, 1));
+            fuzzyLogic.Linguistics.Add(x2Terms);
 
-            fuzzyLogic.Linguistics.Add(irisTerms);
+            LinguisticTerm x3Terms = new LinguisticTerm("x3");
+            x3Terms.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 0, 0.6));
+            x3Terms.MembershipFunctions.Add(new MembershipFunction("Middle", 0, 0.6, 0.6, 1));
+            x3Terms.MembershipFunctions.Add(new MembershipFunction("Long", 0.6, 1, 1, 1));
+            fuzzyLogic.Linguistics.Add(x3Terms);
+
+            LinguisticTerm x4Terms = new LinguisticTerm("x4");
+            x4Terms.MembershipFunctions.Add(new MembershipFunction("Short", 0, 0, 0, 0.6));
+            x4Terms.MembershipFunctions.Add(new MembershipFunction("Middle", 0, 0.6, 0.6, 1));
+            x4Terms.MembershipFunctions.Add(new MembershipFunction("Long", 0.6, 1, 1, 1));
+            fuzzyLogic.Linguistics.Add(x4Terms);
 
             //Fetches data
             string macAdress = Data.GetMacAdress();
@@ -162,9 +178,6 @@ namespace Lab_assignment_2.ViewModel
             SaveAsFile = new RelayCommand<object>(SaveAsFile_Event);
             NewFuzzyLogic = new RelayCommand<object>(NewFuzzyLogic_Event);
             Quit = new RelayCommand<object>(Quit_Event);
-
-
-
         }
         
         #endregion
