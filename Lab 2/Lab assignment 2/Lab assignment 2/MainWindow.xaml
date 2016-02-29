@@ -54,7 +54,7 @@
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
 
             </Grid.RowDefinitions>
             
@@ -191,7 +191,7 @@
             
             <!--Output-->
             <Label Grid.Column="1" Grid.Row="1" Content="Traning output"/>
-            <ScrollViewer Grid.Column="1" Grid.Row="2" VerticalScrollBarVisibility="Auto"  Margin="5,5,5,5">
+            <ScrollViewer Grid.Column="1" Grid.Row="3" VerticalScrollBarVisibility="Visible"  Margin="5,5,5,5">
                 <StackPanel>
                     <ItemsControl ItemsSource="{Binding OutputText}">
                         <ItemsControl.ItemTemplate>
@@ -208,6 +208,5 @@
 
 
 
-        <StatusBar Grid.RowSpan="2" Grid.Column="0"  HorizontalAlignment="Left" Height="25"  VerticalAlignment="Bottom" Width="100"/>
     </Grid>
 </Window>

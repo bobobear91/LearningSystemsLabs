@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -24,6 +25,7 @@ namespace Lab_assignment_2.ViewModel
     {
         #region Variables
         private FuzzyLogic fuzzyLogic;
+        private double[][] normalizeddata;
         #endregion
 
         #region Actions
@@ -40,7 +42,7 @@ namespace Lab_assignment_2.ViewModel
         /// Event for reseting the simulation
         /// </summary>
         public ICommand ResetSimulation { get; private set; }
-        
+
         /// <summary>
         /// Event for stopping the simulation
         /// </summary>
@@ -159,39 +161,15 @@ namespace Lab_assignment_2.ViewModel
             }
 
             //Normalize the data
-            double[][] normalizeddata = MathHelper.NormilizeData(data);
-            for (int i = 0; i < normalizeddata.Length; i++)
+            normalizeddata = MathHelper.NormilizeData(data);
+
+            Action action = () =>
             {
-                double x1 = normalizeddata[i][0];
-                double x2 = normalizeddata[i][1];
-                double x3 = normalizeddata[i][2];
-                double x4 = normalizeddata[i][3];
-                double r = normalizeddata[i][4];
+                GA();
+            };
 
-                try
-                {
-                    //Sets the current network of lingustics term
-                    x1Terms.Input = x1;
-                    x2Terms.Input = x2;
-                    x3Terms.Input = x3;
-                    x4Terms.Input = x4;
-                    
-                    //Fuzzification
-
-                    //Defuzzification
-                    double b = fuzzyLogic.Defuzzification();
-                    bool t = true;
-
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
-            }
-
-            //denormalize the data
-
+            Thread GAThread = new Thread(() => action());
+            GAThread.Start();
 
             //****************************************************************
             //      Events 
@@ -204,8 +182,11 @@ namespace Lab_assignment_2.ViewModel
             SaveAsFile = new RelayCommand<object>(SaveAsFile_Event);
             NewFuzzyLogic = new RelayCommand<object>(NewFuzzyLogic_Event);
             Quit = new RelayCommand<object>(Quit_Event);
+
+            GAThread.Join();
+            TestBest(BestAnswer);
         }
-        
+
         #endregion
 
         #region Events
@@ -294,7 +275,7 @@ namespace Lab_assignment_2.ViewModel
         {
             get
             {
-                return string.Format("Filepath: {0}",(!string.IsNullOrEmpty(filepath) ? filepath : "No file loaded."));
+                return string.Format("Filepath: {0}", (!string.IsNullOrEmpty(filepath) ? filepath : "No file loaded."));
             }
             private set
             {
@@ -453,10 +434,10 @@ namespace Lab_assignment_2.ViewModel
                             foreach (var membershipfunctions in lingu.MembershipFunctions)
                             {
 
-                                lingustics.Add(string.Format("    {0} X1:{1} X2:{2} X3:{3} X4:{4}", 
+                                lingustics.Add(string.Format("    {0} X1:{1} X2:{2} X3:{3} X4:{4}",
                                     (!string.IsNullOrEmpty(membershipfunctions.Name) ? membershipfunctions.Name : "Error!"),
-                                    membershipfunctions.X0, 
-                                    membershipfunctions.X1, 
+                                    membershipfunctions.X0,
+                                    membershipfunctions.X1,
                                     membershipfunctions.X2,
                                     membershipfunctions.X3));
                             }
@@ -474,5 +455,292 @@ namespace Lab_assignment_2.ViewModel
         #region Methods
 
         #endregion
+
+        // double[]population_DNA lista etc. . . 
+        double[][] pop_DNA;
+        double[] pop_Fitness;
+        double[] correct_answers;
+        double[][] children_DNA_of_Doom;
+        Random rnd = new Random();
+        double[] BestAnswer;
+        // individ DNA[0,0,0,0,0,0,0,0,0,0,0,0] 
+        //LinguisticTerm iris = new LinguisticTerm("Iris");
+        //iris.MembershipFunctions.Add(new MembershipFunction("Versicolor", 0, 0, 0, 0));
+        //iris.MembershipFunctions.Add(new MembershipFunction("Setosa", 0, 0.5, 0.5, 0.5));
+        //iris.MembershipFunctions.Add(new MembershipFunction("Virginica", 0, 1, 1, 1));
+
+        public void GA()
+        {
+            // SKapar första generation. inom scope 0-1 kanske 100 individer
+            pop_DNA = InitializePopulation();
+            double bestFitness = double.MaxValue;
+
+            // SKapar barn container
+            children_DNA_of_Doom = new double[50][];
+            for (int i = 0; i < 50; i++)
+            {
+                children_DNA_of_Doom[i] = new double[12];
+            }
+
+            // SKapar fitness container
+            pop_Fitness = new double[100];
+            double[][] latestAnswers = new double[normalizeddata.Length][];
+
+            // Fetch answetrs
+            correct_answers = CollectCorrectAnswers();
+
+            bestFitness = double.MaxValue;
+            int iterations = 0;
+            // repeat - tills itaration eller accuracy/fitness'
+            while (iterations < 200)//bestFitness > 0.1) //godtyckligt skittal
+            {
+                iterations++;
+                double[][] pop_Answers = new double[100][];
+                for (int i = 0; i < 100; i++)
+                {
+                    pop_Answers[i] = new double[normalizeddata.Length]; // TODO: question count.
+                }
+
+                // for every individual
+                for (int i = 0; i < 100; i++)
+                {
+
+                    LinguisticTerm tmp_iris = fuzzyLogic.Linguistics.Last();
+
+                    // counter to iterate DNA
+                    int counter = 0;
+                    // change membership attributes
+                    for (int x = 0; x < 3; x++)
+                    {
+                        tmp_iris.MembershipFunctions[x].X0 = pop_DNA[i][counter];
+                        counter++;
+                        tmp_iris.MembershipFunctions[x].X1 = pop_DNA[i][counter];
+                        counter++;
+                        tmp_iris.MembershipFunctions[x].X2 = pop_DNA[i][counter];
+                        counter++;
+                        tmp_iris.MembershipFunctions[x].X3 = pop_DNA[i][counter];
+                        counter++;
+                    }
+
+                    fuzzyLogic.Linguistics[fuzzyLogic.Linguistics.Count - 1] = tmp_iris;
+
+                    // Compute outputs
+                    for (int x = 0; x < normalizeddata.Length; x++)
+                    {
+                        double x1 = normalizeddata[x][0];
+                        double x2 = normalizeddata[x][1];
+                        double x3 = normalizeddata[x][2];
+                        double x4 = normalizeddata[x][3];
+                        double r = normalizeddata[x][4];
+
+                        //Sets the current network of lingustics term
+                        fuzzyLogic.Linguistics[0].Input = x1;
+                        fuzzyLogic.Linguistics[0].Input = x2;
+                        fuzzyLogic.Linguistics[0].Input = x3;
+                        fuzzyLogic.Linguistics[0].Input = x4;
+
+                        //Fuzzification
+
+                        //Defuzzification
+                        pop_Answers[i][x] = fuzzyLogic.Defuzzification();
+                    }
+
+                    // fitness
+                    pop_Fitness[i] = ComputeFitness(correct_answers, pop_Answers[i]);
+                    bestFitness = FindBestFitness();
+                    // Save latest answers;
+                    latestAnswers = pop_Answers;
+                }
+
+                InvertedCrossBreeding();
+            }
+
+            BestAnswer = latestAnswers[FindBestFitnessIndex()];
+        }
+
+        private double[][] InitializePopulation()
+        {
+            double[][] population = new double[100][];
+            for (int i = 0; i < 100; i++)
+            {
+                population[i] = new double[12]; // size of memfunction paraeters
+                for (int j = 0; j < 12; j++)
+                {
+                    population[i][j] = rnd.NextDouble();
+                }
+            }
+            return population;
+        }
+        private double ComputeFitness(double[] TargetOutput, double[] Individual_Output)
+        {
+            double sumSquaredError = 0.0;
+
+            for (int i = 0; i < TargetOutput.Length; i++)
+            {
+                double error = TargetOutput[i] - Individual_Output[i];
+                sumSquaredError += error * error;
+            }
+            return sumSquaredError / TargetOutput.Length;
+        }
+        private void InvertedCrossBreeding()
+        {
+            for (int i = 0; i < 50; i++) // iterate half of population
+            {
+                children_DNA_of_Doom[i] = Breed(pop_DNA[i], pop_DNA[(pop_DNA.Length -1) - i]);
+            }
+
+            int[] worstIndex = FindWorstIndividuals();
+
+            for (int i = 0; i < 50; i++)
+            {
+                pop_DNA[worstIndex[i]] = children_DNA_of_Doom[i];
+            }
+
+        }
+        private double[] Breed(double[] a, double[] b)
+        {
+            double[] child_DNA = new double[12];
+
+            for (int i = 0; i < 12; i++)
+            {
+                double rnd_value = rnd.NextDouble();
+                if (rnd_value > 0.5)
+                {
+                    child_DNA[i] = a[i];
+                }
+                else
+                {
+                    child_DNA[i] = b[i];
+                }
+
+                // mutation
+                rnd_value = rnd.NextDouble();
+                if (rnd_value > 0.8) // chance for mutation
+                {
+                    child_DNA[i] += (rnd.NextDouble() - (double)0.5)*0.1; //  -0.5 - 0.5
+
+                    if (child_DNA[i] > 1)
+                    {
+                        child_DNA[i] = 1;
+                    }
+                    if (child_DNA[i] < 0)
+                    {
+                        child_DNA[i] = 0;
+                    }
+                }
+            }
+            return child_DNA;
+        }
+
+        private int[] FindWorstIndividuals()
+        {
+            int[] worstIndex = new int[50];
+            for (int i = 0; i < 50; i++)
+            {
+                worstIndex[i] = i;
+            }
+
+            for (int i = 0; i < 100; i++)
+            {
+                for (int x = 0; x < 50; x++)
+                {
+                    if (pop_Fitness[i] > pop_Fitness[worstIndex[x]])
+                    {
+                        worstIndex[x] = i;
+                        break;
+                    }
+                }
+            }
+            return worstIndex;
+        }
+        private double[] CollectCorrectAnswers()
+        {
+            double[] answers = new double[normalizeddata.Length];
+            for (int i = 0; i < normalizeddata.Length; i++)
+            {
+                answers[i] = normalizeddata[i][4]; // get correct answer
+            }
+            return answers;
+        }
+        private double FindBestFitness()
+        {
+            double bestFitness = double.MaxValue;
+            for (int i = 0; i < 100; i++)
+            {
+                if (pop_Fitness[i] < bestFitness)
+                {
+                    bestFitness = pop_Fitness[i];
+                }
+            }
+            return bestFitness;
+        }
+        private int FindBestFitnessIndex()
+        {
+            int bestIndex = 0;
+            for (int i = 0; i < 100; i++)
+            {
+                if (pop_Fitness[i] < pop_Fitness[bestIndex])
+                {
+                    bestIndex = i;
+                }
+            }
+            return bestIndex;
+        }
+
+        // Test
+        private void TestBest(double[] bestAnswers)
+        {
+            int TesterIndex = FindBestFitnessIndex();
+
+            // print best fitness. 
+            double accuracy = ComputeAccuracy(correct_answers, bestAnswers);
+            string performance = string.Format("Accuracy: {0}%, Fitness: {1}", Math.Round(accuracy * 100, 2), FindBestFitness());
+            OutputText.Add(performance);
+
+            for (int i = 0; i < normalizeddata.Length; i++)
+            {
+                // string correct, string ind. answer, dec correct, dec answer
+                string output_String = string.Format("Correct Iris: {0}, Fuzzy Answer: {1}, c:{2}, a:{3}", InterpretAns(correct_answers[i]), InterpretAns(bestAnswers[i]), correct_answers[i], bestAnswers[i]);
+                OutputText.Add(output_String);
+            }
+        }
+        private double ComputeAccuracy(double[] TargetOutput, double[] NNOutput)
+        {
+            int numCorrect = 0;
+            int numWrong = 0;
+
+            for (int y = 0; y < TargetOutput.Length; y++)
+            {
+                string fuzzy_answer = InterpretAns(NNOutput[y]);
+                string t_answer = InterpretAns(TargetOutput[y]);
+
+                if (fuzzy_answer != t_answer)
+                {
+                    ++numCorrect;
+                }
+                else
+                {
+                    ++numWrong;
+                }
+            }
+            double result = (double)(numCorrect) / ((double)numCorrect + numWrong);
+            return result;
+        }
+
+        private string InterpretAns(double value)
+        {
+            if (value < 0.33) // Versicolor
+            {
+                return "Versicolor";
+            }
+            if (value > 0.66) // Setosa
+            {
+                return "Verginica";
+            }
+            else // Vernigica
+            {
+                return "Setosa";
+            }
+        }
     }
 }
