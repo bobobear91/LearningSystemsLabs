@@ -180,6 +180,7 @@ namespace Lab_assignment_2.ViewModel
 
                     //Defuzzification
                     double b = fuzzyLogic.Defuzzification();
+                    bool t = true;
 
                 }
                 catch (Exception)
