@@ -156,7 +156,7 @@ namespace Lab_assignment_2.ViewModel
                     data = Data.TextFile.ReadFileToJaggedArray<double>("C:\\Users\\dss10_000\\Documents\\GitHub\\LearningSystemsLabs\\Lab 2\\iris.txt");
                     break;
                 default:
-                    data = Data.TextFile.ReadFileToJaggedArray<double>("D:\\LearningSystemsLabs\\Lab 2\\iris.txt");
+                    data = Data.TextFile.ReadFileToJaggedArray<double>(@"C:\Users\robin\Documents\GitHub\LearningSystemsLabs\Lab 2\iris.txt");
                     break;
             }
 
@@ -535,9 +535,9 @@ namespace Lab_assignment_2.ViewModel
 
                         //Sets the current network of lingustics term
                         fuzzyLogic.Linguistics[0].Input = x1;
-                        fuzzyLogic.Linguistics[0].Input = x2;
-                        fuzzyLogic.Linguistics[0].Input = x3;
-                        fuzzyLogic.Linguistics[0].Input = x4;
+                        fuzzyLogic.Linguistics[1].Input = x2;
+                        fuzzyLogic.Linguistics[2].Input = x3;
+                        fuzzyLogic.Linguistics[3].Input = x4;
 
                         //Fuzzification
 
@@ -714,7 +714,7 @@ namespace Lab_assignment_2.ViewModel
                 string fuzzy_answer = InterpretAns(NNOutput[y]);
                 string t_answer = InterpretAns(TargetOutput[y]);
 
-                if (fuzzy_answer != t_answer)
+                if (fuzzy_answer == t_answer)
                 {
                     ++numCorrect;
                 }

@@ -197,20 +197,18 @@ namespace Lab_assignment_2.Model
 
                 //If FuzzyRules Value is greater than membership function of that value, set membershipfunction to that value
                 //First iteration is the membership function of the answer 0, 
-                //Unclear
+                //Sets the output linguistic varible for that rule
                 if (fuzzyRule.Value > membershipFunction.Value)
                     membershipFunction.Value = fuzzyRule.Value;
             }
 
-            //For every membership function in the Consequent Linguestic Term         
+            //For every membership function in the Consequent Linguestic Term
+            //DEFUZZIFICATION OF THE VALUES (Fuzzy values -> to real values)         
             foreach (MembershipFunction membershipFunction in this.GetConsequent().MembershipFunctions)
             {
                 numerator += membershipFunction.Centorid() * membershipFunction.Area();
                 denominator += membershipFunction.Area();
             }
-
-
-
             return numerator / denominator;
         }
         #endregion
