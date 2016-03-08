@@ -190,14 +190,32 @@ namespace Lab_Assignment_3.Helpers
         }
         private int[] Breed(int[] parentA, int[] parentB)
         {
-            List<int> indexList = new List<int>();
-            for (int i = 0; i < CityCoordinates.Length; i++)
+            List<int> parentAList = new List<int>();
+            List<int> parentBList = new List<int>();
+            for (int i = 0; i < DNASize; i++)
             {
-                indexList.Add(i);
+                parentAList.Add(parentA[i]);
+                parentBList.Add(parentB[i]);
             }
-            throw new NotImplementedException();
 
-
+            int[] newDNA = new int[DNASize];
+            for (int i = 0; i < DNASize; i++)
+            {
+                double rndValue = rnd.NextDouble();
+                if (rndValue > 0.5)
+                {
+                    newDNA[i] = parentAList[i];
+                    parentAList.RemoveAt(i);
+                    parentBList.Remove(parentAList[i]);
+                }
+                else
+                {
+                    newDNA[i] = parentBList[i];
+                    parentBList.RemoveAt(i);
+                    parentAList.Remove(parentBList[i]);
+                }
+            }
+            return newDNA;
         }
         private double computeFitness(int[] individualDNA)
         {
@@ -216,23 +234,63 @@ namespace Lab_Assignment_3.Helpers
 
         private double GetBestFitnessValue()
         {
-            throw new NotImplementedException();
+            double bestValue = int.MaxValue;
+            for (int i = 0; i < populationSize; i++)
+            {
+                if (population_Fitness[i] < bestValue)
+                {
+                    bestValue = population_Fitness[i];
+                }
+            }
+            return bestValue;
         }
         private double ComputeGenMeanFitnessValue()
         {
-            throw new NotImplementedException();
+            double fitnessSum = 0;
+            for (int i = 0; i < PopulationSize; i++)
+            {
+                fitnessSum += population_Fitness[i];
+            }
+            return fitnessSum / PopulationSize;
         }
         private int GetBestFitnessIndex()
         {
-            throw new NotImplementedException();
+            int bestIndex = 0;
+            for (int i = 0; i < populationSize; i++)
+            {
+                if (population_Fitness[i] < population_Fitness[bestIndex])
+                {
+                    bestIndex = i;
+                }
+            }
+            return bestIndex;
         }
         private int GetWorstFitnessIndex()
         {
-            throw new NotImplementedException();
+            int worstIndex = 0;
+            for (int i = 0; i < populationSize; i++)
+            {
+                if (population_Fitness[i] > population_Fitness[worstIndex])
+                {
+                    worstIndex = i;
+                }
+            }
+            return worstIndex;
         }
-        private int[] GetRoute(int index)
+        private Point[] GetRoute(int index)
         {
-            throw new NotImplementedException();
+            // Get routeOrder from DNA[index]
+            int[] routeOrder = population_DNA[index];
+            // Initialize route Point array
+            Point[] route = new Point[DNASize + 1];
+            // Get all point coordinates in the order of routeOrder
+            for (int i = 0; i < DNASize; i++)
+            {
+                route[i] = cityCoordinates[routeOrder[i]];
+            }
+            // Add the first point from routeOrder to the last point of the route. 
+            route[DNASize] = cityCoordinates[routeOrder[0]];
+            return route;
         }
 
         // Math
