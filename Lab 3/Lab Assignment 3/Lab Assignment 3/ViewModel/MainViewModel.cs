@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Lab_Assignment_3.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Lab_Assignment_3.ViewModel
 {
@@ -15,6 +17,107 @@ namespace Lab_Assignment_3.ViewModel
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Event for starting the simulation
+        /// </summary>
+        public ICommand StartSimulation { get; private set; }
+
+        /// <summary>
+        /// Event for reseting the simulation
+        /// </summary>
+        public ICommand ResetSimulation { get; private set; }
+
+        /// <summary>
+        /// Event for stopping the simulation
+        /// </summary>
+        public ICommand StopSimulation { get; private set; }
+
+        private bool isStartEnabled = true;
+        public bool IsStartEnabled
+        {
+            get { return isStartEnabled; }
+            private set
+            {
+                if (isStartEnabled != value)
+                {
+                    isStartEnabled = value;
+                    NotifyPropertyChanged();
+                }
+            }
+
+        }
+
+        private bool isStopEnabled = false;
+        public bool IsStopEnabled
+        {
+            get { return isStopEnabled; }
+            private set
+            {
+                if (isStopEnabled != value)
+                {
+                    isStopEnabled = value;
+                    NotifyPropertyChanged();
+                }
+            }
+
+        }
+
+        private bool isResetEnabled = false;
+        public bool IsResetEnabled
+        {
+            get { return isResetEnabled; }
+            private set
+            {
+                if (isResetEnabled != value)
+                {
+                    isResetEnabled = value;
+                    NotifyPropertyChanged();
+                }
+            }
+
+        }
+
+        private int populationchance = 1;
+        public int Population
+        {
+            get { return populationchance; }
+            set
+            {
+                if (populationchance != value)
+                {
+                    populationchance = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private int children = 1;
+        public int Children
+        {
+            get { return children; }
+            set
+            {
+                if (children != value)
+                {
+                    children = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private int mutationchance = 1;
+        public int MutationChance
+        {
+            get { return mutationchance; }
+            set
+            {
+                if (mutationchance != value)
+                {
+                    mutationchance = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
         #endregion
 
         #region Actions
@@ -24,7 +127,12 @@ namespace Lab_Assignment_3.ViewModel
         #region Constructor
         public MainViewModel()
         {
-
+            //****************************************************************
+            //      Events 
+            //****************************************************************
+            StartSimulation = new RelayCommand<object>(StartSimulation_Event);
+            ResetSimulation = new RelayCommand<object>(ResetSimulation_Event);
+            StopSimulation = new RelayCommand<object>(StopSimulation_Event);
         }
         #endregion
 
@@ -47,7 +155,25 @@ namespace Lab_Assignment_3.ViewModel
 
             }
         }
-        #endregion
+
+        private void StopSimulation_Event(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ResetSimulation_Event(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void StartSimulation_Event(object obj)
+        {
+
+            throw new NotImplementedException();
+        }
+
+
+    #endregion
 
     }
 }
