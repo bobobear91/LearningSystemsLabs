@@ -126,6 +126,21 @@ namespace Lab_Assignment_3.ViewModel
                 }
             }
         }
+
+
+        private int iterations = 10000;
+        public int Iterations
+        {
+            get { return iterations; }
+            set
+            {
+                if (iterations != value)
+                {
+                    iterations = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
         #endregion
 
         #region Actions
@@ -166,18 +181,29 @@ namespace Lab_Assignment_3.ViewModel
 
         private void StopSimulation_Event(object obj)
         {
-            throw new NotImplementedException();
+            IsStopEnabled = false;
+            IsStartEnabled = true;
+            IsResetEnabled = true;
         }
 
         private void ResetSimulation_Event(object obj)
         {
-            throw new NotImplementedException();
+            //Clears the graphs
+
+            //Stops and clears
+            IsStopEnabled = false;
+            IsStartEnabled = true;
+            IsResetEnabled = false;
+
+            
         }
 
         private void StartSimulation_Event(object obj)
         {
+            IsStopEnabled = true;
+            IsStartEnabled = false;
+            IsResetEnabled = true;
 
-            throw new NotImplementedException();
         }
 
 
