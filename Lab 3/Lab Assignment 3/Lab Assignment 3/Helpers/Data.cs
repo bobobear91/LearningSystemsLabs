@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Net.NetworkInformation;
+using System.Windows;
 
-namespace Lab_assignment_2.Handlers
+namespace Lab_assignment_3.Handlers
 {
     public class Data
     {
@@ -39,6 +40,26 @@ namespace Lab_assignment_2.Handlers
                 }
             }
             return false;
+        }
+        private static bool IsNumericType(object o)
+        {
+            switch (Type.GetTypeCode(o.GetType()))
+            {
+                case TypeCode.Byte:
+                case TypeCode.SByte:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.Decimal:
+                case TypeCode.Double:
+                case TypeCode.Single:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         public static string GetMacAdress()
@@ -358,27 +379,22 @@ namespace Lab_assignment_2.Handlers
                 return true;
             }
 
-            private static bool IsNumericType(object o)
-            {
-                switch (Type.GetTypeCode(o.GetType()))
-                {
-                    case TypeCode.Byte:
-                    case TypeCode.SByte:
-                    case TypeCode.UInt16:
-                    case TypeCode.UInt32:
-                    case TypeCode.UInt64:
-                    case TypeCode.Int16:
-                    case TypeCode.Int32:
-                    case TypeCode.Int64:
-                    case TypeCode.Decimal:
-                    case TypeCode.Double:
-                    case TypeCode.Single:
-                        return true;
-                    default:
-                        return false;
-                }
-            }
+
             #endregion
+        }
+
+        public static class Converter
+        {
+            public static Point[] ArrayToPoint(double[,] _array)
+            {
+                Point[] points = new Point[_array.Length];
+                for (int i = 0; i < _array.Length; i++)
+                {
+                    Point newPoint = new Point(_array[i, 0], _array[i, 1]);
+                    points[i] = newPoint;
+                }
+                return points;
+            }
         }
     }
 }

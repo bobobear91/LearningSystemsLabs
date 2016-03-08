@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -42,7 +43,8 @@ namespace Lab_Assignment_3.Helpers
                 population_DNA = new int[populationSize][];
                 for (int i = 0; i < populationSize; i++)
                 {
-                    population_DNA[i] = new int[DNASize];
+                    population_DNA[i] = CreateRandomDNA();
+                    population_Fitness[i] = int.MaxValue;
                 }
             }
         }
@@ -126,10 +128,14 @@ namespace Lab_Assignment_3.Helpers
         /// <param name="maxIterations"></param>
         public void Start(int maxIterations)
         {
-            // TODO: run this on new thread
-            stopAlgorithm = false;
-            MainGA(maxIterations);
-            // TODO: fire 'finished' event. 
+            Action doGeneticAlgorithm = () =>
+            {
+                stopAlgorithm = false;
+                MainGA(maxIterations);
+            };
+
+            Thread GA = new Thread(() => doGeneticAlgorithm());
+            GA.Start();
         }
         /// <summary>
         /// Stops the algorithm 
@@ -157,7 +163,8 @@ namespace Lab_Assignment_3.Helpers
 
                 // Get Best Fitness and values here --------------------------------
                 int bestIndividualIndex = GetBestFitnessIndex();
-                FireBestFitnessInformation(population_Fitness[bestIndividualIndex]);
+                if (FireBestFitnessInformation != null) FireBestFitnessInformation(population_Fitness[bestIndividualIndex], iterations);
+                if (FireBestRouteInformation != null) FireBestRouteInformation(GetRoute(bestIndividualIndex), iterations);
                 //------------------------------------------------------------------
 
                 // Create new generation / dispose current generation bad eggs. 
@@ -306,12 +313,10 @@ namespace Lab_Assignment_3.Helpers
         }
 
         // Delegate Events
-        public delegate void BestFitnessInformation(double best_fitness);
-        public delegate void BestRouteInformation(int[] best_Route);
-        public delegate void FinishedIterations(double best_fitness, int[] best_Route);
+        public delegate void BestFitnessInformation(double best_fitness, int iteration);
+        public delegate void BestRouteInformation(Point[] best_Route, int iteration);
 
         public event BestFitnessInformation FireBestFitnessInformation;
         public event BestRouteInformation FireBestRouteInformation;
-        public event FinishedIterations FireFinishedIterations;
     }
 }

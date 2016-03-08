@@ -1,9 +1,11 @@
-﻿using Lab_Assignment_3.Helpers;
+﻿using Lab_assignment_3.Handlers;
+using Lab_Assignment_3.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Lab_Assignment_3.ViewModel
@@ -11,6 +13,7 @@ namespace Lab_Assignment_3.ViewModel
     public class MainViewModel : BaseViewModel
     {
         #region Private varibles
+        TravelingSalesman TS;
         #endregion
 
         #region Private Properties
@@ -167,6 +170,13 @@ namespace Lab_Assignment_3.ViewModel
         #region Constructor
         public MainViewModel()
         {
+            // Read file with cityCoordinates. 
+            Point[] cityCoordinates = Data.Converter.ArrayToPoint(Data.TextFile.ReadFileToArray<double>("52Berlin.tsp"));
+
+            TS = new TravelingSalesman(cityCoordinates);
+            TS.FireBestFitnessInformation += TS_FireBestFitnessInformation;
+            TS.FireBestRouteInformation += TS_FireBestRouteInformation;
+
             //****************************************************************
             //      Events 
             //****************************************************************
@@ -227,8 +237,15 @@ namespace Lab_Assignment_3.ViewModel
             IsRunningEnabled = true;
         }
 
-
-    #endregion
+        private void TS_FireBestRouteInformation(Point[] best_Route, int iteration)
+        {
+            throw new NotImplementedException();
+        }
+        private void TS_FireBestFitnessInformation(double best_fitness, int iteration)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
     }
 }
