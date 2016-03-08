@@ -32,6 +32,23 @@ namespace Lab_Assignment_3.ViewModel
         /// </summary>
         public ICommand StopSimulation { get; private set; }
 
+
+
+        private bool isRunningEnabled = false;
+        public bool IsRunningEnabled
+        {
+            get { return !isRunningEnabled; }
+            private set
+            {
+                if (isRunningEnabled != value)
+                {
+                    isRunningEnabled = value;
+                    NotifyPropertyChanged();
+                }
+            }
+
+        }
+
         private bool isStartEnabled = true;
         public bool IsStartEnabled
         {
@@ -184,6 +201,7 @@ namespace Lab_Assignment_3.ViewModel
             IsStopEnabled = false;
             IsStartEnabled = true;
             IsResetEnabled = true;
+
         }
 
         private void ResetSimulation_Event(object obj)
@@ -195,6 +213,8 @@ namespace Lab_Assignment_3.ViewModel
             IsStartEnabled = true;
             IsResetEnabled = false;
 
+
+            IsRunningEnabled = false;
             
         }
 
@@ -204,6 +224,7 @@ namespace Lab_Assignment_3.ViewModel
             IsStartEnabled = false;
             IsResetEnabled = true;
 
+            IsRunningEnabled = true;
         }
 
 
