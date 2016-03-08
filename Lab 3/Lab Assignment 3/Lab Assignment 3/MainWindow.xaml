@@ -50,7 +50,7 @@
                             <ColumnDefinition Width="110"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Content="Population Size"/>
-                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding Path=Population, UpdateSourceTrigger=PropertyChanged}" Watermark="Population Size" />
+                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" Value="{Binding Path=Population, UpdateSourceTrigger=PropertyChanged}" Watermark="Population Size" />
                     </Grid>
 
                     <!--Mutation - Size -->
@@ -63,7 +63,7 @@
                             <ColumnDefinition Width="110"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Content="Mutation Size"/>
-                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding Path=MutationChance, UpdateSourceTrigger=PropertyChanged}" Watermark="Mutation Chance" />
+                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="0" Maximum="1" Increment="0.01" Value="{Binding Path=MutationChance, UpdateSourceTrigger=PropertyChanged}" Watermark="Mutation Chance" />
                     </Grid>
 
                     <!--Population - Size -->
@@ -76,7 +76,7 @@
                             <ColumnDefinition Width="110"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Content="Children Size"/>
-                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding Path=Children, UpdateSourceTrigger=PropertyChanged}" Watermark="Children Size" />
+                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" Maximum="{Binding Path=MaxChildren, UpdateSourceTrigger=PropertyChanged}" Value="{Binding Path=Children, UpdateSourceTrigger=PropertyChanged}" Watermark="Children Size" />
                     </Grid>
 
                 </Grid>

@@ -77,21 +77,29 @@ namespace Lab_Assignment_3.ViewModel
 
         }
 
-        private int populationchance = 1;
+        private int population = 1000; //10e3
         public int Population
         {
-            get { return populationchance; }
+            get { return population; }
             set
             {
-                if (populationchance != value)
+                if (population != value)
                 {
-                    populationchance = value;
+                    population = value;
                     NotifyPropertyChanged();
+                    NotifyPropertyChanged("MaxChildren");
                 }
             }
         }
 
         private int children = 1;
+        
+        public int MaxChildren
+        {
+            get { return population; }
+        }
+
+
         public int Children
         {
             get { return children; }
@@ -105,8 +113,8 @@ namespace Lab_Assignment_3.ViewModel
             }
         }
 
-        private int mutationchance = 1;
-        public int MutationChance
+        private double mutationchance = 0.01;
+        public double MutationChance
         {
             get { return mutationchance; }
             set
