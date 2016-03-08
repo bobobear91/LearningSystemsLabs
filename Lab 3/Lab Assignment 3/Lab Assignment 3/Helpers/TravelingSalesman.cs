@@ -190,7 +190,14 @@ namespace Lab_Assignment_3.Helpers
         }
         private int[] Breed(int[] parentA, int[] parentB)
         {
+            List<int> indexList = new List<int>();
+            for (int i = 0; i < CityCoordinates.Length; i++)
+            {
+                indexList.Add(i);
+            }
             throw new NotImplementedException();
+
+
         }
         private double computeFitness(int[] individualDNA)
         {
