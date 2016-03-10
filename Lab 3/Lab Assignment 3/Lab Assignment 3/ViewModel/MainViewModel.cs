@@ -2,11 +2,14 @@
 using Lab_Assignment_3.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Lab_Assignment_3.ViewModel
 {
@@ -35,7 +38,8 @@ namespace Lab_Assignment_3.ViewModel
         /// </summary>
         public ICommand StopSimulation { get; private set; }
 
-
+        public ObservableCollection<Point> Cities { get; set; }
+        public ObservableCollection<Point> Route { get; set; }
 
         private bool isRunningEnabled = false;
         public bool IsRunningEnabled
@@ -177,6 +181,23 @@ namespace Lab_Assignment_3.ViewModel
             TS.FireBestFitnessInformation += TS_FireBestFitnessInformation;
             TS.FireBestRouteInformation += TS_FireBestRouteInformation;
 
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(UpdateCharts_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            dispatcherTimer.Start();
+
+            //****************************************************************
+            //      ObservableProperties
+            //****************************************************************
+            Cities = new ObservableCollection<Point>();
+            for (int i = 0; i < cityCoordinates.GetLength(0); i++)
+            {
+                Cities.Add(cityCoordinates[i]);
+            }
+            
+            Route = new ObservableCollection<Point>();
+            //Route = Cities;
+
             //****************************************************************
             //      Events 
             //****************************************************************
@@ -235,16 +256,36 @@ namespace Lab_Assignment_3.ViewModel
             IsResetEnabled = true;
 
             IsRunningEnabled = true;
+            TS.Start(Iterations);
         }
 
         private void TS_FireBestRouteInformation(Point[] best_Route, int iteration)
         {
-            //throw new NotImplementedException();
+            Route.Clear();
+            for (int i = 0; i < best_Route.GetLength(0); i++)
+            {
+                Route.Add(best_Route[i]);
+            }         
         }
         private void TS_FireBestFitnessInformation(double best_fitness, int iteration)
         {
             //throw new NotImplementedException();
         }
+
+        private void UpdateCharts_Tick(object sender, EventArgs e)
+        {
+            if (TS.IsRunning)
+            {
+                Point[] tmp = TS.GetBestRoute();
+                Route.Clear();
+                for (int i = 0; i < tmp.GetLength(0); i++)
+                {
+                    Route.Add(tmp[i]);
+                }
+            }
+        }
         #endregion
+
+       
     }
 }

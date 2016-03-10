@@ -35,8 +35,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Sparrow.Chart.Wpf.40, Version=13.1.0.118, Culture=neutral, PublicKeyToken=50f33fb8697e9a92, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sparrow.Chart.Wpf.13.1.0.118\lib\net40\Sparrow.Chart.Wpf.40.dll</HintPath>
+    <Reference Include="Arction.DirectX, Version=6.5.8.4001, Culture=neutral, PublicKeyToken=6484d7bb14b95dd3, processorArchitecture=MSIL">
+      <HintPath>..\packages\LightningChartUltimateWPF.6.5.8\lib\Net40-Client\Arction.DirectX.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Arction.WPF.LightningChartUltimate, Version=6.5.8.4001, Culture=neutral, PublicKeyToken=6484d7bb14b95dd3, processorArchitecture=MSIL">
+      <HintPath>..\packages\LightningChartUltimateWPF.6.5.8\lib\Net40-Client\Arction.WPF.LightningChartUltimate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Sparrow.Chart.Wpf.40, Version=13.1.0.117, Culture=neutral, PublicKeyToken=50f33fb8697e9a92, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sparrow.Chart.Wpf.13.1.0.117\lib\net40\Sparrow.Chart.Wpf.40.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

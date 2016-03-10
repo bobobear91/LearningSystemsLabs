@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Lab_Assignment_3.Helpers
 {
@@ -51,6 +52,11 @@ namespace Lab_Assignment_3.Helpers
 
         //State
         bool stopAlgorithm;
+        bool isRunning;
+        public bool IsRunning
+        {
+            get { return isRunning; }
+        }
 
         // Population
         int[][] population_DNA;
@@ -76,6 +82,7 @@ namespace Lab_Assignment_3.Helpers
 
             // Set state
             stopAlgorithm = false;
+            isRunning = false;
         }
         /// <summary>
         /// Initializes/Resets the current population and fitness
@@ -153,6 +160,7 @@ namespace Lab_Assignment_3.Helpers
         private void MainGA(int maxIterations)
         {
             int iterations = 0;
+            isRunning = true;
             while (iterations < maxIterations && !stopAlgorithm)
             {
                 for (int i = 0; i < populationSize; i++)
@@ -163,13 +171,25 @@ namespace Lab_Assignment_3.Helpers
 
                 // Get Best Fitness and values here --------------------------------
                 int bestIndividualIndex = GetBestFitnessIndex();
-                if (FireBestFitnessInformation != null) FireBestFitnessInformation(population_Fitness[bestIndividualIndex], iterations);
-                if (FireBestRouteInformation != null) FireBestRouteInformation(GetRoute(bestIndividualIndex), iterations);
+                //if (bestIndividualIndex != lastBestIndex)
+                //{
+                //    lastBestIndex = bestIndividualIndex;
+                //    Point[] bestRoute = GetRoute(bestIndividualIndex);
+                //    Application.Current.Dispatcher.Invoke(FireBestRouteInformation, new object[] { bestRoute, iterations });
+                //}
+                //if (FireBestFitnessInformation != null) FireBestFitnessInformation(population_Fitness[bestIndividualIndex], iterations);
+                //if (FireBestRouteInformation != null) FireBestRouteInformation(GetRoute(bestIndividualIndex), iterations);
                 //------------------------------------------------------------------
 
                 // Create new generation / dispose current generation bad eggs. 
                 InvertedCrossBreeding();
+                iterations++;
+                if (IsItCrapYet())
+                {
+                    isRunning = true;
+                }
             }
+            isRunning = false;
         }
         private void InvertedCrossBreeding()
         {
@@ -211,15 +231,15 @@ namespace Lab_Assignment_3.Helpers
                 double rndValue = rnd.NextDouble();
                 if (rndValue > 0.5)
                 {
-                    newDNA[i] = parentAList[i];
-                    parentAList.RemoveAt(i);
-                    parentBList.Remove(parentAList[i]);
+                    newDNA[i] = parentAList[0];
+                    parentBList.Remove(parentAList[0]);
+                    parentAList.RemoveAt(0);
                 }
                 else
                 {
-                    newDNA[i] = parentBList[i];
-                    parentBList.RemoveAt(i);
-                    parentAList.Remove(parentBList[i]);
+                    newDNA[i] = parentBList[0];
+                    parentAList.Remove(parentBList[0]);
+                    parentBList.RemoveAt(0);               
                 }
             }
             return newDNA;
@@ -298,6 +318,38 @@ namespace Lab_Assignment_3.Helpers
             // Add the first point from routeOrder to the last point of the route. 
             route[DNASize] = cityCoordinates[routeOrder[0]];
             return route;
+        }
+
+        public Point[] GetBestRoute()
+        {
+            int rndIndex = rnd.Next(DNASize - 1);
+            int bestIndex = GetBestFitnessIndex();
+            Point[] tmpRoute = GetRoute(rndIndex);
+            return tmpRoute;
+        }
+
+        private Point[] RandomPoints()
+        {
+            Point[] tmp = new Point[53];
+            for (int i = 0; i < 53; i++)
+            {
+                tmp[i] = new Point(rnd.Next(1500), rnd.Next(1500));
+            }
+            return tmp;
+        }
+        private bool IsItCrapYet()
+        {
+            for (int i = 0; i < populationSize; i++)
+            {
+                for (int j = 0; j < DNASize; j++)
+                {
+                    if (population_DNA[0][j] != population_DNA[i][j])
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         // Math
