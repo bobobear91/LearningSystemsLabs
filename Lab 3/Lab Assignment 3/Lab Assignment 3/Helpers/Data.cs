@@ -388,7 +388,7 @@ namespace Lab_assignment_3.Handlers
             public static Point[] ArrayToPoint(double[,] _array)
             {
                 Point[] points = new Point[_array.Length];
-                for (int i = 0; i < _array.Length; i++)
+                for (int i = 0; i < _array.GetLength(0); i++)
                 {
                     Point newPoint = new Point(_array[i, 0], _array[i, 1]);
                     points[i] = newPoint;

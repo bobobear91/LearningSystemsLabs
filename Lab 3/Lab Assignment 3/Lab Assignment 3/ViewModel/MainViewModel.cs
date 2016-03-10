@@ -171,7 +171,7 @@ namespace Lab_Assignment_3.ViewModel
         public MainViewModel()
         {
             // Read file with cityCoordinates. 
-            Point[] cityCoordinates = Data.Converter.ArrayToPoint(Data.TextFile.ReadFileToArray<double>("52Berlin.tsp"));
+            Point[] cityCoordinates = Data.Converter.ArrayToPoint(Data.TextFile.ReadFileToArray<double>(AppDomain.CurrentDomain.BaseDirectory + "berlin52.tsp"));
 
             TS = new TravelingSalesman(cityCoordinates);
             TS.FireBestFitnessInformation += TS_FireBestFitnessInformation;
@@ -239,13 +239,12 @@ namespace Lab_Assignment_3.ViewModel
 
         private void TS_FireBestRouteInformation(Point[] best_Route, int iteration)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         private void TS_FireBestFitnessInformation(double best_fitness, int iteration)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         #endregion
-
     }
 }
