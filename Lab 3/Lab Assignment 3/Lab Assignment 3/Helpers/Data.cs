@@ -17,7 +17,7 @@ namespace Lab_assignment_3.Handlers
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        private static bool FileExist(string FilePath)
+        public static bool FileExist(string FilePath)
         {
             if (File.Exists(FilePath))
             {

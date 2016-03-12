@@ -8,7 +8,7 @@
         xmlns:sparrow="http://sparrowtoolkit.codeplex.com/wpf"
         xmlns:lcu="http://www.arction.com/schemas/" x:Class="Lab_Assignment_3.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="380" Width="525">
     <Grid>
         <!--Grid for application-->
         <Grid>
@@ -29,6 +29,8 @@
                     <Separator />
                     <MenuItem Header="_Save"/>
                     <MenuItem Header="_Save As..."/>
+                    <MenuItem Header="_Load Points" 
+                               Click="MenuItem_Click"/>
                     <Separator />
                     <MenuItem Header="_Exit" Command="{Binding Quit}"/>
                 </MenuItem>
@@ -49,7 +51,7 @@
                     <!--Top-->
                     <RowDefinition Height="*" MinHeight="198"/>
                     <!--Bottom-->
-                    <RowDefinition Height="Auto" MinHeight="86"/>
+                    <RowDefinition Height="Auto" MinHeight="109"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -60,7 +62,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -76,7 +78,7 @@
                             <ColumnDefinition Width="110"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Content="Population Size"/>
-                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" Value="{Binding Population, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Watermark="Population Size" />
+                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" Value="{Binding Population, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Watermark="Population Size" Width="100" />
                     </Grid>
 
                     <!--Mutation - Size -->
@@ -89,7 +91,7 @@
                             <ColumnDefinition Width="110"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Content="Mutation Size"/>
-                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="0" Maximum="1" Increment="0.01" Value="{Binding MutationChance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Watermark="Mutation Chance" />
+                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="0" Maximum="1" Increment="0.01" Value="{Binding MutationChance, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Watermark="Mutation Chance" Width="100" />
                     </Grid>
 
                     <!--Population - Size -->
@@ -102,7 +104,7 @@
                             <ColumnDefinition Width="110"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Content="Children Size"/>
-                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" Maximum="{Binding MaxChildren, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Value="{Binding Children, UpdateSourceTrigger=PropertyChanged}" Watermark="Children Size" />
+                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" Maximum="{Binding MaxChildren, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Value="{Binding Children, UpdateSourceTrigger=PropertyChanged}" Watermark="Children Size" Width="100" />
                     </Grid>
 
                 </Grid>
@@ -117,9 +119,21 @@
                         </sparrow:SparrowChart.YAxis>
                         <sparrow:ScatterSeries ScatterSize="8" PointsSource="{Binding Path=Cities}" XPath="X" YPath="Y" Fill="#FF105AB4" Stroke="#FF254EB9"></sparrow:ScatterSeries>
                         <sparrow:LineSeries PointsSource="{Binding Path=Route}" XPath="X" YPath="Y" Stroke="#FF0F704D"></sparrow:LineSeries>
+                        <sparrow:ScatterSeries ScatterSize="20" PointsSource="{Binding Path=Home}" XPath="X" YPath="Y" Fill="#FF20A01A" Stroke="#FF2EAC12"></sparrow:ScatterSeries>
                     </sparrow:SparrowChart>
                 </Grid>
-
+                <!--Right Bottom corner-->
+                <Grid Grid.Column="1" Grid.Row="1">
+                    <sparrow:SparrowChart Height="Auto" Margin="-13,10,10,-17">
+                        <sparrow:SparrowChart.XAxis>
+                            <sparrow:LinearXAxis MinValue="0" Interval="500"/>
+                        </sparrow:SparrowChart.XAxis>
+                        <sparrow:SparrowChart.YAxis>
+                            <sparrow:LinearYAxis MinValue="0" Interval="10000"/>
+                        </sparrow:SparrowChart.YAxis>
+                        <sparrow:LineSeries PointsSource="{Binding Path=Fitness}" XPath="X" YPath="Y" Stroke="#FF0A1B81"></sparrow:LineSeries>
+                    </sparrow:SparrowChart>
+                </Grid>
 
 
 
@@ -142,11 +156,11 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Content="Iterations:"/>
-                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Value="{Binding Iterations, UpdateSourceTrigger=PropertyChanged}" Watermark="Population Size" Margin="0,3,0,0" />
+                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Value="{Binding Iterations, UpdateSourceTrigger=PropertyChanged}" Watermark="Population Size" Margin="0,3,0,0" Width="95" />
                     </Grid>
 
                     <!--Buttons-->
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" Margin="10,0,-4,-22">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -169,8 +183,7 @@
 
 
                 <!--http://dynamicdatadisplay.codeplex.com/-->
-                <!--Right Bottom corner-->
-                <Grid Grid.Column="1" Grid.Row="1"/>
+
             </Grid>
         </Grid>
     </Grid>

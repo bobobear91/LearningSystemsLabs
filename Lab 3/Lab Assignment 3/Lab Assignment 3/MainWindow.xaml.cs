@@ -32,5 +32,10 @@ namespace Lab_Assignment_3
             if (viewModel.CloseAction == null)
                 viewModel.CloseAction = new Action(() => this.Close());
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.LoadCityFileDialog(sender, e);
+        }
     }
 }

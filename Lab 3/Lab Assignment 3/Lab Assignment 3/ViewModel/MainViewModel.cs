@@ -1,5 +1,7 @@
 ﻿using Lab_assignment_3.Handlers;
+using Lab_Assignment_3.GA;
 using Lab_Assignment_3.Helpers;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +18,7 @@ namespace Lab_Assignment_3.ViewModel
     public class MainViewModel : BaseViewModel
     {
         #region Private varibles
-        TravelingSalesman TS;
+        TravelingSalesmanAlgorithm TS;
         #endregion
 
         #region Private Properties
@@ -40,6 +42,8 @@ namespace Lab_Assignment_3.ViewModel
 
         public ObservableCollection<Point> Cities { get; set; }
         public ObservableCollection<Point> Route { get; set; }
+        public ObservableCollection<Point> Home { get; set; }
+        public ObservableCollection<Point> Fitness { get; set; }
 
         private bool isRunningEnabled = false;
         public bool IsRunningEnabled
@@ -101,7 +105,7 @@ namespace Lab_Assignment_3.ViewModel
 
         }
 
-        private int population = 1000; //10e3
+        private int population = 100; //10e3
         public int Population
         {
             get { return population; }
@@ -116,7 +120,7 @@ namespace Lab_Assignment_3.ViewModel
             }
         }
 
-        private int children = 1;
+        private int children = 50;
         
         public int MaxChildren
         {
@@ -176,14 +180,18 @@ namespace Lab_Assignment_3.ViewModel
         {
             // Read file with cityCoordinates. 
             Point[] cityCoordinates = Data.Converter.ArrayToPoint(Data.TextFile.ReadFileToArray<double>(AppDomain.CurrentDomain.BaseDirectory + "berlin52.tsp"));
+            List<Point> cityLayout = new List<Point>();
+            for (int i = 0; i < cityCoordinates.Length; i++)
+            {
+                cityLayout.Add(cityCoordinates[i]);
+            }     
 
-            TS = new TravelingSalesman(cityCoordinates);
-            TS.FireBestFitnessInformation += TS_FireBestFitnessInformation;
-            TS.FireBestRouteInformation += TS_FireBestRouteInformation;
+            TS = new TravelingSalesmanAlgorithm(cityLayout);
+            TS.AlgorithmIsDone_Event += TS_AlgorithmIsDone_Event;
 
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(UpdateCharts_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
             dispatcherTimer.Start();
 
             //****************************************************************
@@ -196,7 +204,8 @@ namespace Lab_Assignment_3.ViewModel
             }
             
             Route = new ObservableCollection<Point>();
-            //Route = Cities;
+            Home = new ObservableCollection<Point>();
+            Fitness = new ObservableCollection<Point>();
 
             //****************************************************************
             //      Events 
@@ -223,69 +232,145 @@ namespace Lab_Assignment_3.ViewModel
             if (CloseAction != null)
             {
                 CloseAction();
-
             }
         }
 
         private void StopSimulation_Event(object obj)
         {
+            // Setup UI States
             IsStopEnabled = false;
             IsStartEnabled = true;
             IsResetEnabled = true;
+            IsRunningEnabled =false;
 
+            // Stop Algorithm
+            TS.StopAlgorithm();
         }
 
         private void ResetSimulation_Event(object obj)
         {
-            //Clears the graphs
+            if (TS.IsRunning)
+            {
+                // if algorithm is Running. do nothing.
+                return;
+            }
 
-            //Stops and clears
+            // Setup UI States
             IsStopEnabled = false;
             IsStartEnabled = true;
-            IsResetEnabled = false;
-
-
+            IsResetEnabled = false;         
             IsRunningEnabled = false;
-            
+
+            // Clear charts
+            Fitness.Clear();
+            Home.Clear();
+            Route.Clear();
+
+            // Reset Population
+            TS.ResetPopulation();
         }
 
         private void StartSimulation_Event(object obj)
         {
+            // Check UI Values
+            if (TS.PopulationSize != Population)
+            {
+                // Reset Population
+                TS.PopulationSize = Population;
+                TS.ResetPopulation();
+            }
+            if (TS.CityLayout.Count != Cities.Count)
+            {
+                // Reset Population
+                // Add file for cities
+            }
+
+            // Setup algorithm configuration
+            TS.ReproductionVolume = Children;
+            TS.MutationChance = MutationChance;
+
+            // Setup UI State
             IsStopEnabled = true;
             IsStartEnabled = false;
-            IsResetEnabled = true;
-
+            IsResetEnabled = false;
             IsRunningEnabled = true;
-            TS.Start(Iterations);
+            Fitness.Clear();
+
+            // Start Algorithm
+            TS.StartAlgorithm(Iterations);
         }
 
-        private void TS_FireBestRouteInformation(Point[] best_Route, int iteration)
+        private void TS_AlgorithmIsDone_Event(double bestFitness)
         {
-            Route.Clear();
-            for (int i = 0; i < best_Route.GetLength(0); i++)
-            {
-                Route.Add(best_Route[i]);
-            }         
+            MessageBox.Show(string.Format("Done! Best-fitness: {0}!", bestFitness));
+            // Setup UI States
+            IsStopEnabled = false;
+            IsStartEnabled = true;
+            IsResetEnabled = true;
+            IsRunningEnabled = false;
         }
-        private void TS_FireBestFitnessInformation(double best_fitness, int iteration)
+
+        public void LoadCityFileDialog(object sender, RoutedEventArgs e)
         {
-            //throw new NotImplementedException();
+            if (TS.IsRunning)
+            {
+                return;
+            }
+
+            string path;
+            OpenFileDialog loadFile_Dialog = new OpenFileDialog();
+            loadFile_Dialog.Title = "New Layout";
+            loadFile_Dialog.Filter = "Tsp Files|*.tsp|Txt Files|*.txt";
+
+            try
+            {
+                loadFile_Dialog.ShowDialog();
+                path = loadFile_Dialog.FileName; 
+
+                if (Data.FileExist(path))
+                {
+                    Point[] test = new Point[1];
+
+                    Point[] cityCoordinates = Data.Converter.ArrayToPoint(Data.TextFile.ReadFileToArray<double>(path));
+                    if (cityCoordinates != null)
+                    {
+                        List<Point> cityLayout = new List<Point>();
+                        Cities.Clear();
+                        for (int i = 0; i < cityCoordinates.Length; i++)
+                        {
+                            cityLayout.Add(cityCoordinates[i]);
+                            Cities.Add(cityCoordinates[i]);
+                        }
+
+                        TS.CityLayout = cityLayout;
+                        TS.ResetPopulation();
+                    }
+                }
+            }
+            catch {
+                MessageBox.Show(string.Format("Ops! Something went wrong, try again later."));
+            }
         }
 
         private void UpdateCharts_Tick(object sender, EventArgs e)
         {
             if (TS.IsRunning)
             {
+                // Update Route
                 Point[] tmp = TS.GetBestRoute();
                 Route.Clear();
                 for (int i = 0; i < tmp.GetLength(0); i++)
                 {
                     Route.Add(tmp[i]);
                 }
+                // Update Home
+                Home.Clear();
+                Home.Add(Route[0]);
+                // Update Fitness
+                Point fitness = TS.GetBestFitness();
+                Fitness.Add(fitness);
             }
         }
-        #endregion
-
-       
+        #endregion      
     }
 }
