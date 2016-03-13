@@ -37,5 +37,10 @@ namespace Lab_Assignment_3
         {
             viewModel.LoadCityFileDialog(sender, e);
         }
+
+        private void SlowBox_Checked(object sender, RoutedEventArgs e)
+        {
+            viewModel.ToggleSlowDown_Event(sender, e);
+        }
     }
 }

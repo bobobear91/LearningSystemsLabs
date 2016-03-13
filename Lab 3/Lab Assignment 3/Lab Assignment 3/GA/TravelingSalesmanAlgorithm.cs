@@ -91,11 +91,17 @@ namespace Lab_Assignment_3.GA
         // Control
         bool abortAlgorithm;
         bool isRunning;
+        bool doSlowDown;
         private Object ReadLock = new Object();
 
         public bool IsRunning
         {
             get { return isRunning; }
+        }
+        public bool DoSlowDown
+        {
+            get { return doSlowDown; }
+            set { doSlowDown = value; }
         }
 
         Random rnd;
@@ -120,7 +126,8 @@ namespace Lab_Assignment_3.GA
             abortAlgorithm = false;
             isRunning = false;
             currentIteration = 0;
-            currentBestFitness = double.MaxValue; 
+            currentBestFitness = double.MaxValue;
+            doSlowDown = false;
         }
         private void InitializePopulation()
         {
@@ -207,6 +214,11 @@ namespace Lab_Assignment_3.GA
                 MutateDuplicates();
 
                 iteration++;
+
+                if (doSlowDown)
+                {
+                    Thread.Sleep(100);
+                }
             } 
         }
         private void ReproducePopulation()

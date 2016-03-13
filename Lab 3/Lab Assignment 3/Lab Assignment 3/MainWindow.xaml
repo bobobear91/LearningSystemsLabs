@@ -107,6 +107,18 @@
                         <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" Maximum="{Binding MaxChildren, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Value="{Binding Children, UpdateSourceTrigger=PropertyChanged}" Watermark="Children Size" Width="100" />
                     </Grid>
 
+                    <!-- Slowdown -->
+                    <Grid Grid.Row="2" Margin="0,26,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="110"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Grid.Column="1" x:Name="SlowBox" Content="Slow-down" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="SlowBox_Checked" Unchecked="SlowBox_Checked"/>
+                    </Grid>
+
                 </Grid>
                 <!--Right Top corner-->
                 <Grid Grid.Row="0" Grid.Column="1">
@@ -156,7 +168,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Content="Iterations:"/>
-                        <xctk:DecimalUpDown Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Value="{Binding Iterations, UpdateSourceTrigger=PropertyChanged}" Watermark="Population Size" Margin="0,3,0,0" Width="95" />
+                        <xctk:DecimalUpDown HorizontalAlignment="Left" VerticalAlignment="Top" Minimum="1" IsEnabled="{Binding IsRunningEnabled, UpdateSourceTrigger=PropertyChanged}" Value="{Binding Iterations, UpdateSourceTrigger=PropertyChanged}" Watermark="Population Size" Margin="62,3,0,0" Width="134" Grid.ColumnSpan="2" />
                     </Grid>
 
                     <!--Buttons-->

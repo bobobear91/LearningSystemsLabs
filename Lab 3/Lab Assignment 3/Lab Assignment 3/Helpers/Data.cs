@@ -279,7 +279,7 @@ namespace Lab_assignment_3.Handlers
                 return FileData;
             }
 
-            public static void WriteArrayToFile<T>(string _filePath, T[,] _array, bool _overwrite)
+            public static void WriteArrayToFile<T>(string _filePath, T[,] _array, bool _overwrite = true)
             {
                 string[] lines = new string[_array.GetLength(0)];
                 for (int y = 0; y < _array.GetLength(0); y++)
@@ -302,7 +302,7 @@ namespace Lab_assignment_3.Handlers
                     System.IO.File.WriteAllLines(_filePath, lines);
                 }
             }
-            public static void WriteJaggedArrayToFile<T>(string _filePath, T[][] _array, bool _overwrite)
+            public static void WriteJaggedArrayToFile<T>(string _filePath, T[][] _array, bool _overwrite = true)
             {
                 string[] lines = new string[_array.Length];
                 for (int y = 0; y < _array.Length; y++)
@@ -311,6 +311,30 @@ namespace Lab_assignment_3.Handlers
                     for (int x = 0; x < _array[0].Length; x++)
                     {
                         line += Convert.ChangeType(_array[y][x], typeof(string));
+                    }
+                    lines[y] = line;
+                }
+
+                if (!FileExist(_filePath) || _overwrite)
+                {
+                    if (!CheckFileEnding(_filePath, ".txt"))
+                    {
+                        _filePath += ".txt";
+                    }
+
+                    System.IO.File.WriteAllLines(_filePath, lines);
+                }
+            }
+            public static void WritePointArrayToFile(string _filePath, Point[,] _array, bool _overwrite = true)
+            {
+                string[] lines = new string[_array.GetLength(0)];
+                for (int y = 0; y < _array.GetLength(0); y++)
+                {
+                    string line = "";
+                    for (int x = 0; x < _array.GetLength(1); x++)
+                    {
+                        line += " " + Convert.ChangeType(_array[y, x].X, typeof(string));
+                        line += " " + Convert.ChangeType(_array[y, x].Y, typeof(string));
                     }
                     lines[y] = line;
                 }
@@ -378,8 +402,6 @@ namespace Lab_assignment_3.Handlers
                 // Returns true, if all values pass the range check.
                 return true;
             }
-
-
             #endregion
         }
 

@@ -194,6 +194,34 @@ namespace Lab_Assignment_3.ViewModel
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
             dispatcherTimer.Start();
 
+            // tmp
+            Point[,] tmpArray = new Point[7, 10];
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < tmpArray.GetLength(0); i++)
+            {
+                y += 160;
+                x = 0;
+                for (int j = 0; j < tmpArray.GetLength(1); j++)
+                {
+                    x += 160;
+                    tmpArray[i, j] = new Point(x, y);
+                }
+            }
+
+            Point[,] fixedArray = new Point[tmpArray.Length, 1];
+            int index = 0;
+            for (int i = 0; i < tmpArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < tmpArray.GetLength(1); j++)
+                {
+                    fixedArray[index, 0] = tmpArray[i, j];
+                    index++;
+                }
+            }
+
+            Data.TextFile.WritePointArrayToFile("testLayout", fixedArray, true);
+
             //****************************************************************
             //      ObservableProperties
             //****************************************************************
@@ -350,6 +378,14 @@ namespace Lab_Assignment_3.ViewModel
             catch {
                 MessageBox.Show(string.Format("Ops! Something went wrong, try again later."));
             }
+        }
+
+        // TODO: do binding instead. 
+        bool doSlowDown = false;
+        public void ToggleSlowDown_Event(object sender, RoutedEventArgs e)
+        {
+            doSlowDown = !doSlowDown;
+            TS.DoSlowDown = doSlowDown;
         }
 
         private void UpdateCharts_Tick(object sender, EventArgs e)
