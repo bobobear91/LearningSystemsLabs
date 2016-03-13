@@ -166,12 +166,7 @@ namespace Lab_4.ViewModel
         #region Constructor
         public MainViewModel()
         {
-            // Read file with cityCoordinates. 
-            Point[] cityCoordinates = Data.Converter.ArrayToPoint(Data.TextFile.ReadFileToArray<double>("52Berlin.tsp"));
-
-            TS = new TravelingSalesman(cityCoordinates);
-            TS.FireBestFitnessInformation += TS_FireBestFitnessInformation;
-            TS.FireBestRouteInformation += TS_FireBestRouteInformation;
+            
 
             //****************************************************************
             //      Events 
