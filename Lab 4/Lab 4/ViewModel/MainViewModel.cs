@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Lab_4.Handlers;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Lab_4.ViewModel
@@ -93,6 +96,53 @@ namespace Lab_4.ViewModel
 
         }
 
+        private bool _isEnabledType = true;
+        public bool IsEnabledType
+        {
+            get { return _isEnabledType; }
+            set
+            {
+                if (_isEnabledType != value)
+                {
+                    _isEnabledType = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+
+        private bool _isEnabledfrom = true;
+        public bool IsEnabledFrom
+        {
+            get { return _isEnabledfrom; }
+            set
+            {
+                if (_isEnabledfrom != value)
+                {
+                    _isEnabledfrom = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private bool _isEnabledDest = true;
+        public bool IsEnabledDest
+        {
+            get { return _isEnabledDest; }
+            set
+            {
+                if (_isEnabledDest != value)
+                {
+                    _isEnabledDest = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public enum Type { One,Two}
+        public ObservableCollection<Type> Types { get; set; }
+        public ObservableCollection<string> From { get; set; }
+        public ObservableCollection<string> Dest { get; set; }
         //private int population = 1000; //10e3
         //public int Population
         //{
@@ -157,6 +207,8 @@ namespace Lab_4.ViewModel
         //        }
         //    }
         //}
+
+
         #endregion
 
         #region Actions
@@ -166,7 +218,23 @@ namespace Lab_4.ViewModel
         #region Constructor
         public MainViewModel()
         {
-            
+
+            ShortestPath.CreateFile();
+            CityNodeCollection collection = Data.XML.DeserializeFromFile<CityNodeCollection>("city 1.xml");
+            HashSet<string> uniques = new HashSet<string>();
+            foreach (var item in collection)
+            {
+                uniques.Add(item.From);
+                uniques.Add(item.Dest);
+            }
+
+            From = new ObservableCollection<string>();
+            Dest = new ObservableCollection<string>();
+            foreach (var item in uniques)
+            {
+                From.Add(item);
+                Dest.Add(item);
+            }
 
             //****************************************************************
             //      Events 
@@ -174,6 +242,8 @@ namespace Lab_4.ViewModel
             StartSimulation = new RelayCommand<object>(StartSimulation_Event);
             ResetSimulation = new RelayCommand<object>(ResetSimulation_Event);
             StopSimulation = new RelayCommand<object>(StopSimulation_Event);
+
+
         }
         #endregion
 
