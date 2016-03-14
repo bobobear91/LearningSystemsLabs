@@ -84,7 +84,7 @@ namespace Lab_Assignment_3.GA
             {
                 reverseRange[i] = dna_String[startIndex + i];
             }
-            reverseRange.Reverse();
+            reverseRange = reverseRange.Reverse().ToArray();
 
             // Insert the new reversed DNA part. 
             for (int i = 0; i < reverseRange.Length; i++)
