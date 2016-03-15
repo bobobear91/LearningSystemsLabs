@@ -158,7 +158,27 @@
                 <!--Right Top corner-->
                 <Grid Grid.Column="1" Grid.Row="0"/>
                 <!--Right Top corner-->
-                <Grid Grid.Column="1" Grid.Row="1"/>
+                <Grid Grid.Column="1" Grid.Row="1">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Grid.Row="0" Grid.Column="0" VerticalScrollBarVisibility="Visible"  Margin="5,5,5,5" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <StackPanel>
+                            <ItemsControl ItemsSource="{Binding OutputText}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Path=.}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
