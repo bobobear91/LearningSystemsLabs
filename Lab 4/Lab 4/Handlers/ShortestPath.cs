@@ -17,35 +17,27 @@ namespace Lab_4.Handlers
             Dictionary<char, char> previous = new Dictionary<char, char>();
             Dictionary<char, int> distances = new Dictionary<char, int>();
             List<char> nodes = new List<char>();
-            
             //Return list
             List<char> path = null;
 
+            //Instantiate our movement "Queue", just to know point of origin
             foreach (var vertex in vertices)
             {
-                //Distance
-                if (vertex.Key == start)
-                {
-                    distances[vertex.Key] = 0;
-                }
-                else
-                {
-                    distances[vertex.Key] = int.MaxValue;
-                }
-
+                //Set the current position equal to zero if its start (source)
+                distances[vertex.Key] = (vertex.Key == start) ? 0 : int.MaxValue;
+                //Adds the movement nodes in to list of nodes 
                 nodes.Add(vertex.Key);
             }
 
             // The main loop
             while (nodes.Count != 0)
             {
-                //Sort all nodes by their distance
+                //Sort all nodes by their distance from this point to next standing point
                 nodes.Sort((x, y) => distances[x] - distances[y]);
                 //Sets the next node 
-                var smallest = nodes[0];
-                // Remove and return best vertex
+                char smallest = nodes[0];
+                // Remove current position so we don't move to this position
                 nodes.Remove(smallest);
-
                 //If we at the end of path
                 if (smallest == finish)
                 {
@@ -58,11 +50,12 @@ namespace Lab_4.Handlers
                     break;
                 }
 
-                //Checks if the smallest path is equal to int max
+                //Checks if the current distance is equal to int max, if it is we have no path to move and therefor break
                 if (distances[smallest] == int.MaxValue)
                     break;
 
-                //ForEach neighbor in verices set the new distance for the next step from smallest 
+
+                //ForEach neighbor in verices set the new distance for the next step from smallest  (uses the previous values)
                 foreach (var neighbor in vertices[smallest])
                 {
                     //adds the distance with neighbor value
@@ -82,29 +75,30 @@ namespace Lab_4.Handlers
 
         public static int Dijkstra_CostForPath(Dictionary<char, Dictionary<char, int>> vertices, List<char> path, char start, char answer)
         {
+            //Checks if we are already at the end
             if (start == answer)
                 return 0;
-
+            //Creates a queue
             Queue<char> pathQueue = new Queue<char>(path);
+            //First character for the movement (start= A, temp = B then A->B) 
             char temp = pathQueue.Dequeue();
-            //A -> B
             int cost = vertices[start][temp];
+
+            //If there still movement in the queue, iterate through it 
             while (path.Count != 0)
             {
+                //Checks if we are already at the end
                 if (temp == answer)
                     break;
+
+                //Sums the cost
                 cost += vertices[temp][pathQueue.Peek()];
+                //Move forward
                 temp = pathQueue.Dequeue();
    
             }
+
             return cost;
-        }
-
-        public static Tuple<int, List<char>> Dijkstra_ShortestPathAndCost(Dictionary<char, Dictionary<char, int>> vertices, char start, char finish)
-        {
-            List<char> path = Dijkstra_ShortestPath(vertices, start, finish);
-
-            return new Tuple<int, List<char>>(Dijkstra_CostForPath(vertices, path, start, finish),path);
         }
 
         public static Path PathShortest(Dictionary<char, Dictionary<char, int>> vertices, char start, char finish)
