@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Lab_4.Handlers;
+using Lab_4.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Lab_4.ViewModel
@@ -10,6 +14,7 @@ namespace Lab_4.ViewModel
     public class MainViewModel : BaseViewModel
     {
         #region Private varibles
+
         #endregion
 
         #region Private Properties
@@ -93,70 +98,54 @@ namespace Lab_4.ViewModel
 
         }
 
-        //private int population = 1000; //10e3
-        //public int Population
-        //{
-        //    get { return population; }
-        //    set
-        //    {
-        //        if (population != value)
-        //        {
-        //            population = value;
-        //            NotifyPropertyChanged();
-        //            NotifyPropertyChanged("MaxChildren");
-        //        }
-        //    }
-        //}
-
-        //private int children = 1;
-
-        //public int MaxChildren
-        //{
-        //    get { return population; }
-        //}
+        private bool _isEnabledType = true;
+        public bool IsEnabledType
+        {
+            get { return _isEnabledType; }
+            set
+            {
+                if (_isEnabledType != value)
+                {
+                    _isEnabledType = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
 
-        //public int Children
-        //{
-        //    get { return children; }
-        //    set
-        //    {
-        //        if (children != value)
-        //        {
-        //            children = value;
-        //            NotifyPropertyChanged();
-        //        }
-        //    }
-        //}
+        private bool _isEnabledfrom = true;
+        public bool IsEnabledFrom
+        {
+            get { return _isEnabledfrom; }
+            set
+            {
+                if (_isEnabledfrom != value)
+                {
+                    _isEnabledfrom = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
-        //private double mutationchance = 0.01;
-        //public double MutationChance
-        //{
-        //    get { return mutationchance; }
-        //    set
-        //    {
-        //        if (mutationchance != value)
-        //        {
-        //            mutationchance = value;
-        //            NotifyPropertyChanged();
-        //        }
-        //    }
-        //}
+        private bool _isEnabledDest = true;
+        public bool IsEnabledDest
+        {
+            get { return _isEnabledDest; }
+            set
+            {
+                if (_isEnabledDest != value)
+                {
+                    _isEnabledDest = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
-
-        //private int iterations = 10000;
-        //public int Iterations
-        //{
-        //    get { return iterations; }
-        //    set
-        //    {
-        //        if (iterations != value)
-        //        {
-        //            iterations = value;
-        //            NotifyPropertyChanged();
-        //        }
-        //    }
-        //}
+        public enum Type { One,Two}
+        public ObservableCollection<Type> TypesDropdownlist { get; set; }
+        public ObservableCollection<char> FromDropdownlist { get; set; }
+        public ObservableCollection<char> DestDropdownlist { get; set; }
+        public ObservableCollection<string> OutputText { get; set; }
         #endregion
 
         #region Actions
@@ -166,19 +155,84 @@ namespace Lab_4.ViewModel
         #region Constructor
         public MainViewModel()
         {
-            // Read file with cityCoordinates. 
-            Point[] cityCoordinates = Data.Converter.ArrayToPoint(Data.TextFile.ReadFileToArray<double>("52Berlin.tsp"));
+            //**************************************************************
+            //      Initialize GUI-Variables
+            //**************************************************************
+            FromDropdownlist = new ObservableCollection<char>();
+            DestDropdownlist = new ObservableCollection<char>();
+            OutputText = new ObservableCollection<string>();
 
-            TS = new TravelingSalesman(cityCoordinates);
-            TS.FireBestFitnessInformation += TS_FireBestFitnessInformation;
-            TS.FireBestRouteInformation += TS_FireBestRouteInformation;
+            //**************************************************************
+            //      Graph and loading the file
+            //**************************************************************
+            ShortestPath.CreateFile();
+            CityNodeCollection collection = Data.XML.DeserializeFromFile<CityNodeCollection>("city 1.xml");
+            HashSet<char> uniques = new HashSet<char>();
+            Graph graph = new Graph();
+            //Get all unique chars from city collection
+            foreach (var item in collection)
+            {
+                uniques.Add(item.From);
+                uniques.Add(item.Dest);
+            }
 
+         
+            //Answer for the assignment
+            char finish = 'F';
+            foreach (var unique in uniques)
+            {
+                //Adds to the drop down list
+                FromDropdownlist.Add(unique);
+                DestDropdownlist.Add(unique);
+
+                //Dictionary for handling all routes from unique to new nodes
+                Dictionary<char, int> routes = new Dictionary<char, int>();
+
+                //Get all possible routes both from the route and from dest to route
+                foreach (var route in collection.Where(s=> s.From == unique))
+                {
+                    routes.Add(route.Dest, route.Cost);
+                }
+
+                foreach (var route in collection.Where(s => s.Dest == unique))
+                {
+                    routes.Add(route.From, route.Cost);
+                }
+
+                //Add the routes to the graph
+                graph.AddNewVertices(unique, routes);
+            }
+
+            //**************************************************************
+            //      Initialize GUI-Variables
+            //**************************************************************
+            List<Path> answers = new List<Path>();
+
+            //All paths from a unique node to the answer
+            foreach (var start in uniques.Where(s=> s != finish))
+            {
+                answers.Add(ShortestPath.PathShortest(graph.Vertices, start, finish));
+            }
+
+
+  
+            foreach (var answer in answers)
+            {
+                string textway = string.Format("{0} -> ", answer.Start);
+                foreach (var pathway in answer.PathChars)
+                {
+                    textway  = string.Concat(textway,(answer.PathChars.Last() != pathway) ? (string.Format(" {0} -> ", pathway)) : (string.Format("{0}", pathway)));
+                }
+                OutputText.Add(string.Format("[From: {0} to end {1}] is [{2}] and total cost is: {3}",answer.Start,finish, textway, answer.Cost));
+            }
             //****************************************************************
             //      Events 
             //****************************************************************
             StartSimulation = new RelayCommand<object>(StartSimulation_Event);
             ResetSimulation = new RelayCommand<object>(ResetSimulation_Event);
             StopSimulation = new RelayCommand<object>(StopSimulation_Event);
+
+
         }
         #endregion
 
@@ -231,15 +285,6 @@ namespace Lab_4.ViewModel
             IsResetEnabled = true;
 
             IsRunningEnabled = true;
-        }
-
-        private void TS_FireBestRouteInformation(Point[] best_Route, int iteration)
-        {
-            throw new NotImplementedException();
-        }
-        private void TS_FireBestFitnessInformation(double best_fitness, int iteration)
-        {
-            throw new NotImplementedException();
         }
         #endregion
 
