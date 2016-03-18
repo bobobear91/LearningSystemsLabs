@@ -6,13 +6,23 @@ using System.Threading.Tasks;
 
 namespace Lab_4.Models
 {
-    class Graph
+    class DijkstrasGraph
     {
         #region Variables & Properties
         Dictionary<char, Dictionary<char, int>> vertices = new Dictionary<char, Dictionary<char, int>>();
         public Dictionary<char, Dictionary<char, int>> Vertices
         {
             get { return vertices; }
+        }
+
+        public int Edges
+        {
+            get;
+        }
+
+        public int Vertex
+        {
+            get;
         }
         #endregion
 
@@ -24,11 +34,11 @@ namespace Lab_4.Models
         #endregion
 
         #region Constructor
-        public Graph()
+        public DijkstrasGraph()
         {
 
         }
-        public Graph(Dictionary<char, Dictionary<char, int>> vertices)
+        public DijkstrasGraph(Dictionary<char, Dictionary<char, int>> vertices)
         {
             this.vertices = vertices;
         }
