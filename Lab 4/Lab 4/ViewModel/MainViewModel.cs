@@ -195,7 +195,20 @@ namespace Lab_4.ViewModel
             //**************************************************************
             ShortestPath.CreateFile(); //Creates an xml file of the textfile
             collection = Data.XML.DeserializeFromFile<CityNodeCollection>("city 1.xml"); //Collection of all the paths
-            
+            HashSet<char> uniques = new HashSet<char>(); //Unique nodes
+
+            //Get all unique chars from city collection
+            foreach (var item in collection)
+            {
+                uniques.Add(item.From);
+                uniques.Add(item.Dest);
+            }
+            foreach (var unique in uniques)
+            {
+                //Adds to the drop down list
+                FromDropdownlist.Add(unique);
+                DestDropdownlist.Add(unique);
+            }
 
 
             //****************************************************************
@@ -264,31 +277,17 @@ namespace Lab_4.ViewModel
         #endregion
         private void RunApplication()
         {
-            HashSet<char> uniques = new HashSet<char>(); //Unique nodes
             //Answer for the assignment
             char finish = 'F';
+            int doubledges = 0;
             //Different graphs
             DijkstrasGraph dijkstrasgraph = new DijkstrasGraph();
-            BellmanGraph bellmanGraphList;
-            BellmanFord bellmanArray = new BellmanFord();
+            BellmanGraph bellmanGraph;
+            List<BellmanFord.Egde> edges = new List<BellmanFord.Egde>();
+            BellmanFord bellmanList = new BellmanFord();
 
-
-            //Get all unique chars from city collection
-            foreach (var item in collection)
+            foreach (var unique in FromDropdownlist)
             {
-                uniques.Add(item.From);
-                uniques.Add(item.Dest);
-            }
-
-            int i = 0;
-            bellmanGraphList = new BellmanGraph(uniques.Count, collection.Count);
-
-            foreach (var unique in uniques)
-            {
-                //Adds to the drop down list
-                FromDropdownlist.Add(unique);
-                DestDropdownlist.Add(unique);
-
                 //Dictionary for handling all routes from unique to new nodes
                 Dictionary<char, int> routes = new Dictionary<char, int>();
 
@@ -296,6 +295,7 @@ namespace Lab_4.ViewModel
                 foreach (var route in collection.Where(s => s.From == unique))
                 {
                     routes.Add(route.Dest, route.Cost);
+                    doubledges++;
                 }
 
                 //All paths is linked A-B then B->A
@@ -304,23 +304,53 @@ namespace Lab_4.ViewModel
                     foreach (var route in collection.Where(s => s.Dest == unique))
                     {
                         routes.Add(route.From, route.Cost);
+                        doubledges++;
                     }
                 }
-                
                 //Add the routes to the graph
                 dijkstrasgraph.AddNewVertices(unique, routes);
             }
-
-            //Go through all edges
-            foreach (var edge in collection)
+            int i = 0;
+            //Checks if bellman is double linked 
+            if (IsDoubleLinked)
             {
-                //Convert routes char's alphabet to integers from 0
-                int from = edge.From - 65;
-                int dest = edge.Dest - 65;
+                bellmanGraph = new BellmanGraph(dijkstrasgraph.Vertex, doubledges);
+                //Go through all edges
+                foreach (var edge in collection)
+                {
+                    //Convert routes char's alphabet to integers from 0
+                    int from = edge.From - 65;
+                    int dest = edge.Dest - 65;
 
-                //Compare bellman graphs
-                bellmanGraphList.edge[i] = new BellmanNode(edge.From, from, dest, edge.Cost);
-                bellmanArray.Edge.Add(new BellmanFord.Egde(from, dest, edge.Cost, edge.From));
+                    //Compare bellman graphs
+                    bellmanGraph.edge[i] = new BellmanNode(edge.From, from, dest, edge.Cost);
+                    i++;
+                    bellmanGraph.edge[i] = new BellmanNode(edge.Dest, dest, from, edge.Cost);
+                    i++;
+
+                    //From -> Dest && Dest -> From
+                    bellmanList.Edge.Add(new BellmanFord.Egde(from, dest, edge.Cost, edge.From));
+                    bellmanList.Edge.Add(new BellmanFord.Egde(dest, from, edge.Cost, edge.Dest));
+
+                }
+
+            }
+            else
+            {
+                bellmanGraph = new BellmanGraph(FromDropdownlist.Count, collection.Count);
+                //Go through all edges
+                foreach (var edge in collection)
+                {
+                    //Convert routes char's alphabet to integers starting from 0
+                    int from = edge.From - 65;
+                    int dest = edge.Dest - 65;
+
+                    //Compare bellman graphs
+                    bellmanGraph.edge[i] = new BellmanNode(edge.From, from, dest, edge.Cost);
+                    bellmanList.Edge.Add(new BellmanFord.Egde(from, dest, edge.Cost, edge.From));
+                    i++;
+                }
+
             }
 
 
@@ -332,12 +362,15 @@ namespace Lab_4.ViewModel
             List<int[]> bga = new List<int[]>();
             int a = 'A' - 65;
 
-            var f = bellmanGraphList.BellmanFord(bellmanGraphList,a);
-            var anwers = bellmanArray.GetShortestPath(a, uniques.Count);
+            //
+            var f = bellmanGraph.BellmanFord(bellmanGraph,a);
+            var anwers = bellmanList.GetShortestPath(a, FromDropdownlist.Count);
             //All paths from a unique node to the answer
-            foreach (var start in uniques.Where(s => s != finish))
+            foreach (var start in FromDropdownlist.Where(s => s != finish))
             {
-                answersDij.Add(ShortestPath.PathShortest(dijkstrasgraph.Vertices, start, finish));
+                answersDij.Add(ShortestPath.PathShortest(dijkstrasgraph.Graph, start, finish));
+                bgl.Add(bellmanGraph.BellmanFord(bellmanGraph, start-65));
+                bga.Add(bellmanList.GetShortestPath(start - 65, FromDropdownlist.Count));
             }
 
             //****************************************************************

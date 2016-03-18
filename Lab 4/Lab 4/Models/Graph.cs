@@ -9,12 +9,14 @@ namespace Lab_4.Models
     class DijkstrasGraph
     {
         #region Variables & Properties
-        Dictionary<char, Dictionary<char, int>> vertices = new Dictionary<char, Dictionary<char, int>>();
-        public Dictionary<char, Dictionary<char, int>> Vertices
+        private Dictionary<char, Dictionary<char, int>> graph = new Dictionary<char, Dictionary<char, int>>();
+        public Dictionary<char, Dictionary<char, int>> Graph
         {
-            get { return vertices; }
+            get { return graph; }
         }
 
+
+        private int edges = 0;
         public int Edges
         {
             get;
@@ -22,14 +24,15 @@ namespace Lab_4.Models
 
         public int Vertex
         {
-            get;
+            get { return graph.Count; }
         }
         #endregion
 
         #region Public Methods
         public void AddNewVertices(char name, Dictionary<char, int> edges)
         {
-            vertices[name] = edges;
+            graph[name] = edges;
+            this.edges += edges.Count;
         }
         #endregion
 
@@ -40,7 +43,7 @@ namespace Lab_4.Models
         }
         public DijkstrasGraph(Dictionary<char, Dictionary<char, int>> vertices)
         {
-            this.vertices = vertices;
+            this.graph = vertices;
         }
         #endregion
     }

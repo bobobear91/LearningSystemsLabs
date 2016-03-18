@@ -51,10 +51,11 @@ namespace Lab_4.Handlers
            
             this.V = vertex;
             int[] shortestPath = new int[vertex];
-            int INF = this.GetTotalPositiveCost() + 1;
+            int INF = GetTotalPositiveCost() + 1;
 
-            for (int i = 0; i < V; i++) shortestPath[i] = INF;
-
+            for (int i = 0; i < V; i++)
+                shortestPath[i] = INF;
+       
             shortestPath[startIndex] = 0;
             while (true)
             {
