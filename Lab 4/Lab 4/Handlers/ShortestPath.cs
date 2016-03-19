@@ -4,6 +4,97 @@ using System.Collections.Generic;
 
 namespace Lab_4.Handlers
 {
+    public class BellmanFord
+    {
+        public List<Egde> Edge = new List<Egde>();
+        public int V;   // number of vertex
+
+        public class Egde
+        {
+            public int From, To, Cost;
+            public char Name;
+            public Egde(int from, int to, int cost, char t)
+            {
+                From = from;
+                To = to;
+                Cost = cost;
+                t = Name;
+            }
+        }
+
+        private int GetTotalPositiveCost()
+        {
+            int sum = 0;
+            foreach (var e in Edge)
+            {
+                if (e.Cost > 0)
+                    sum += e.Cost;
+            }
+            return sum;
+        }
+
+        private void generateV()
+        {
+            foreach (var e in Edge)
+            {
+                V = Math.Max(V, e.From);
+                V = Math.Max(V, e.To);
+            }
+            V++;
+        }
+
+        /// <summary>
+        ///  return shortestPath[V] represents distance from startIndex
+        /// </summary>
+        public int[] GetShortestPath(int startIndex, int vertex)
+        {
+           
+            this.V = vertex;
+            int[] shortestPath = new int[vertex];
+            int INF = GetTotalPositiveCost() + 1;
+
+            for (int i = 0; i < V; i++)
+                shortestPath[i] = INF;
+       
+            shortestPath[startIndex] = 0;
+            while (true)
+            {
+                bool update = false;
+                foreach (Egde e in Edge)
+                {
+                    if (shortestPath[e.From] != INF && shortestPath[e.To] > shortestPath[e.From] + e.Cost)
+                    {
+                        shortestPath[e.To] = shortestPath[e.From] + e.Cost;
+                        update = true;
+                    }
+                }
+                if (!update)
+                    break;
+            }
+
+            return shortestPath;
+        }
+
+        /// <summary>
+        ///  return true if it has negative close loop
+        /// </summary>
+        public bool HasNegativeLoop()
+        {
+            int[] d = new int[V];
+            for (int i = 0; i < V; i++)
+            {
+                foreach (Egde e in Edge)
+                {
+                    if (d[e.To] > d[e.From] + e.Cost)
+                    {
+                        d[e.To] = d[e.From] + e.Cost;
+                        if (i == V - 1) return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
     public class ShortestPath
     {
         //Using a priority queue
@@ -69,14 +160,72 @@ namespace Lab_4.Handlers
                 }
             }
             //Reverse the list so it start from the first node
-            path.Reverse();
+            if (path != null)
+            {
+                path.Reverse();
+            }
             return path;
         }
+
+
+        //http://www.geeksforgeeks.org/dynamic-programming-set-23-bellman-ford-algorithm/
+        //https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+        public static int[] BellmanFord(BellmanGraph graph, int src)
+        {
+            //declare variables
+            int Vertices = graph.Vertex, Edges = graph.Edges;
+            int[] dist = new int[Vertices];
+            int[] predecessor = new int[Vertices];
+
+            // Step 1: Initialize distances from src to all other
+            // vertices as INFINITE
+            for (int i = 0; i < Vertices; i++)
+            {
+                dist[i] = int.MaxValue;
+                predecessor[i] = int.MaxValue;
+            }
+            dist[src] = 0;
+            // Step 2: Relax all edges |V| - 1 times. A simple
+            // shortest path from src to any other vertex can
+            // have at-most |V| - 1 edges
+            for (int i = 1; i < Vertices; i++)
+            {
+                for (int j = 0; j < Edges; j++)
+                {
+                    //int u = graph.edge[j].src;
+                    //int v = graph.edge[j].dest;
+                    int weight = graph.edge[j].weight;
+                    if (dist[graph.edge[j].src] != int.MaxValue && dist[graph.edge[j].src] + weight < dist[graph.edge[j].dest])
+                    {
+                        dist[graph.edge[j].dest] = dist[graph.edge[j].src] + weight;
+                        predecessor[graph.edge[j].dest] = graph.edge[j].src;
+                    }
+                }
+            }
+
+            // Step 3: check for negative-weight cycles.  The above
+            // step guarantees shortest distances if graph doesn't
+            // contain negative weight cycle. If we get a shorter
+            //  path, then there is a cycle.
+            for (int j = 0; j < Edges; j++)
+            {
+                int u = graph.edge[j].src;
+                int v = graph.edge[j].dest;
+                int weight = graph.edge[j].weight;
+                if (dist[u] != int.MaxValue && dist[u] + weight < dist[v])
+                {
+                    break;
+                    //System.out.println("Graph contains negative weight cycle");
+                }
+            }
+            return dist;
+        }
+
 
         public static int Dijkstra_CostForPath(Dictionary<char, Dictionary<char, int>> vertices, List<char> path, char start, char answer)
         {
             //Checks if we are already at the end
-            if (start == answer)
+            if (start == answer || path == null)
                 return 0;
             //Creates a queue
             Queue<char> pathQueue = new Queue<char>(path);
@@ -114,10 +263,10 @@ namespace Lab_4.Handlers
         public static void CreateFile()
         {
             CityNodeCollection collection = new CityNodeCollection();
-            collection.Add(new CityNode('A', 'B', 2));
-            collection.Add(new CityNode('A', 'E', 2));
-            collection.Add(new CityNode('A', 'W', 1));
-            collection.Add(new CityNode('B', 'D', 5));
+            collection.Add(new CityNode('A', 'B', 2)); //0
+            collection.Add(new CityNode('A', 'E', 2)); //0
+            collection.Add(new CityNode('A', 'W', 1)); //0
+            collection.Add(new CityNode('B', 'D', 5)); 
             collection.Add(new CityNode('B', 'W', 4));
             collection.Add(new CityNode('B', 'C', 2));
             collection.Add(new CityNode('B', 'F', 3));
