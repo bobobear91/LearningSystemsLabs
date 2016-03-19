@@ -13,18 +13,21 @@ namespace Lab_4.Handlers
 
         public BellmanNode(char name, int src, int dest, int weight)
         {
+            this.name = name;
             this.src = src;
             this.dest = dest;
             this.weight = weight;
-            this.name = name;
         }
         public BellmanNode(char name)
         {
             this.name = name;
+            src = dest = weight = 0;
+
         }
         public BellmanNode()
         {
-            src =  dest=  weight = 0;
+            src = dest = weight = 0;
+            name = 'U';
         }
 
         public char Name
@@ -85,6 +88,8 @@ namespace Lab_4.Handlers
             {
                 for (int j = 0; j < Edges; j++)
                 {
+                    //int u = graph.edge[j].src;
+                    //int v = graph.edge[j].dest;
                     int weight = graph.edge[j].weight;
                     if (dist[graph.edge[j].src] != int.MaxValue && dist[graph.edge[j].src] + weight < dist[graph.edge[j].dest])
                     {

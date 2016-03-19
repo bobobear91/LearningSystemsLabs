@@ -283,8 +283,8 @@ namespace Lab_4.ViewModel
             //Different graphs
             DijkstrasGraph dijkstrasgraph = new DijkstrasGraph();
             BellmanGraph bellmanGraph;
-            List<BellmanFord.Egde> edges = new List<BellmanFord.Egde>();
-            BellmanFord bellmanList = new BellmanFord();
+            //List<BellmanFord.Egde> edges = new List<BellmanFord.Egde>();
+            //BellmanFord bellmanList = new BellmanFord();
 
             foreach (var unique in FromDropdownlist)
             {
@@ -329,14 +329,15 @@ namespace Lab_4.ViewModel
                     i++;
 
                     //From -> Dest && Dest -> From
-                    bellmanList.Edge.Add(new BellmanFord.Egde(from, dest, edge.Cost, edge.From));
-                    bellmanList.Edge.Add(new BellmanFord.Egde(dest, from, edge.Cost, edge.Dest));
+                    //bellmanList.Edge.Add(new BellmanFord.Egde(from, dest, edge.Cost, edge.From));
+                    //bellmanList.Edge.Add(new BellmanFord.Egde(dest, from, edge.Cost, edge.Dest));
 
                 }
 
             }
             else
             {
+                //Vertices = 23, collection 35
                 bellmanGraph = new BellmanGraph(FromDropdownlist.Count, collection.Count);
                 //Go through all edges
                 foreach (var edge in collection)
@@ -347,7 +348,7 @@ namespace Lab_4.ViewModel
 
                     //Compare bellman graphs
                     bellmanGraph.edge[i] = new BellmanNode(edge.From, from, dest, edge.Cost);
-                    bellmanList.Edge.Add(new BellmanFord.Egde(from, dest, edge.Cost, edge.From));
+                    //bellmanList.Edge.Add(new BellmanFord.Egde(from, dest, edge.Cost, edge.From));
                     i++;
                 }
 
@@ -364,13 +365,13 @@ namespace Lab_4.ViewModel
 
             //
             var f = bellmanGraph.BellmanFord(bellmanGraph,a);
-            var anwers = bellmanList.GetShortestPath(a, FromDropdownlist.Count);
+            //var anwers = bellmanList.GetShortestPath(a, FromDropdownlist.Count);
             //All paths from a unique node to the answer
             foreach (var start in FromDropdownlist.Where(s => s != finish))
             {
                 answersDij.Add(ShortestPath.PathShortest(dijkstrasgraph.Graph, start, finish));
                 bgl.Add(bellmanGraph.BellmanFord(bellmanGraph, start-65));
-                bga.Add(bellmanList.GetShortestPath(start - 65, FromDropdownlist.Count));
+                //bga.Add(bellmanList.GetShortestPath(start - 65, FromDropdownlist.Count));
             }
 
             //****************************************************************
