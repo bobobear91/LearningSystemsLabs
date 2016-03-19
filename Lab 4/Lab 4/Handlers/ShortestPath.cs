@@ -167,6 +167,61 @@ namespace Lab_4.Handlers
             return path;
         }
 
+
+        //http://www.geeksforgeeks.org/dynamic-programming-set-23-bellman-ford-algorithm/
+        //https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+        public static int[] BellmanFord(BellmanGraph graph, int src)
+        {
+            //declare variables
+            int Vertices = graph.Vertex, Edges = graph.Edges;
+            int[] dist = new int[Vertices];
+            int[] predecessor = new int[Vertices];
+
+            // Step 1: Initialize distances from src to all other
+            // vertices as INFINITE
+            for (int i = 0; i < Vertices; i++)
+            {
+                dist[i] = int.MaxValue;
+                predecessor[i] = int.MaxValue;
+            }
+            dist[src] = 0;
+            // Step 2: Relax all edges |V| - 1 times. A simple
+            // shortest path from src to any other vertex can
+            // have at-most |V| - 1 edges
+            for (int i = 1; i < Vertices; i++)
+            {
+                for (int j = 0; j < Edges; j++)
+                {
+                    //int u = graph.edge[j].src;
+                    //int v = graph.edge[j].dest;
+                    int weight = graph.edge[j].weight;
+                    if (dist[graph.edge[j].src] != int.MaxValue && dist[graph.edge[j].src] + weight < dist[graph.edge[j].dest])
+                    {
+                        dist[graph.edge[j].dest] = dist[graph.edge[j].src] + weight;
+                        predecessor[graph.edge[j].dest] = graph.edge[j].src;
+                    }
+                }
+            }
+
+            // Step 3: check for negative-weight cycles.  The above
+            // step guarantees shortest distances if graph doesn't
+            // contain negative weight cycle. If we get a shorter
+            //  path, then there is a cycle.
+            for (int j = 0; j < Edges; j++)
+            {
+                int u = graph.edge[j].src;
+                int v = graph.edge[j].dest;
+                int weight = graph.edge[j].weight;
+                if (dist[u] != int.MaxValue && dist[u] + weight < dist[v])
+                {
+                    break;
+                    //System.out.println("Graph contains negative weight cycle");
+                }
+            }
+            return dist;
+        }
+
+
         public static int Dijkstra_CostForPath(Dictionary<char, Dictionary<char, int>> vertices, List<char> path, char start, char answer)
         {
             //Checks if we are already at the end

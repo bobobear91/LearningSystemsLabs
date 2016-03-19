@@ -123,6 +123,8 @@
                     <Grid Grid.Row="0" Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
@@ -132,7 +134,10 @@
                         <Label Grid.Column="0" Content="Double linked:"/>
                         <RadioButton Grid.Column="1" x:Name="Linkes" Content="Yes" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding Path=IsDoubleLinked, UpdateSourceTrigger=PropertyChanged}"/>
                         <RadioButton Grid.Column="2" Content="No" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding Path=IsDoubleLinkedNo, UpdateSourceTrigger=PropertyChanged}"/>
-
+                        
+                        <Label Grid.Row="1" Grid.Column="0" Content="Bellman Ford:"/>
+                        <RadioButton Grid.Row="1" x:Name="Bellman"  Grid.Column="1" Content="Yes" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding Path=IsBellman, UpdateSourceTrigger=PropertyChanged}"/>
+                        <RadioButton Grid.Row="1" Grid.Column="2" Content="No" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding Path=IsBellmanNo, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
 
                     <!--Buttons-->

@@ -36,6 +36,36 @@ namespace Lab_4.ViewModel
         /// </summary>
         public ICommand StopSimulation { get; private set; }
 
+        private bool isbellman = true;
+        public bool IsBellman
+        {
+            get { return isbellman; }
+            set
+            {
+                if (isbellman != value)
+                {
+                    isbellman = value;
+                    IsBellmanNo = !value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        private bool isbellmanNo = false;
+        public bool IsBellmanNo
+        {
+            get { return isbellmanNo; }
+            set
+            {
+                if (isdoublelinkedNo != value)
+                {
+                    isbellmanNo = value;
+                    IsBellman = !value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+
 
         private bool isdoublelinked = true;
         public bool IsDoubleLinked
@@ -65,6 +95,8 @@ namespace Lab_4.ViewModel
                 }
             }
         }
+
+
 
         private bool isRunningEnabled = false;
         public bool IsRunningEnabled
@@ -275,6 +307,8 @@ namespace Lab_4.ViewModel
             RunApplication();
         }
         #endregion
+
+
         private void RunApplication()
         {
             //Answer for the assignment
@@ -364,13 +398,13 @@ namespace Lab_4.ViewModel
             int a = 'A' - 65;
 
             //
-            var f = bellmanGraph.BellmanFord(bellmanGraph,a);
+            //var f = ShortestPath.BellmanFord(bellmanGraph,a);
             //var anwers = bellmanList.GetShortestPath(a, FromDropdownlist.Count);
             //All paths from a unique node to the answer
             foreach (var start in FromDropdownlist.Where(s => s != finish))
             {
                 answersDij.Add(ShortestPath.PathShortest(dijkstrasgraph.Graph, start, finish));
-                bgl.Add(bellmanGraph.BellmanFord(bellmanGraph, start-65));
+                //bgl.Add(ShortestPath.BellmanFord(bellmanGraph, start-65));
                 //bga.Add(bellmanList.GetShortestPath(start - 65, FromDropdownlist.Count));
             }
 
@@ -390,9 +424,12 @@ namespace Lab_4.ViewModel
                     {
                         textway = string.Concat(textway, (answer.PathChars.Last() != pathway) ? (string.Format(" {0} -> ", pathway)) : (string.Format("{0}", pathway)));
                     }
-                    OutputText.Add(string.Format("[From: {0} to {1}] Dijkstras [{2}] Cost:{3} {4}", answer.Start, finish, textway, answer.Cost, 0));
-                    OutputText.Add(string.Format("Bellman using lists: Cost{0}",0));
-                    OutputText.Add(string.Format("Bellman using arrays: Cost{0}",0));
+
+                    OutputText.Add(string.Format("[From: {0} to {1}] Dijkstras [{2}] Cost:{3} ", answer.Start, finish, textway, answer.Cost));
+                    if (IsBellman)
+                    {
+                        OutputText.Add(string.Format("Bellman using arrays: Cost{0}", 0));
+                    }
                 }
                 else //No path is possible
                 {
