@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageRecognotion.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,15 @@ namespace ImageRecognotion
             var traningPath = @"trainingsample.csv";
             var traning = DataReader.ReadObservations(traningPath);
 
+            var distance = new ManhattanDistance();
+            var classifier = new BasicClassifier(distance);
+            classifier.Train(traning);
+
+            var validationPath = @"validationsample.csv";
+            var validation = DataReader.ReadObservations(validationPath);
+
+            var correct = Evaluator.Correct(validation, classifier);
+            Console.WriteLine("Correctly Classified: {0:P2}", correct);
             Console.ReadLine();
         }
     }
@@ -27,17 +37,61 @@ namespace ImageRecognotion
         public string Label { get; private set; }
         public int[] Pixels { get; private set; }
     }
-    public interface IDistance
+    public class BasicClassifier : IClassifier
     {
-        double Between(int[] pixels1, int[] pixels2);
+        private IEnumerable<Observation> data;
+
+        private readonly IDistance distance;
+        
+        public BasicClassifier(IDistance distance)
+        {
+            this.distance = distance;
+        }
+
+        public void Train(IEnumerable<Observation> trainingSet)
+        {
+            this.data = trainingSet;
+        }
+
+        public string Predict(int[] pixels)
+        {
+            Observation currentBest = null;
+            var shortest = Double.MaxValue;
+
+            foreach (Observation obs in this.data)
+            {
+                var dist = this.distance.Between(obs.Pixels, pixels);
+                if (dist < shortest)
+                {
+                    shortest = dist;
+                    currentBest = obs;
+                }
+            }
+            return currentBest.Label;
+        }
     }
+    public class Evaluator
+    {
+        public static double Correct(IEnumerable<Observation> validationSet, IClassifier classifier)
+        {
+            return validationSet.Select(obs => Score(obs, classifier)).Average();
+        }
+        private static double Score(Observation obs, IClassifier classifier)
+        {
+            if (classifier.Predict(obs.Pixels) == obs.Label)
+                return 1.0;
+            else
+                return 0.0;
+        }
+    }
+
     public class ManhattanDistance : IDistance
     {
         public double Between(int[] pixels1,int[] pixels2)
         {
             if (pixels1.Length != pixels2.Length)
             {
-                throw new ArgumentException("Inconsistent image sizes")
+                throw new ArgumentException("Inconsistent image sizes");
             }
             var length = pixels1.Length;
             var distance = 0;

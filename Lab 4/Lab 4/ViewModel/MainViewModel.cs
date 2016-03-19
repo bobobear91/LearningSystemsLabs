@@ -15,6 +15,7 @@ namespace Lab_4.ViewModel
     {
         #region Private varibles
         CityNodeCollection collection;
+        Dictionary<char, int> DennisAlphabet;
         #endregion
 
         #region Private Properties
@@ -228,21 +229,29 @@ namespace Lab_4.ViewModel
             ShortestPath.CreateFile(); //Creates an xml file of the textfile
             collection = Data.XML.DeserializeFromFile<CityNodeCollection>("city 1.xml"); //Collection of all the paths
             HashSet<char> uniques = new HashSet<char>(); //Unique nodes
-
+            DennisAlphabet = new Dictionary<char, int>();
             //Get all unique chars from city collection
             foreach (var item in collection)
             {
                 uniques.Add(item.From);
                 uniques.Add(item.Dest);
             }
+            int i = 0;
+            
             foreach (var unique in uniques)
             {
                 //Adds to the drop down list
                 FromDropdownlist.Add(unique);
                 DestDropdownlist.Add(unique);
+
             }
-
-
+            List<char> characters = new List<char>(FromDropdownlist);
+            characters.Sort();
+            foreach (var item in characters)
+            {
+                DennisAlphabet.Add(item, i);
+                i++;
+            }
             //****************************************************************
             //      Events 
             //****************************************************************
@@ -317,8 +326,6 @@ namespace Lab_4.ViewModel
             //Different graphs
             DijkstrasGraph dijkstrasgraph = new DijkstrasGraph();
             BellmanGraph bellmanGraph;
-            //List<BellmanFord.Egde> edges = new List<BellmanFord.Egde>();
-            //BellmanFord bellmanList = new BellmanFord();
 
             foreach (var unique in FromDropdownlist)
             {
@@ -352,20 +359,11 @@ namespace Lab_4.ViewModel
                 //Go through all edges
                 foreach (var edge in collection)
                 {
-                    //Convert routes char's alphabet to integers from 0
-                    int from = edge.From - 65;
-                    int dest = edge.Dest - 65;
-
                     //Compare bellman graphs
-                    bellmanGraph.edge[i] = new BellmanNode(edge.From, from, dest, edge.Cost);
+                    bellmanGraph.edge[i] = new BellmanNode(edge.From, DennisAlphabet[edge.From], DennisAlphabet[edge.Dest], edge.Cost);
                     i++;
-                    bellmanGraph.edge[i] = new BellmanNode(edge.Dest, dest, from, edge.Cost);
-                    i++;
-
-                    //From -> Dest && Dest -> From
-                    //bellmanList.Edge.Add(new BellmanFord.Egde(from, dest, edge.Cost, edge.From));
-                    //bellmanList.Edge.Add(new BellmanFord.Egde(dest, from, edge.Cost, edge.Dest));
-
+                    bellmanGraph.edge[i] = new BellmanNode(edge.Dest, DennisAlphabet[edge.Dest], DennisAlphabet[edge.From], edge.Cost);
+                    i++;          
                 }
 
             }
@@ -376,13 +374,8 @@ namespace Lab_4.ViewModel
                 //Go through all edges
                 foreach (var edge in collection)
                 {
-                    //Convert routes char's alphabet to integers starting from 0
-                    int from = edge.From - 65;
-                    int dest = edge.Dest - 65;
-
                     //Compare bellman graphs
-                    bellmanGraph.edge[i] = new BellmanNode(edge.From, from, dest, edge.Cost);
-                    //bellmanList.Edge.Add(new BellmanFord.Egde(from, dest, edge.Cost, edge.From));
+                    bellmanGraph.edge[i] = new BellmanNode(edge.From, DennisAlphabet[edge.From], DennisAlphabet[edge.Dest], edge.Cost);
                     i++;
                 }
 
@@ -393,47 +386,48 @@ namespace Lab_4.ViewModel
             //      Dijkstras & Bellman Ford
             //**************************************************************
             List<Path> answersDij = new List<Path>();
-            List<int[]> bgl = new List<int[]>();
             List<int[]> bga = new List<int[]>();
-            int a = 'A' - 65;
 
-            //
-            //var f = ShortestPath.BellmanFord(bellmanGraph,a);
-            //var anwers = bellmanList.GetShortestPath(a, FromDropdownlist.Count);
-            //All paths from a unique node to the answer
+            //STOPWATCH FOR Dijkstras
             foreach (var start in FromDropdownlist.Where(s => s != finish))
             {
                 answersDij.Add(ShortestPath.PathShortest(dijkstrasgraph.Graph, start, finish));
-                //bgl.Add(ShortestPath.BellmanFord(bellmanGraph, start-65));
-                //bga.Add(bellmanList.GetShortestPath(start - 65, FromDropdownlist.Count));
             }
+            //STOP
+
+            //STOPWATCH FOR Alphabet
+            foreach (var start in FromDropdownlist.Where(s => s != finish))
+            {
+                bga.Add(ShortestPath.BellmanFord(bellmanGraph, DennisAlphabet[start]));
+            }
+            //STOP
 
             //****************************************************************
             //      Creates the answer sheet
             //****************************************************************
             string spliter = "-------------------------";
-            foreach (var answer in answersDij)
+            for (int x = 0; x < answersDij.Count; x++)
             {
                 OutputText.Add(spliter);
                 //Return string
-                string textway = string.Format("{0} -> ", answer.Start);
+                string textway = string.Format("{0} -> ", answersDij[x].Start);
                 //Checks if there is any paths 
-                if (answer.PathChars != null)
+                if (answersDij[x].PathChars != null)
                 {
-                    foreach (var pathway in answer.PathChars)
+                    foreach (var pathway in answersDij[x].PathChars)
                     {
-                        textway = string.Concat(textway, (answer.PathChars.Last() != pathway) ? (string.Format(" {0} -> ", pathway)) : (string.Format("{0}", pathway)));
+                        textway = string.Concat(textway, (answersDij[x].PathChars.Last() != pathway) ? (string.Format(" {0} -> ", pathway)) : (string.Format("{0}", pathway)));
                     }
 
-                    OutputText.Add(string.Format("[From: {0} to {1}] Dijkstras [{2}] Cost:{3} ", answer.Start, finish, textway, answer.Cost));
+                    OutputText.Add(string.Format("[From: {0} to {1}] Dijkstras [{2}] Cost:{3} ", answersDij[x].Start, finish, textway, answersDij[x].Cost));
                     if (IsBellman)
                     {
-                        OutputText.Add(string.Format("Bellman using arrays: Cost{0}", 0));
+                        OutputText.Add(string.Format("Bellman using arrays: Cost: {0}", bga[x][5]));
                     }
                 }
                 else //No path is possible
                 {
-                    OutputText.Add(string.Format("[From: {0} to {1}] No path is found. ", answer.Start, finish));
+                    OutputText.Add(string.Format("[From: {0} to {1}] No path is found. ", answersDij[x].Start, finish));
                 }
                 OutputText.Add(spliter);
                 OutputText.Add(string.Empty);
