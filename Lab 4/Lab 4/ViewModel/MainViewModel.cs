@@ -3,6 +3,7 @@ using Lab_4.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace Lab_4.ViewModel
         #region Private varibles
         CityNodeCollection collection;
         Dictionary<char, int> DennisAlphabet;
+        Stopwatch stopwatch;
+        Stopwatch BellmanWatch;
         #endregion
 
         #region Private Properties
@@ -97,7 +100,24 @@ namespace Lab_4.ViewModel
             }
         }
 
-
+        private double bellmanFordTime;
+        public double BellmanFordTime
+        {
+            get { return bellmanFordTime; }
+            set {
+                bellmanFordTime = value;
+                NotifyPropertyChanged();
+            }
+        }
+        private double djikstrasTime;
+        public double DjikstrasTime
+        {
+            get { return djikstrasTime; }
+            set {
+                djikstrasTime = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private bool isRunningEnabled = false;
         public bool IsRunningEnabled
@@ -259,7 +279,8 @@ namespace Lab_4.ViewModel
             ResetSimulation = new RelayCommand<object>(ResetSimulation_Event);
             StopSimulation = new RelayCommand<object>(StopSimulation_Event);
 
-
+            stopwatch = new Stopwatch();
+            BellmanWatch = new Stopwatch();
         }
         #endregion
 
@@ -388,19 +409,23 @@ namespace Lab_4.ViewModel
             List<Path> answersDij = new List<Path>();
             List<int[]> bga = new List<int[]>();
 
-            //STOPWATCH FOR Dijkstras
+            stopwatch.Start();
             foreach (var start in FromDropdownlist.Where(s => s != finish))
             {
                 answersDij.Add(ShortestPath.PathShortest(dijkstrasgraph.Graph, start, finish));
             }
-            //STOP
+            stopwatch.Stop();
+            DjikstrasTime = stopwatch.ElapsedMilliseconds;
 
             //STOPWATCH FOR Alphabet
+            BellmanWatch.Start();
             foreach (var start in FromDropdownlist.Where(s => s != finish))
             {
                 bga.Add(ShortestPath.BellmanFord(bellmanGraph, DennisAlphabet[start]));
             }
             //STOP
+            BellmanWatch.Stop();
+            BellmanFordTime = BellmanWatch.ElapsedMilliseconds;
 
             //****************************************************************
             //      Creates the answer sheet

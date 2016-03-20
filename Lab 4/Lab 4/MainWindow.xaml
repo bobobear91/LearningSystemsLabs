@@ -165,7 +165,22 @@
 
                 <!--http://dynamicdatadisplay.codeplex.com/-->
                 <!--Right Top corner-->
-                <Grid Grid.Column="1" Grid.Row="0"/>
+                <Grid Grid.Column="1" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    
+                    <Label Grid.Column="0" Grid.Row="0" Content="Dijkstras ExecutionTime:"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Bellman Ford:"/>
+
+                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding Path=DjikstrasTime, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Grid.Column="1" Grid.Row="1" Content="{Binding Path=BellmanFordTime, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
                 <!--Right Top corner-->
                 <Grid Margin="1,1,9.667,-0.667" Grid.Column="1" Grid.Row="1">
 
