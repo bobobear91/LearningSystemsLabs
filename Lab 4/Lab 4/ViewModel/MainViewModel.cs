@@ -247,7 +247,9 @@ namespace Lab_4.ViewModel
             //      Graph and loading the file
             //**************************************************************
             ShortestPath.CreateFile(); //Creates an xml file of the textfile
-            collection = Data.XML.DeserializeFromFile<CityNodeCollection>("city 1.xml"); //Collection of all the paths
+            //collection = Data.XML.DeserializeFromFile<CityNodeCollection>("city 1.xml"); //Collection of all the paths
+            collection = Data.XML.DeserializeFromFile<CityNodeCollection>("1.xml"); //Collection of all the paths
+
             HashSet<char> uniques = new HashSet<char>(); //Unique nodes
             DennisAlphabet = new Dictionary<char, int>();
             //Get all unique chars from city collection
@@ -342,7 +344,7 @@ namespace Lab_4.ViewModel
         private void RunApplication()
         {
             //Answer for the assignment
-            char finish = 'F';
+            char finish = 'A';
             int doubledges = 0;
             //Different graphs
             DijkstrasGraph dijkstrasgraph = new DijkstrasGraph();
@@ -416,6 +418,8 @@ namespace Lab_4.ViewModel
             }
             stopwatch.Stop();
             DjikstrasTime = stopwatch.ElapsedMilliseconds;
+
+            bga.Add(ShortestPath.BellmanFord(bellmanGraph, DennisAlphabet['E']));
 
             //STOPWATCH FOR Alphabet
             BellmanWatch.Start();

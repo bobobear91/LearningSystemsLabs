@@ -301,6 +301,18 @@ namespace Lab_4.Handlers
 
             //Serilize it
             Data.XML.SerializeToFile(collection, "city 1.xml");
+
+            CityNodeCollection collection2 = new CityNodeCollection();
+            collection2.Add(new CityNode('A', 'B', 2)); //1
+            collection2.Add(new CityNode('A', 'C', 3)); //2
+            collection2.Add(new CityNode('A', 'D', 4)); //3
+            collection2.Add(new CityNode('B', 'C', 2)); //4
+            collection2.Add(new CityNode('B', 'E', 1)); //5
+            collection2.Add(new CityNode('C', 'E', 7)); //6
+            collection2.Add(new CityNode('D', 'E', 8)); //7
+            collection2.Add(new CityNode('D', 'C', 3)); //8
+            Data.XML.SerializeToFile(collection2, "1.xml");
+
         }
     }
 
